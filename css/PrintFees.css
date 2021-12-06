@@ -1,0 +1,27 @@
+﻿@page{
+margin-left: 0px;
+margin-right: 25px;
+margin-top:0px;
+margin-bottom: 0px;
+size:8.5in 11.69in ;
+}
+.billcont {font-family:Arial, Helvetica, sans-serif;font-size:13px; line-height:14px;  }
+.ph {font-family:Arial, Helvetica, sans-serif;font-size:12px;}
+table.particulars td{ height:16px; }
+
+
+html, body, .main, .tabs, .tabbed-content { float: none; }
+
+.break-after 
+{
+    margin-top:50px;
+    display: block;
+    page-break-after: always;
+    position: relative;
+}
+
+.break-before {
+    display: block;
+    page-break-before: always;
+    position: relative;
+}

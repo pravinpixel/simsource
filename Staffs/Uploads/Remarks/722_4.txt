@@ -1,0 +1,33 @@
+Dear Mr. John & Rozario,
+
+As already discussed, with regarding to RegNo for CBSE Module, the database is structured in such a way that it will not allow alphabets and it will allow only the numeric characters to be stored in the database.
+
+So, either we can add one more number in prefix in the regno for cbse school.
+
+Eg : 
+The format which is for School as of now is
+
+  120150001
+  220150002
+  320150003
+1320150004
+1420150005
+
+In the same way we can go for CBSE, additionally we can add 2 as a prefix for the CBSE module
+
+Eg : 
+The format which is for academy will be
+
+  2120150001
+  2220150002
+  2320150003
+21320150004
+21420150005
+
+The highlighted "2" will be the prefix and it can any number as your wish
+
+
+Kindly check it and let me know
+
+Regards
+Pravin

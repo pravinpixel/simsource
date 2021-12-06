@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'VANAVIL-Avvaiyar';
+	src: url('VANAVILAvvaiyar.eot');
+	src: url('VANAVILAvvaiyar.eot?#iefix') format('embedded-opentype'),
+		url('VANAVILAvvaiyar.woff2') format('woff2'),
+		url('VANAVILAvvaiyar.woff') format('woff'),
+		url('VANAVILAvvaiyar.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+
+}
+text_tamil{
+font-family:'VANAVIL-Avvaiyar';
+}
+
+.text_tam{
+font-family:'VANAVIL-Avvaiyar'!important;
+}

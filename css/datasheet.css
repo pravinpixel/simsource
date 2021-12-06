@@ -1,0 +1,39 @@
+/* http://meyerweb.com/eric/tools/css/reset/ */
+/* v1.0 | 20080212 */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 1;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline important;
+	background: transparent;
+}
+   .tc-img
+    {
+        height:80% !important;
+    }
+    
+table{font-family:arial;line-height: 30px;width:800px;}
+
+body {
+	line-height: 1;
+}
+
+.staff-list-report table td b{
+	width:150px;
+}  
+.staff-list-report table td
+{
+    padding-left: 2px;
+    width: 150px;
+}
