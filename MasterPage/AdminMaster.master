@@ -61,6 +61,13 @@
     <%="<link href='" + ResolveUrl("~/js/jquery.timeentry.package-1.5.0/jquery.timeentry.css") + "' rel='stylesheet' type='text/css'  media='screen' />"%>
     <%="<script src='" + ResolveUrl("~/js/browser.js") + "' type='text/javascript'></script>"%>
         
+    <script type="text/javascript" language="javascript">
+        function EndRequestHandler(sender, args) {
+            if (args.get_error() != undefined) {
+                args.set_errorHandled(true);
+            }
+        }
+    </script>
 
     <script type="text/javascript">
         var glValue = '';
@@ -74,6 +81,7 @@
             setSidebarHeight();
             ChangeParentMenuBG(glValue);
             setCurrentDatePicker("[id*=txtDate]");
+            
 
         }
         //        function changeAcademicYear(ID) {

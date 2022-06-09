@@ -547,9 +547,14 @@
             $('#txtstudName').val(xml.find("stname").text());
             $('#txtstudClass').val(xml.find("classname").text());
             $('#txtstudSections').val(xml.find("sectionname").text());
+            
+            if (xml.find("AdminNo").text() == "0" || xml.find("AdminNo").text() == "") {
+                jAlert('Can\'t Display the Fees Bill, B\'coz the student admission is not approved. !!!');
+            }
+
             if (xml.find("PresentStatus").text() == "Inactive") {
                 jAlert('Can\'t Display the Fees Bill, B\'coz he/she is not active. !!!');
-            }
+            }            
             else if (xml.find("PresentStatus").text() == "Active") {
                 checkConcession();                                
             }
