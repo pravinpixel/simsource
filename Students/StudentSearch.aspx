@@ -138,10 +138,21 @@
 
             var row = $("[id*=dgStudentInfo] tr:last-child").clone(true);
             $("[id*=dgStudentInfo] tr").not($("[id*=dgStudentInfo] tr:first-child")).remove();
+            var vanchor = ''
+            var vanchorEnd = '';
             var eanchor = ''
             var eanchorEnd = '';
             var danchor = ''
             var danchorEnd = '';
+            if ($("[id*=hfViewPrm]").val() == 'false') {
+                vanchor = "<a>";
+                vanchorEnd = "</a>";
+            }
+            else {
+                vanchor = "<a  href=\"javascript:ViewStudentInfo('";
+                vanchorEnd = "');\">View</a>";
+            }
+
             if ($("[id*=hfEditPrm]").val() == 'false') {
                 eanchor = "<a>";
                 eanchorEnd = "</a>";
@@ -166,8 +177,9 @@
                 $("td", row).eq(3).html("No Record Found").attr("align", "left");
                 $("td", row).eq(4).html("");
                 $("td", row).eq(5).html("");
-                $("td", row).eq(6).html("").removeClass("editacc edit-links");
+                $("td", row).eq(6).html("").removeClass("viewacc edit-links");
                 $("td", row).eq(7).html("").removeClass("editacc edit-links");
+             //   $("td", row).eq(8).html("").removeClass("editacc edit-links");
                 //   $("td", row).eq(6).html("").removeClass("deleteacc delete-links"); ;
 
                 $("[id*=dgStudentInfo]").append(row);
@@ -186,6 +198,7 @@
 
                 $.each(StudentInfoes, function () {
                     var iStudentInfo = $(this);
+                    var vhref = vanchor + $(this).find("StudentID").text() + vanchorEnd;
                     var ehref = eanchor + $(this).find("StudentID").text() + eanchorEnd;
                     var dhref = danchor + $(this).find("StudentID").text() + danchorEnd;
                     row.addClass("even");
@@ -195,15 +208,20 @@
                     $("td", row).eq(3).html($(this).find("Class").text());
                     $("td", row).eq(4).html($(this).find("Section").text());
                     $("td", row).eq(5).html($(this).find("Status").text());
-                    $("td", row).eq(6).html(ehref).addClass("editacc edit-links");
-
-                    $("td", row).eq(7).html(dhref).addClass("editacc edit-links");
+                    $("td", row).eq(6).html(vhref).addClass("viewacc view-links");
+                    $("td", row).eq(7).html(ehref).addClass("editacc edit-links");
+                  //  $("td", row).eq(8).html(dhref).addClass("editacc edit-links");
 
                     //  $("td", row).eq(6).html(dhref).addClass("deleteacc delete-links");
                     $("[id*=dgStudentInfo]").append(row);
                     row = $("[id*=dgStudentInfo] tr:last-child").clone(true);
                 });
-
+                if ($("[id*=hfViewPrm]").val() == 'false') {
+                    $('.viewacc').hide();
+                }
+                else {
+                    $('.viewacc').show();
+                }
                 if ($("[id*=hfEditPrm]").val() == 'false') {
                     $('.editacc').hide();
                 }
@@ -385,7 +403,34 @@
             }
         }
 
+        function ViewStudentInfo(StudentInfoID) {
+            if ($("[id*=hfViewPrm]").val() == 'true') {
+                $("table.form :input").prop('disabled', false);
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/StudentInfoView.aspx/GetStudentInfo",
+                    data: '{studentid: ' + StudentInfoID + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var url = "../Students/StudentInfoView.aspx?StudentID=" + StudentInfoID + "";
+                        $.prettyPhoto.open('StudentInfoView.aspx?StudentID=' + StudentInfoID + '&iframe=true&width=800', '', '');
+                    },
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
 
+            }
+            else {
+                $("table.form :input").prop('disabled', true);
+                return false;
+            }
+
+        }
 
         function UpdateCoCurricularpayment(StudentInfoID) {
             if ($("[id*=hfEditPrm]").val() == 'true') {
@@ -787,6 +832,15 @@
                                         HeaderText="Status" SortExpression="Status">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     </asp:BoundField>
+                                     <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
+                                        HeaderStyle-CssClass="sorting_mod viewacc">
+                                        <HeaderTemplate>
+                                            View</HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="lnkView" runat="server" Text="View" CommandArgument='<%# Eval("StudentID") %>'
+                                                CommandName="View" CausesValidation="false" CssClass="links"></asp:LinkButton>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                                         HeaderStyle-CssClass="sorting_mod editacc">
                                         <HeaderTemplate>
@@ -796,7 +850,7 @@
                                                 CommandName="Edit" CausesValidation="false" CssClass="links"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
+                                     <%--   <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                                         HeaderStyle-CssClass="sorting_mod editacc">
                                         <HeaderTemplate>
                                             Action</HeaderTemplate>
@@ -806,7 +860,7 @@
                                                 CssClass="links"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <%--    <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
+                                    <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                                         HeaderStyle-CssClass="sorting_mod deleteacc">
                                         <HeaderTemplate>
                                             Delete</HeaderTemplate>
@@ -921,5 +975,11 @@
                 $("[id*=txtRegNo]").val('');
             }
         }
+    </script>
+      <script src="../prettyphoto/js/prettyPhoto.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("a[rel^='prettyPhoto']").prettyPhoto();
+        });
     </script>
 </asp:Content>
