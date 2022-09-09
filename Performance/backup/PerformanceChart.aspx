@@ -16,7 +16,6 @@
         }
         @media screen
         {
-            .printContent
             {
                 display: none;
             }
@@ -88,16 +87,8 @@
                             <%-- <asp:CheckBoxList ID="chkExamName" runat="server" CssClass="checkboxlist" RepeatColumns="7"
                                         RepeatDirection="Horizontal" RepeatLayout="Flow">
                                     </asp:CheckBoxList>--%>
-                            <asp:DropDownList ID="ddlExamName" CssClass="jsrequired" runat="server">
+                            <asp:DropDownList ID="ddlExamName" CssClass="jsrequired" runat="server" AppendDataBoundItems="True">
                                 <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
-                            </asp:DropDownList>
-                             <label>
-                                Display Type :</label>
-                            <asp:DropDownList ID="ddlType" CssClass="jsrequired" runat="server" 
-                                AutoPostBack="True">
-                                <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
-                                <asp:ListItem Value="Grade">Grade</asp:ListItem>
-                                  <asp:ListItem Value="Result">Result</asp:ListItem>
                             </asp:DropDownList>
                         </td>
                     </tr>

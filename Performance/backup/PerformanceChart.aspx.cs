@@ -331,9 +331,8 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
             {
                 if (examnochk != dsGet.Tables[0].Rows[i]["RegNo"].ToString())
                 {
-                    stroption += @"<table width='100%' border='0' cellspacing='0' cellpadding='0' class='terms-bg'><tr><td height='1350' align='center' valign='top'><div class='terms-cont'> <table width='1000' border='0' cellspacing='0' cellpadding='0'><tr><td height='20' align='center'><br/><h3 style='font-size: 31px;'>AMALORPAVAM HR. SEC. SCHOOL </h3> <h3 style=' margin-top: -20px;'>LOURDES CAMPUS, VANARAPET, PUDUCHERRY.</h3><h3 style=' margin-top: -5px;'>www.amalorpavamschool.org</h3></td></tr><tr><td height='30' align='center'><table border='0' cellspacing='0' cellpadding='0'><tr><td align='right' valign='bottom'><img src='../img/title-left.jpg' width='113' height='74' /></td><td class='titlebg' ><Div class='title-hd'><h1>PERFORMANCE CHART</h1> </Div> </td><td align='left'> <img src='../img/title-right.jpg' width='110' height='74' /></td></tr></table></td><td></td></tr><tr><td><Div class='terms-student-details terms-studentname'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='10' colspan='4'>&nbsp;</td></tr><tr><td align='left' height='40' valign='top'></td>
-                  </tr><tr><td width='19%' style='border-bottom:1px solid #000;' height='35'>Student Name&nbsp;&nbsp;&nbsp;<span style='padding-left:3px;'>:</span> </td><td colspan='3' style='border-bottom:1px solid #000;'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString() + "</td><td  style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Reg. No : " + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Class & Section : </td><td  colspan='3' style='border-bottom:1px solid #000;' width='15%'>" + ddlClass.SelectedItem.Text + "  " + ddlSection.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' width='48%'>Exam No : " + dsGet.Tables[0].Rows[i]["ExamNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Exam Name :</td><td colspan='3' style='border-bottom:1px solid #000;'> " + ddlExamName.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Date : 10/09/2022</td></tr></table></div></td></tr>";
-                   
+                    stroption += @"<table width='100%' border='0' cellspacing='0' cellpadding='0' class='terms-bg'><tr><td height='1350' align='center' valign='top'><div class='terms-cont'> <table width='1000' border='0' cellspacing='0' cellpadding='0'><tr><td height='20' align='center'>&nbsp;</td></tr><tr><td height='30' align='center'><table border='0' cellspacing='0' cellpadding='0'><tr><td align='right' valign='bottom'><img src='../img/title-left.jpg' width='113' height='74' /></td><td class='titlebg' ><Div class='title-hd'><h1>" + ddlExamName.SelectedItem.Text + " EXAMINATION " + acadamicyear + "</h1> </Div> </td><td align='left'> <img src='../img/title-right.jpg' width='110' height='74' /></td></tr></table></td><td></td></tr><tr><td><Div class='terms-student-details terms-studentname'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='10' colspan='4'>&nbsp;</td></tr><tr><td width='19%'  height='35'>Student Name&nbsp;&nbsp;&nbsp;<span style='padding-left:3px;'>:</span> </td><td colspan='3' style='border-bottom:1px solid #000;'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString() + "</td></tr><tr><td height='35'>Class & Section : </td><td width='15%'>" + ddlClass.SelectedItem.Text + "  " + ddlSection.SelectedItem.Text + "</td><td width='25%' height='35'>Reg. No : " + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "</td><td width='48%'>Exam No : " + dsGet.Tables[0].Rows[i]["ExamNo"].ToString() + "</td></tr></table></div></td></tr>";
+                    
                     DataRow[] drExamPattern = dsGet.Tables[0].Select("Pattern='None' and RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " ");
 
                     if (drExamPattern.Length > 0)
@@ -344,15 +343,15 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                         sqlstr1 = "SP_GetConsolidateReport '" + ddlClass.SelectedValue + "',''," + "'" + ddlExamName.SelectedValue + "'" + "," + "''" + "," + "'General'" + "," + AcademicID;
                         dsGetRank = utl.GetDataset(sqlstr1);
 
-                        if (ddlType.Text == "Result")
+                        if (Convert.ToInt32(classid) >= 12 && Convert.ToInt32(classid) <= 22)
                         {
-                                                        stroption += @"<tr><td><div class='terms-student-details terms-markareaHSSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
-              <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'> <tr><td class='heading' width='20%' height='20'>Subjects</td><td class='heading' width='20%'>Minimum Marks</td><td class='heading' width='20%'>Maximum Marks</td><td class='heading' width='20%'>Marks Obtained</td><td class='heading' width='24%'>Result</td></tr>";
+                            stroption += @"<tr><td><div class='terms-student-details terms-markareaHSSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
+              <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'> <tr><td class='heading' width='20%' height='20'>Subjects</td><td class='heading' width='20%'>Minimum Marks</td><td class='heading' width='20%'>Maximum Marks</td><td class='heading' width='27%'>Marks Obtained</td><td class='heading' width='20%'>Result</td></tr>";
                         }
-                        else if (ddlType.Text == "Grade")
+                        else
                         {
-                                                    stroption += @"<tr><td><div class='terms-student-details terms-markareaSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
-              <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td class='heading' width='20%' height='25'>Subjects</td><td class='heading' width='20%'>Minimum Marks</td><td class='heading' width='20%'>Maximum Marks</td><td class='heading' width='20%'>Marks Obtained</td><td class='heading' width='24%'>Mark Grade</td></tr>";
+                            stroption += @"<tr><td><div class='terms-student-details terms-markareaSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
+              <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td class='heading' width='20%' height='25'>Subjects</td><td class='heading' width='20%'>Minimum Marks</td><td class='heading' width='33%'>Maximum Marks</td><td class='heading' width='20%'>Marks Obtained</td><td class='heading' width='22%'>Mark Grade</td></tr>";
                         }
 
 
@@ -396,12 +395,12 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                                     Mark_Grade = "ABSENT";
                                 }
 
-                                if (ddlType.Text == "Result")
+                                if (Convert.ToInt32(classid) >= 12 && Convert.ToInt32(classid) <= 22)
                                 {
                                     if (Convert.ToDouble(drSubject[0]["PassMark"].ToString()) <= Convert.ToDouble(dblActualMark))
                                     {
 
-                                         stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>PASS</td></tr>";
+                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>PASS</td></tr>";
                                     }
 
                                     else
@@ -416,17 +415,17 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                                         }
                                     }
                                 }
-                                else if (ddlType.Text == "Grade")
+                                else
                                 {
-                                     if (Convert.ToDouble(drSubject[0]["PassMark"].ToString()) <= Convert.ToDouble(dblActualMark))
+                                    if (Convert.ToDouble(drSubject[0]["PassMark"].ToString()) <= Convert.ToDouble(dblActualMark))
                                     {
 
-                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 75px;text-align: right;'>" + Mark_Grade + "</td></tr>";
+                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 75px;text-align: right;'>" + Mark_Grade + "</td></tr>";
                                     }
 
                                     else
                                     {
-                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 75px;text-align: right;'>" + Mark_Grade + "</td></tr>";
+                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + Mark_Grade + "</td></tr>";
                                     }
                                 }
 
@@ -435,18 +434,16 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                             }
                         }
 
-                           MarksPercetage = Math.Round(((TotalMarks / MaxMarks) * 100),1);
+                        MarksPercetage = (TotalMarks / MaxMarks) * 100;
 
                         DataRow[] drRank = dsGetRank.Tables[0].Select("RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "");
 
 
-                        //if (schooltypeid == "1")
-                        //{
-                        //    stroption += @"<tr><td height='25' align='left'></td><td align='center'></td><td class='percentage'><b>percentage : " + Math.Round(MarksPercetage, 1) + "</b></td><td class='total'><b>Total : " + TotalMarks.ToString() + "</b></td><td class='total'><b>&nbsp;</b></td></tr>";
-                        //}
-                        //else 
-                        
-                        if (ddlType.Text == "Result")
+                        if (schooltypeid == "1")
+                        {
+                            stroption += @"<tr><td height='25' align='left'></td><td align='center'></td><td class='total'><b>Total : " + TotalMarks.ToString() + "</b></td><td class='percentage'><b>percentage : " + Math.Round(MarksPercetage, 1) + "</b></td></tr>";
+                        }
+                        else if (Convert.ToInt32(classid) >= 12 && Convert.ToInt32(classid) <= 22)
                         {
                             
                             sqlstr = "select count(*) from vw_getstudent where classid= '" + ddlClass.SelectedValue + "' and academicyear='" + Session["AcademicID"] + "'";
@@ -456,11 +453,11 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                             string SectionCnt = utl.ExecuteScalar(sqlstr);
 
 
-                            stroption += @"<tr><td colspan='2' align='left' style='padding-left:98px;'><b>TOTAL &nbsp;&nbsp;&nbsp;<span style='padding-left:42px;'>:</span> " + TotalMarks.ToString() + " / " + MaxMarks.ToString() + "</b></td><td colspan='3' style='padding-left: 172px;' align='left'><b>PERCENTAGE &nbsp;&nbsp;&nbsp;<span style='padding-left:1px;'>:</span> " + MarksPercetage + "</b></td></tr><tr><td height='20' colspan='2' align='center'><b>SECTION RANK : " + drRank[0]["SectionRank"].ToString() + " / " + SectionCnt + "</b></td><td align='center' colspan='3'><b>OVERALL RANK : " + drRank[0]["ClassRank"].ToString() + " / " + ClassCnt + "</b></td></tr>";
+                            stroption += @"<tr><td colspan='2' align='left' style='padding-left:98px;'><b>TOTAL &nbsp;&nbsp;&nbsp;<span style='padding-left:42px;'>:</span> " + TotalMarks.ToString() + " / " + MaxMarks.ToString() + "</b></td><td colspan='3' style='padding-left: 172px;' align='left'><b>PERCENTAGE &nbsp;&nbsp;&nbsp;<span style='padding-left:1px;'>:</span> " + Math.Round(MarksPercetage, 1) + "</b></td></tr><tr><td height='20' colspan='2' align='center'><b>SECTION RANK : " + drRank[0]["SectionRank"].ToString() + " / " + SectionCnt + "</b></td><td align='center' colspan='3'><b>OVERALL RANK : " + drRank[0]["ClassRank"].ToString() + " / " + ClassCnt + "</b></td></tr>";
                         }
-                        else if (ddlType.Text == "Grade")
+                        else
                         {
-                            stroption += @"<tr><td height='25' align='left'></td><td align='center'></td><td class='percentage'><b>percentage : " + MarksPercetage + "</b></td><td class='total'><b>Total : " + TotalMarks.ToString() + "</b></td><td class='total'><b>Rank : " + drRank[0]["SectionRank"].ToString() + "</b></td></tr>";
+                            stroption += @"<tr><td height='25' align='left'></td><td align='center'></td><td class='total'><b>Total : " + TotalMarks.ToString() + "</b></td><td class='percentage'><b>percentage : " + Math.Round(MarksPercetage, 1) + "</b></td><td class='total'><b>Rank : " + drRank[0]["SectionRank"].ToString() + "</b></td></tr>";
                         }
 
                         stroption += @"</table></div></td></tr><tr><td>&nbsp;</td></tr></tr></table></div></td></tr>";
@@ -729,7 +726,7 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
 
                     //Co-scholastic Type only - General Activities Result -END
 
-                    stroption += @"</div></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table></div></td></tr>";
+                    stroption += @"</div></td></tr><tr><td>&nbsp;</td></tr></table></div></td></tr>";
 
 
                     //Signature List Row - start

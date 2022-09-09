@@ -336,25 +336,25 @@
                                                         <asp:TextBox ID="txtConductedby" runat="server" CssClass="jsrequired" Width="400px"></asp:TextBox>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                  <tr>
                                                     <td class="col1" align="left">
-                                                        <label>
-                                                            6. Award Type / Stage of Award Received
+                                                        6<label>. 
+                                                        Name of the Program <span style="color: Red">*</span>
                                                         </label>
                                                     </td>
                                                     <td colspan="2">
                                                         :
                                                     </td>
-                                                    <td>
-                                                        <asp:TextBox ID="txtawardtype" runat="server" Width="400px"></asp:TextBox>
+                                                    <td style="text-align: left">
+                                                        <asp:TextBox ID="txtEvent" CssClass="jsrequired" runat="server"  Width="400px"></asp:TextBox>
                                                     </td>
                                                 </tr>
+                                              
                                                 <tr>
                                                     <td class="col1" align="left">
                                                         <label>
                                                             7. Remarks
-                                                        </label>
-                                                    </td>
+                                                        (Winner / Participant)</label></td>
                                                     <td colspan="2">
                                                         :
                                                     </td>
@@ -381,7 +381,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="col1" align="left">
-                                                        9<label>. Competition Date <span style="color: Red">*</span>
+                                                        9<label>. Program Start Date <span style="color: Red">*</span>
                                                         </label>
                                                     </td>
                                                     <td colspan="2">
@@ -391,9 +391,9 @@
                                                         <asp:TextBox ID="txtDate" CssClass="jsrequired dateNL date-picker" runat="server"></asp:TextBox>
                                                     </td>
                                                 </tr>
-                                                <tr style="display: none;">
+                                                <tr>
                                                     <td class="col1" align="left">
-                                                        9<label>. Competition End Date
+                                                        9<label>. Program End Date
                                                         </label>
                                                     </td>
                                                     <td colspan="2">
@@ -405,14 +405,15 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="col1" align="left">
-                                                        10<label>. Name of the event <span style="color: Red">*</span>
+                                                        <label>
+                                                            10. Name of the Event
                                                         </label>
                                                     </td>
                                                     <td colspan="2">
                                                         :
                                                     </td>
-                                                    <td style="text-align: left">
-                                                        <asp:TextBox ID="txtEvent" CssClass="jsrequired" runat="server"></asp:TextBox>
+                                                    <td>
+                                                        <asp:TextBox ID="txtawardtype" runat="server" Width="400px"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr>
