@@ -200,12 +200,12 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
     StringBuilder dvContent = new StringBuilder();
     DataSet dsGet = new DataSet();
     string examnochk = string.Empty;
-
+    string printdata = "";
     private void LOAD_RESULT()
     {
         try
         {
-            DISPLAY();
+          printdata =  DISPLAY();
         }
         catch
         {
@@ -213,14 +213,14 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
         }
         //Normal Type only - Samacheer and General Result
 
-        dvContent.Append(stroption);
+        dvContent.Append(printdata);
         dvCard.InnerHtml = dvContent.ToString();
     }
 
 
 
     string acadamicyear;
-    private void DISPLAY()
+    private string DISPLAY()
     {
         utl = new Utilities();
         string sqlqry = "select YEAR(StartDate) from m_academicyear where AcademicId='" + AcademicID + "'";
@@ -283,6 +283,7 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
                // examnochk = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
             }
         }
+        return stroption;
     }
 
     
