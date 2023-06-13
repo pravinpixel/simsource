@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/AdminMaster.master"
-    EnableEventValidation="false" AutoEventWireup="true" CodeFile="MarkEntry.aspx.cs"
-    Inherits="Performance_MarkEntry" %>
+    EnableEventValidation="false" AutoEventWireup="true" CodeFile="HeaderMarkEntry.aspx.cs"
+    Inherits="Performance_HeaderMarkEntry" %>
 
 <%@ MasterType VirtualPath="~/MasterPage/AdminMaster.master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
@@ -24,7 +24,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "../Performance/MarkEntry.aspx/GetExamTypeByExamName",
+                    url: "../Performance/HeaderMarkEntry.aspx/GetExamTypeByExamName",
                     data: parameters,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -63,7 +63,7 @@
         function GetExamNameByType(ID) {
             $.ajax({
                 type: "POST",
-                url: "../Performance/MarkEntry.aspx/GetExamNameByType",
+                url: "../Performance/HeaderMarkEntry.aspx/GetExamNameByType",
                 data: '{ExamNameID: ' + ID + '}',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -95,7 +95,7 @@
         function GetSectionByClass(ID) {
             $.ajax({
                 type: "POST",
-                url: "../Performance/MarkEntry.aspx/GetSectionByClassID",
+                url: "../Performance/HeaderMarkEntry.aspx/GetSectionByClassID",
                 data: '{ClassID: ' + ID + '}',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -127,10 +127,10 @@
         function GetList() {
             if ($("[id*=hfViewPrm]").val() == 'true') {
                 if ($('#aspnetForm').valid()) {
-                    var parameters = '{"classid": "' + $("[id*=ddlClass]").val() + '","section": "' + $("[id*=ddlSection]").val() + '","type": "' + $("[id*=ddlType]").val() + '","academicId": "' + $("[id*=hfAcademicYear]").val() + '","examTypeId": "' + $("[id*=ddlExamType]").val() + '"}';
+                    var parameters = '{"classid": "' + $("[id*=ddlClass]").val() + '","section": "' + $("[id*=ddlSection]").val() + '","type": "' + $("[id*=ddlType]").val() + '","academicId": "' + $("[id*=hfAcademicYear]").val() + '","examTypeId": "' + $("[id*=ddlExamType]").val() + '","subjectID": "' + $("[id*=ddlSubjects]").val() + '"}';
                     $.ajax({
                         type: "POST",
-                        url: "../Performance/MarkEntry.aspx/GetList",
+                        url: "../Performance/HeaderMarkEntry.aspx/GetList",
                         data: parameters,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -166,7 +166,7 @@
                 var second = '';
 
                 $.each(langs, function () {
-                    second += '<th class=\"freezing_mod\" scope=\"col\">' + $(this).find("SubjectName").text() + '</th>';
+                    second += '<th class=\"freezing_mod\" scope=\"col\">' + $(this).find("SubjectHeaderName").text() + '</th>';
                 });
                 var third = '</tr></<tbody>';
                 $("[id*=grdList]").html(first + second + third);
@@ -189,19 +189,17 @@
                                 $.each(marks, function () {
 
                                     var sub = $(this).find("Sub").text();
-
+                                    
                                     if (value == sub) {
 
                                         maxMark = $(this).find("Maxmark").text();
-                                      
 
                                     }
 
                                 });
                             }
 
-
-                            secondeApp += '<td><input style=\"width:57px;\" type=\"text\" class=\"' + SubjectId + 'S' + ' ' + maxMark + '\" value="' + mod.find(value).text() + '" ></input></td>';
+                            secondeApp += '<td><input style=\"width:57px;\" type=\"text\" class=\"' + SubjectId.trim() + 'S' + ' ' + maxMark.trim() + '\" value="' + mod.find(value).text() + '" ></input></td>';
 
 
                         });
@@ -347,7 +345,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "../Performance/MarkEntry.aspx/SaveMarks",
+                    url: "../Performance/HeaderMarkEntry.aspx/SaveMarks",
                     data: parameters,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -415,7 +413,7 @@
     <div class="grid_10">
         <div class="box round first fullpage">
             <h2>
-                Mark Entry
+               Subject Header Mark Entry
             </h2>
             <div>
                 <asp:UpdatePanel ID="ups" runat="server">
@@ -442,27 +440,26 @@
                                                     </asp:DropDownList>
                                                 </td>
 
-                                                <td width="25%">
+                                                <td width="15%">
                                                     <label>
-                                                        Section &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</label>
+                                                        Section:</label>
                                                     <asp:DropDownList ID="ddlSection" runat="server" AppendDataBoundItems="True" CssClass="jsrequired">
                                                         <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                                     </asp:DropDownList>
-                                                </td>                                                
+                                                </td> 
+                                                  <td width="15%">
+                                                    <label>
+                                                        ExamType :</label>
+                                                     <asp:DropDownList ID="ddlExamType" runat="server" CssClass="jsrequired">
+                                                        <asp:ListItem Selected="True" Value="">-----Select-----</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>                                               
                                                
                                             </tr>
                                             <tr>
-                                            <td height="40">
-                                                    <label>
-                                                        ExamType :</label>
-                                                    <asp:DropDownList ID="ddlExamType" runat="server" CssClass="jsrequired">
-                                                        <asp:ListItem Selected="True" Value="">-----Select-----</asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </td>
-                                                
                                                 <td>
                                                     <label>
-                                                        Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</label>
+                                                        Type :</label>
                                                     <asp:DropDownList ID="ddlType" runat="server" AppendDataBoundItems="True" CssClass="jsrequired">
                                                         <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                                         <asp:ListItem Value="General">General</asp:ListItem>
@@ -472,6 +469,14 @@
                                                         <asp:ListItem>Slip Test</asp:ListItem>
                                                     </asp:DropDownList>
                                                 </td>
+                                                 <td>
+                                            <label>
+                                                Subject:</label>&nbsp;
+                                            <asp:DropDownList ID="ddlSubjects" runat="server" AppendDataBoundItems="True" CssClass="jsrequired"
+                                                OnSelectedIndexChanged="ddlSubjects_SelectedIndexChanged">
+                                                <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </td>
                                                 <td>
                                                     <button id="btnSearch" type="button" class="btn-icon btn-navy btn-search" onclick="GetList();">
                                                         Search</button>
@@ -496,6 +501,7 @@
                         <asp:AsyncPostBackTrigger ControlID="ddlExamType" EventName="SelectedIndexChanged" />
                         <asp:AsyncPostBackTrigger ControlID="ddlClass" EventName="SelectedIndexChanged" />
                         <asp:AsyncPostBackTrigger ControlID="ddlSection" EventName="SelectedIndexChanged" />
+                         <asp:AsyncPostBackTrigger ControlID="ddlSubjects" EventName="SelectedIndexChanged" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>

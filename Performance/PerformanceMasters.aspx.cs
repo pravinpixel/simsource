@@ -47,8 +47,30 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
                 BindExamType();
                 BindGrade();      
                 BindDummyRow();
+                BindSubjectMasters();
             }
 
+        }
+    }
+
+    private void BindSubjectMasters()
+    {
+        utl = new Utilities();
+        DataSet dsSubjects = new DataSet();
+        dsSubjects = utl.GetDataset("sp_GetSubExperience");
+        if (dsSubjects != null && dsSubjects.Tables.Count > 0 && dsSubjects.Tables[0].Rows.Count > 0)
+        {
+            ddlSubjects.DataSource = dsSubjects;
+            ddlSubjects.DataTextField = "SubExperienceName";
+            ddlSubjects.DataValueField = "SubExperienceID";
+            ddlSubjects.DataBind();
+        }
+        else
+        {
+            ddlSubjects.DataSource = null;
+            ddlSubjects.DataTextField = "";
+            ddlSubjects.DataValueField = "";
+            ddlSubjects.DataBind();
         }
     }
    
@@ -95,6 +117,22 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         }
     }
 
+
+    [WebMethod]
+    public static string BindSubjectExamType(int ExamNameID, int ClassID)
+    {
+        string query =string.Empty;
+        Utilities utl = new Utilities();
+        if (ExamNameID != 0 && ClassID!=0)
+        {
+            
+            query = "[sp_GetExamTypeByExamName_Filter] " + "'" + ExamNameID + "','" + ClassID + "','" + AcademicID + "'";
+           
+        }
+        return utl.GetDatasetTable(query, "ExamNameByType").GetXml();
+    }
+
+  
     private void BindSchoolType()
     {
         utl = new Utilities();
@@ -106,6 +144,11 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             ddlSchoolType.DataTextField = "SchoolTypeName";
             ddlSchoolType.DataValueField = "SchoolTypeID";
             ddlSchoolType.DataBind();
+
+            ddlSchType.DataSource = dsSchoolType;
+            ddlSchType.DataTextField = "SchoolTypeName";
+            ddlSchType.DataValueField = "SchoolTypeID";
+            ddlSchType.DataBind();
         }
         else
         {
@@ -113,10 +156,35 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             ddlSchoolType.DataTextField = "";
             ddlSchoolType.DataValueField = "";
             ddlSchoolType.DataBind();
+
+            ddlSchType.DataSource = null;
+            ddlSchType.DataTextField = "";
+            ddlSchType.DataValueField = "";
+            ddlSchType.DataBind();
         }
     }
 
-   
+    [WebMethod]
+    public static string GetExamClassSubjectID(string schooltypeid, string classid, string examtypeid, string subjecttype, string subjects)
+    {
+         Utilities utl = new Utilities();
+         string query = "";
+        if (examtypeid!="")
+        {
+           query = "sp_GetExamClassSubjectID " + classid + "," + examtypeid + "," + subjecttype + "," + subjects + "," + AcademicID + "";
+            
+        }
+        return utl.GetDatasetTable(query, "GetExamClassSubjectID").GetXml();
+    }
+
+
+    [WebMethod]
+    public static string GetClassSubjectID(string schooltypeid, string classid, string subjecttype, string subjects)
+    {
+        Utilities utl = new Utilities();
+        string query = "sp_GetClassSubjectID " + classid + "," + subjecttype + "," + subjects + ","+ AcademicID +"";
+        return utl.GetDatasetTable(query, "GetClassSubjectID").GetXml();
+    }
 
     [WebMethod]
     public static string GetClassBySchoolTypeID(int SchoolTypeID)
@@ -156,6 +224,11 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             ddlExamNameID.DataTextField = "ExamName";
             ddlExamNameID.DataValueField = "ExamNameID";
             ddlExamNameID.DataBind();
+
+            ddlSubjectExamName.DataSource = dsExam;
+            ddlSubjectExamName.DataTextField = "ExamName";
+            ddlSubjectExamName.DataValueField = "ExamNameID";
+            ddlSubjectExamName.DataBind();
         }
         else
         {
@@ -163,6 +236,15 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             ddlExamNameID.DataTextField = "";
             ddlExamNameID.DataValueField = "";
             ddlExamNameID.DataBind();
+
+            ddlSubjectExamName.DataSource = null;
+            ddlSubjectExamName.DataTextField = "";
+            ddlSubjectExamName.DataValueField = "";
+            ddlSubjectExamName.DataBind();
+
+            ddlSubjectExamName.Items.Insert(0, "---Select---");
+
+            ddlSubjectExamName.SelectedIndex = -1;
         }
     }
     private void BindDummyRow()
@@ -211,6 +293,21 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             dgClassSubjects.DataSource = dummy;
             dgClassSubjects.DataBind();
 
+
+            dummy = new DataTable();
+            dummy.Columns.Add("SchoolType");
+            dummy.Columns.Add("Class");
+            dummy.Columns.Add("SubjectType");
+            dummy.Columns.Add("ClassSubjectName");
+            dummy.Columns.Add("ExamTypeName");
+            dummy.Columns.Add("SubjectHeaderName");
+            dummy.Columns.Add("MaxMark");
+            dummy.Columns.Add("SubjectHeaderID");
+            dummy.Rows.Add();
+            dgSubjectheaders.DataSource = dummy;
+            dgSubjectheaders.DataBind();
+
+
             dummy = new DataTable();
             dummy.Columns.Add("ExamSetupID");
             dummy.Columns.Add("ClassSubjectID");
@@ -252,6 +349,22 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             ddlClass.DataValueField = "";
             ddlClass.DataBind();
         }
+        ddlClass.Items.Insert(0, "---Select---");
+        if (dsClass != null && dsClass.Tables.Count > 0 && dsClass.Tables[0].Rows.Count > 0)
+        {
+            cmbClass.DataSource = dsClass;
+            cmbClass.DataTextField = "ClassName";
+            cmbClass.DataValueField = "ClassID";
+            cmbClass.DataBind();
+        }
+        else
+        {
+            cmbClass.DataSource = null;
+            cmbClass.DataTextField = "";
+            cmbClass.DataValueField = "";
+            cmbClass.DataBind();
+        }
+        cmbClass.Items.Insert(0, "---Select---");
 
         if (dsClass != null && dsClass.Tables.Count > 0 && dsClass.Tables[0].Rows.Count > 0)
         {
@@ -267,6 +380,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             ddlClass1.DataValueField = "";
             ddlClass1.DataBind();
         }
+        ddlClass1.Items.Insert(0, "---Select---");
          if (dsClass != null && dsClass.Tables.Count > 0 && dsClass.Tables[0].Rows.Count > 0)
         {
             ddlClassSearch.DataSource = dsClass;
@@ -364,8 +478,8 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             Session["strSection"] = ddlSection.SelectedItem.Text;
             Session["strSectionID"] = ddlSection.SelectedValue;
         }
-
     }
+
 
     [WebMethod]
     public static string BindClassByExamType(int ExamTypeID)
@@ -412,6 +526,21 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         cmd.Parameters.AddWithValue("@AcademicID", AcademicID);
         return GetClassSubjectsData(cmd, pageIndex).GetXml();
     }
+
+    [WebMethod]
+    public static string GetSubjectheaders(int pageIndex, string ClassID)
+    {
+        string query = "[BindSubjectheaders_Pager]";
+        SqlCommand cmd = new SqlCommand(query);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+        cmd.Parameters.AddWithValue("@PageSize", PageSize);
+        cmd.Parameters.Add("@RecordCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
+        cmd.Parameters.AddWithValue("@ClassID", ClassID);
+        cmd.Parameters.AddWithValue("@AcademicID", AcademicID);
+        return GetSubjectheadersData(cmd, pageIndex).GetXml();
+    }
+
     [WebMethod]
     public static string GetExamSetup(int pageIndex)
     {
@@ -477,7 +606,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
                 sda.SelectCommand = cmd;
                 using (DataSet ds = new DataSet())
                 {
-                    sda.Fill(ds, "ExamTypes");
+                    sda.Fill(ds, "ExamSetup");
                     DataTable dt = new DataTable("Pager");
                     dt.Columns.Add("PageIndex");
                     dt.Columns.Add("PageSize");
@@ -520,6 +649,35 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             }
         }
     }
+
+    public static DataSet GetSubjectheadersData(SqlCommand cmd, int pageIndex)
+    {
+
+        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        using (SqlConnection con = new SqlConnection(strConnString))
+        {
+            using (SqlDataAdapter sda = new SqlDataAdapter())
+            {
+                cmd.Connection = con;
+                sda.SelectCommand = cmd;
+                using (DataSet ds = new DataSet())
+                {
+                    sda.Fill(ds, "Subjectheaders");
+                    DataTable dt = new DataTable("Pager");
+                    dt.Columns.Add("PageIndex");
+                    dt.Columns.Add("PageSize");
+                    dt.Columns.Add("RecordCount");
+                    dt.Rows.Add();
+                    dt.Rows[0]["PageIndex"] = pageIndex;
+                    dt.Rows[0]["PageSize"] = PageSize;
+                    dt.Rows[0]["RecordCount"] = ds.Tables[1].Rows[0][0];
+                    ds.Tables.Add(dt);
+                    return ds;
+                }
+            }
+        }
+    }
+
     [WebMethod]
     public static string GetStudentList(string classid, string sectionid)
     {
@@ -636,6 +794,15 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         DataSet ds = new DataSet();
         string query = "sp_GetExamNameList " + ExamNameID + "," + AcademicID;
         return utl.GetDatasetTable(query, "EditExamName").GetXml();
+    }
+
+    [WebMethod]
+    public static string EditSubjectheaders(int SubjectheaderID)
+    {
+        Utilities utl = new Utilities();
+        DataSet ds = new DataSet();
+        string query = "sp_GetSubjectheaderList " + SubjectheaderID + "," + AcademicID;
+        return utl.GetDatasetTable(query, "EditSubjectheader").GetXml();
     }
 
     [WebMethod]
@@ -820,6 +987,21 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         else
             return strQueryStatus;
     }
+
+    [WebMethod]
+    public static string DeleteSubjectheaders(string SubjectheaderID)
+    {
+        Utilities utl = new Utilities();
+        string sqlstr = string.Empty;
+        string strQueryStatus = string.Empty;
+        string message = string.Empty;
+        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
+        strQueryStatus = utl.ExecuteScalar("update  p_subjectheaders set isactive=0 where  SubjectheaderID='" + SubjectheaderID + "'");
+        if (strQueryStatus == "")
+            return "Deleted";
+        else
+            return strQueryStatus;
+    }
     public static DataSet GetGradeSetupData(SqlCommand cmd, int pageIndex)
     {
 
@@ -878,6 +1060,38 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         DataSet ds = new DataSet();
         string query = "sp_GetClassSubjects " + ClassSubjectID + "," + AcademicID;
         return utl.GetDatasetTable(query, "EditClassSubjects").GetXml();
+    }
+
+    [WebMethod]
+    public static string SaveSubjectheaders(string id, string ExamTypeID, string HeaderID, string subjectheaders, string MaxMark, string SortOrder)
+    {
+        Utilities utl = new Utilities();
+        string sqlstr = string.Empty;
+        string strQueryStatus = string.Empty;
+        string message = string.Empty;
+        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
+
+        sqlstr = "select isnull(count(*),0) from p_subjectheaders where SubjectHeaderName='" + subjectheaders.Replace("'", "''") + "' and ClassSubjectID='" + id.Replace("'", "''") + "' and ExamTypeID='" + ExamTypeID.Replace("'", "''") + "'  and AcademicID='" + AcademicID + "' and isactive=1";
+        string iCount = Convert.ToString(utl.ExecuteScalar(sqlstr));
+        if (iCount == "0" && HeaderID == "")
+        {
+            sqlstr = "insert into p_subjectheaders (ExamTypeID,ClassSubjectID,SubjectHeaderName,MaxMark,SortOrder,AcademicID,IsActive,UserId)values('" + ExamTypeID + "','" + id + "','" + subjectheaders + "','" + MaxMark + "','" + SortOrder + "'," + AcademicID + ",'1'," + Userid + ")";
+            strQueryStatus = utl.ExecuteQuery(sqlstr);
+            if (strQueryStatus == "")
+                return "Inserted";
+            else
+                return "Insert Failed";
+        }
+        else
+        {
+            sqlstr = "update p_subjectheaders set SubjectHeaderName='" + subjectheaders + "',MaxMark='" + MaxMark + "',ExamTypeID='" + ExamTypeID + "',SortOrder='" + SortOrder + "' where SubjectheaderID='" + HeaderID + "' and AcademicID=" + AcademicID + "";
+            strQueryStatus = utl.ExecuteQuery(sqlstr);
+            if (strQueryStatus == "")
+                return "Updated";
+            else
+                return "Update Failed";
+
+        }      
     }
 
     [WebMethod]

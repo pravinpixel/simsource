@@ -303,11 +303,11 @@ public partial class Students_TcApproval : System.Web.UI.Page
         string query = "";
         if (Isactive == "True")
         {
-            query = "sp_TCSendForApporval " + RegNo + "," + AcademicId + "," + userId;
+            query = "sp_TCApporval " + RegNo + "," + AcademicId + "," + userId;
         }
         else
         {
-            query = "sp_PromoTCSendForApporval " + RegNo + "," + AcademicId + "," + userId;
+            query = "sp_PromoTCApporval " + RegNo + "," + AcademicId + "," + userId;
         }
 
         string strError = utl.ExecuteQuery(query);

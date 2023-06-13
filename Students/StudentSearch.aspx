@@ -152,7 +152,6 @@
                 vanchor = "<a  href=\"javascript:ViewStudentInfo('";
                 vanchorEnd = "');\">View</a>";
             }
-
             if ($("[id*=hfEditPrm]").val() == 'false') {
                 eanchor = "<a>";
                 eanchorEnd = "</a>";
@@ -224,6 +223,7 @@
                 }
                 if ($("[id*=hfEditPrm]").val() == 'false') {
                     $('.editacc').hide();
+                    
                 }
                 else {
                     $('.editacc').show();
@@ -283,7 +283,7 @@
                 var SectionName = $(this).find("SectionName").text();
                 select.append($("<option>").val(SectionID).text(SectionName));
                 $("[id*=dgStudentInfo] tr:has(td)").remove();
-                $("[id*=dgStudentInfo]").append("<tr class=\"even\"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>");
+                $("[id*=dgStudentInfo]").append("<tr class=\"even\"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>");
 
             });
             GetStudentBySection();
@@ -339,7 +339,7 @@
                 var StudentName = $(this).find("StudentName").text();
                 select.append($("<option>").val(StudentID).text(StudentName));
                 $("[id*=dgStudentInfo] tr:has(td)").remove();
-                $("[id*=dgStudentInfo]").append("<tr class=\"even\"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>");
+                $("[id*=dgStudentInfo]").append("<tr class=\"even\"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>");
             });
         };
 

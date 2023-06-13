@@ -458,6 +458,7 @@ public partial class Performance_CoScholasticReport : System.Web.UI.Page
                                  {
                                      sqlstr1 = "sp_getCalculateGrade " + "'Co-Curricular Activities'" + "," + Convert.ToDouble(drCOMark[0]["Mark"].ToString()) + "," + "'" + Session["AcademicID"].ToString() + "'"; 
                                      string Mark_Grade = utl.ExecuteScalar(sqlstr1);
+                                     
                                      stroption += @"<td  style='color:black'>" + drCOMark[0]["Mark"].ToString() + "</td><td>" + Mark_Grade + "</td>";
                                  }
                                 
@@ -530,8 +531,6 @@ public partial class Performance_CoScholasticReport : System.Web.UI.Page
 
         dvCard.InnerHtml = dvContent.ToString();
     }
-
-
 
     int totdays;
     private void LOAD_Totdays()

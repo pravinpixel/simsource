@@ -438,6 +438,7 @@
                                                                        <asp:ListItem Value="IX">IX</asp:ListItem>
                                                                         <asp:ListItem Value="X">X</asp:ListItem>
                                                                         <asp:ListItem Value="Consolation">Consolation</asp:ListItem>
+                                                                        <asp:ListItem Value="Winner">Winner</asp:ListItem>
                                                             </asp:DropDownList>
                                                     </td>
                                                 </tr>

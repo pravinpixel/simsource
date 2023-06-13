@@ -160,7 +160,6 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
     }
 
 
-
     protected void ddlSection_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (ddlSection.SelectedItem.Text == "---Select---" || ddlSection.SelectedItem.Value == "---Select---")
@@ -257,7 +256,6 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                         SubjectListID = SubjectListID + "," + ds.Tables[0].Rows[i]["Subjectid"].ToString();
                     }
                 }
-
             }
         }
     }
@@ -303,8 +301,7 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
         dvContent.Append(stroption);
         dvCard.InnerHtml = dvContent.ToString();
     }
-
-
+    
 
     string acadamicyear;
     private void DISPLAY()
@@ -331,9 +328,11 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
             {
                 if (examnochk != dsGet.Tables[0].Rows[i]["RegNo"].ToString())
                 {
+                    string dateofissue = utl.ExecuteScalar("select convert(varchar(10),dateofissue,103) from p_exammarks xmark inner join p_examtypes xtype on (xmark.ClassId=xtype.ClassId and xmark.ExamTypeId=xtype.ExamTypeID and xmark.AcademicID=xtype.AcademicID and xmark.IsActive=1)  where  xmark.ClassID= '" + Session["strClassID"] + "' and xtype.ExamNameID= '" + ddlExamName.SelectedValue + "' and type='General' and xmark.academicId='" + AcademicID + "' and xmark.isactive=1 and dateofissue is not null and regno='" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "'");
+
                     stroption += @"<table width='100%' border='0' cellspacing='0' cellpadding='0' class='terms-bg'><tr><td height='1350' align='center' valign='top'><div class='terms-cont'> <table width='1000' border='0' cellspacing='0' cellpadding='0'><tr><td height='20' align='center'><br/><h3 style='font-size: 31px;'>AMALORPAVAM HR. SEC. SCHOOL </h3> <h3 style=' margin-top: -20px;'>LOURDES CAMPUS, VANARAPET, PUDUCHERRY.</h3><h3 style=' margin-top: -5px;'>www.amalorpavamschool.org</h3></td></tr><tr><td height='30' align='center'><table border='0' cellspacing='0' cellpadding='0'><tr><td align='right' valign='bottom'><img src='../img/title-left.jpg' width='113' height='74' /></td><td class='titlebg' ><Div class='title-hd'><h1>PERFORMANCE CHART</h1> </Div> </td><td align='left'> <img src='../img/title-right.jpg' width='110' height='74' /></td></tr></table></td><td></td></tr><tr><td><Div class='terms-student-details terms-studentname'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='10' colspan='4'>&nbsp;</td></tr><tr><td align='left' height='40' valign='top'></td>
-                  </tr><tr><td width='19%' style='border-bottom:1px solid #000;' height='35'>Student Name&nbsp;&nbsp;&nbsp;<span style='padding-left:3px;'>:</span> </td><td colspan='3' style='border-bottom:1px solid #000;'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString() + "</td><td  style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Reg. No : " + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Class & Section : </td><td  colspan='3' style='border-bottom:1px solid #000;' width='15%'>" + ddlClass.SelectedItem.Text + "  " + ddlSection.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' width='48%'>Exam No : " + dsGet.Tables[0].Rows[i]["ExamNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Exam Name :</td><td colspan='3' style='border-bottom:1px solid #000;'> " + ddlExamName.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Date : 10/09/2022</td></tr></table></div></td></tr>";
-                   
+                  </tr><tr><td width='19%' style='border-bottom:1px solid #000;' height='35'>Student Name&nbsp;&nbsp;&nbsp;<span style='padding-left:3px;'>:</span> </td><td colspan='3' style='border-bottom:1px solid #000;'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString() + "</td><td  style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Reg. No : " + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Class & Section : </td><td  colspan='3' style='border-bottom:1px solid #000;' width='15%'>" + ddlClass.SelectedItem.Text + "  " + ddlSection.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' width='48%'>Exam No : " + dsGet.Tables[0].Rows[i]["ExamNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Exam Name :</td><td colspan='3' style='border-bottom:1px solid #000;'> " + ddlExamName.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Date :" + dateofissue.ToString() + "</td></tr></table></div></td></tr>";
+
                     DataRow[] drExamPattern = dsGet.Tables[0].Select("Pattern='None' and RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " ");
 
                     if (drExamPattern.Length > 0)
@@ -344,17 +343,16 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                         sqlstr1 = "SP_GetConsolidateReport '" + ddlClass.SelectedValue + "',''," + "'" + ddlExamName.SelectedValue + "'" + "," + "''" + "," + "'General'" + "," + AcademicID;
                         dsGetRank = utl.GetDataset(sqlstr1);
 
-                        if (ddlType.Text == "Result")
+                        
+                            stroption += @"<tr><td><div class='terms-student-details terms-markareaHSSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
+              <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'> <tr><td class='heading' width='15%' height='20'>Subjects</td><td class='heading' width='15%'>Minimum Marks</td><td class='heading' width='15%'>Maximum Marks</td><td class='heading' width='15%'>Marks Obtained</td><td class='heading' width='15%'>Result</td>";
+                       
+                        if (ddlType.Text == "Grade")
                         {
-                                                        stroption += @"<tr><td><div class='terms-student-details terms-markareaHSSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
-              <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'> <tr><td class='heading' width='20%' height='20'>Subjects</td><td class='heading' width='20%'>Minimum Marks</td><td class='heading' width='20%'>Maximum Marks</td><td class='heading' width='20%'>Marks Obtained</td><td class='heading' width='24%'>Result</td></tr>";
-                        }
-                        else if (ddlType.Text == "Grade")
-                        {
-                                                    stroption += @"<tr><td><div class='terms-student-details terms-markareaSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
-              <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td class='heading' width='20%' height='25'>Subjects</td><td class='heading' width='20%'>Minimum Marks</td><td class='heading' width='20%'>Maximum Marks</td><td class='heading' width='20%'>Marks Obtained</td><td class='heading' width='24%'>Mark Grade</td></tr>";
+                            stroption += @"<td class='heading' width='15%'>Mark Grade</td>";
                         }
 
+                        stroption += @"</tr>";
 
                         double TotalMarks = 0;
                         double MaxMarks = 0;
@@ -396,46 +394,42 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                                     Mark_Grade = "ABSENT";
                                 }
 
-                                if (ddlType.Text == "Result")
-                                {
+                               
                                     if (Convert.ToDouble(drSubject[0]["PassMark"].ToString()) <= Convert.ToDouble(dblActualMark))
                                     {
 
-                                         stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>PASS</td></tr>";
+                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>PASS</td>";
                                     }
 
                                     else
                                     {
                                         if (ActualMark == "A")
                                         {
-                                            stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>ABSENT</td></tr>";
+                                            stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>ABSENT</td>";
                                         }
                                         else
                                         {
-                                            stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>FAIL</td></tr>";
+                                            stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 50px;text-align: right;'>FAIL</td>";
                                         }
                                     }
-                                }
-                                else if (ddlType.Text == "Grade")
+                                if (ddlType.Text == "Grade")
                                 {
-                                     if (Convert.ToDouble(drSubject[0]["PassMark"].ToString()) <= Convert.ToDouble(dblActualMark))
+                                    if (Convert.ToDouble(drSubject[0]["PassMark"].ToString()) <= Convert.ToDouble(dblActualMark))
                                     {
 
-                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 75px;text-align: right;'>" + Mark_Grade + "</td></tr>";
+                                        stroption += @"<td style='text-align: center;'>" + Mark_Grade + "</td>";
                                     }
 
                                     else
                                     {
-                                        stroption += @"<tr><td height='20' align='left'><b>" + drSubject[0]["SubExperienceName"].ToString() + "</b></td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["PassMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + drSubject[0]["MaxMark"].ToString() + "</td><td style='padding-right: 75px;text-align: right;'>" + ActualMark + "</td><td style='padding-right: 75px;text-align: right;'>" + Mark_Grade + "</td></tr>";
+                                        stroption += @"<td style='text-align: center;'>" + Mark_Grade + "</td>";
                                     }
                                 }
-
-
-
+                                stroption += @"</tr>";
                             }
                         }
 
-                           MarksPercetage = Math.Round(((TotalMarks / MaxMarks) * 100),1);
+                        MarksPercetage = Math.Round(((TotalMarks / MaxMarks) * 100), 2);
 
                         DataRow[] drRank = dsGetRank.Tables[0].Select("RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "");
 
@@ -445,25 +439,40 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                         //    stroption += @"<tr><td height='25' align='left'></td><td align='center'></td><td class='percentage'><b>percentage : " + Math.Round(MarksPercetage, 1) + "</b></td><td class='total'><b>Total : " + TotalMarks.ToString() + "</b></td><td class='total'><b>&nbsp;</b></td></tr>";
                         //}
                         //else 
+
                         
-                        if (ddlType.Text == "Result")
-                        {
-                            
-                            sqlstr = "select count(*) from vw_getstudent where classid= '" + ddlClass.SelectedValue + "' and academicyear='" + Session["AcademicID"] + "'";
+
+                            sqlstr = "select count(*) from s_studentinfo where  Active in('C','N') and class= '" + ddlClass.SelectedValue + "' and academicyear='" + Session["AcademicID"] + "' ";
                             string ClassCnt = utl.ExecuteScalar(sqlstr);
 
-                            sqlstr = "select count(*) from vw_getstudent where classid='" + ddlClass.SelectedValue + "' and  sectionid='" + ddlSection.SelectedValue + "'  and academicyear='" + Session["AcademicID"] + "'";
+                            sqlstr = "select count(*) from s_studentinfo where  Active in('C','N') and class='" + ddlClass.SelectedValue + "' and  section='" + ddlSection.SelectedValue + "'  and academicyear='" + Session["AcademicID"] + "'";
                             string SectionCnt = utl.ExecuteScalar(sqlstr);
 
+                            if (ddlType.Text == "Grade")
+                            {
+                                stroption += @"<tr><td colspan='2' align='left' style='padding-left:42px;'><b>TOTAL &nbsp;&nbsp;&nbsp;<span style='padding-left:42px;'>:</span> " + TotalMarks.ToString() + " / " + MaxMarks.ToString() + "</b></td><td colspan='4' style='padding-left: 172px;' align='left'><b>PERCENTAGE &nbsp;&nbsp;&nbsp;<span style='padding-left:1px;'>:</span> " + MarksPercetage + "</b></td></tr><tr><td height='20' colspan='2' align='left' style='padding-left:42px;'><b>SECTION RANK : " + drRank[0]["SectionRank"].ToString() + " / " + SectionCnt + "</b></td><td align='left' colspan='4' style='padding-left: 172px;'><b>OVERALL RANK : " + drRank[0]["ClassRank"].ToString() + " / " + ClassCnt + "</b></td></tr>";
+                            }
 
-                            stroption += @"<tr><td colspan='2' align='left' style='padding-left:98px;'><b>TOTAL &nbsp;&nbsp;&nbsp;<span style='padding-left:42px;'>:</span> " + TotalMarks.ToString() + " / " + MaxMarks.ToString() + "</b></td><td colspan='3' style='padding-left: 172px;' align='left'><b>PERCENTAGE &nbsp;&nbsp;&nbsp;<span style='padding-left:1px;'>:</span> " + MarksPercetage + "</b></td></tr><tr><td height='20' colspan='2' align='center'><b>SECTION RANK : " + drRank[0]["SectionRank"].ToString() + " / " + SectionCnt + "</b></td><td align='center' colspan='3'><b>OVERALL RANK : " + drRank[0]["ClassRank"].ToString() + " / " + ClassCnt + "</b></td></tr>";
-                        }
-                        else if (ddlType.Text == "Grade")
+                            if (ddlType.Text == "Grade")
+                            {
+                                //  stroption += @"<tr><td height='25' align='left'></td><td align='center'></td><td class='percentage'><b>percentage : " + MarksPercetage + "</b></td><td class='total'><b>Total : " + TotalMarks.ToString() + "</b></td><td class='total'><b>Rank : " + drRank[0]["SectionRank"].ToString() + "</b></td></tr>";
+                            }
+
+
+                        string StudRegno = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
+                        //double StudPresentdays = Attenance(StudRegno);
+                        //double Attpercentage = (StudPresentdays / totdays);
+                        string studAtt = Attenance(StudRegno);
+
+                        if (ddlExamName.SelectedValue!="179" && ddlExamName.SelectedValue!="180")
                         {
-                            stroption += @"<tr><td height='25' align='left'></td><td align='center'></td><td class='percentage'><b>percentage : " + MarksPercetage + "</b></td><td class='total'><b>Total : " + TotalMarks.ToString() + "</b></td><td class='total'><b>Rank : " + drRank[0]["SectionRank"].ToString() + "</b></td></tr>";
+                            stroption += @"<tr><td align='center' colspan='6'><b>ATTENDANCE: " + studAtt + "/" + totdays + " </b></td></tr>";    
                         }
+                        
 
-                        stroption += @"</table></div></td></tr><tr><td>&nbsp;</td></tr></tr></table></div></td></tr>";
+                        stroption += @"</table></div></td></tr><tr><td></td></tr><tr><td></td></tr></table></div></td></tr>";
+
+                        //stroption += @"</table></div></td></tr><tr><td>&nbsp;</td></tr></tr></table></div></td></tr>";
 
                         //General Type only - Result -START
                     }
@@ -597,7 +606,7 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                             string FA_Grade = "";
                             if (strFAtot != "" || strFBtot != "")
                             {
-                                sqlstr1 = "sp_getCalculateGrade " + "'FA'" + "," + FABTotal + "," + "'" + Session["AcademicID"].ToString() + "'"; 
+                                sqlstr1 = "sp_getCalculateGrade " + "'FA'" + "," + FABTotal + "," + "'" + Session["AcademicID"].ToString() + "'";
                                 FA_Grade = utl.ExecuteScalar(sqlstr1);
                             }
                             else
@@ -635,128 +644,205 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
 
                         }
 
-                        stroption += @"</table></div></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table></div></td></tr>";
+                        //Student Attendance Details
+
+                        string StudRegno = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
+                        //double StudPresentdays = Attenance(StudRegno);
+                        //double Attpercentage = (StudPresentdays / totdays);
+                        string studAtt = Attenance(StudRegno);
+
+                        stroption += @"<tr><td align='center' colspan='6'><b>ATTENDANCE: " + studAtt + "/" + totdays + " </b></td></tr>";
+
+                        stroption += @"</table></div></td></tr><tr><td></td></tr><tr><td></td></tr></table></div></td></tr>";
 
                         //Normal Type only - Samacheer Result -END
                     }
 
-
-                    stroption += @"<tr><td><br/><br/><br/><div class='terms-student-details terms-markareaCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='35' align='center' class='terms-title'>CO-SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'>";
-
-                    //Co-scholastic Type only - Cocurricular Activities Result -START
-
-                    string[] CO_SUBList = CO_SubjectListID.Split(',');
-
-                    if (CO_SubjectListID != "")
+                    if (CO_SubjectListID != "" || GA_SubjectListID != "")
                     {
-                        stroption += @"<div class='performance curricular-block'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tr><td class='heading' width='100%'align='left' colspan='2'>Co-Curricular Activities</td></tr><tbody>";
 
-                        foreach (string CO_SUBListID in CO_SUBList)
+                        stroption += @"<tr><td><div class='terms-student-details terms-markareaCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='35' align='center' class='terms-title'>CO-SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'>";
+
+                        //Co-scholastic Type only - Cocurricular Activities Result -START
+
+                        string[] CO_SUBList = CO_SubjectListID.Split(',');
+
+                        if (CO_SubjectListID != "")
                         {
-                            DataRow[] drCO_CAScroedMarkTOT = dsGet.Tables[0].Select("SubjectType='Co-Curricular Activities' and RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " and SubExperienceid='" + CO_SUBListID + "'");
+                            stroption += @"<div class='performance curricular-block'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tr><td class='heading' width='100%'align='left' colspan='2'>Co-Curricular Activities</td></tr><tbody>";
 
-                            if (drCO_CAScroedMarkTOT.Length > 0)
+                            foreach (string CO_SUBListID in CO_SUBList)
                             {
-                                string strCAmark = "";
-                                sqlstr1 = "select SubExperienceName from m_SubExperiences where SubExperienceId=" + CO_SUBListID + "";
+                                DataRow[] drCO_CAScroedMarkTOT = dsGet.Tables[0].Select("SubjectType='Co-Curricular Activities' and RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " and SubExperienceid='" + CO_SUBListID + "'");
+
+                                if (drCO_CAScroedMarkTOT.Length > 0)
+                                {
+                                    string strCAmark = "";
+                                    string strMaxCAmark = "";
+                                    sqlstr1 = "select SubExperienceName from m_SubExperiences where SubExperienceId=" + CO_SUBListID + "";
+                                    string SubjectName = utl.ExecuteScalar(sqlstr1);
+
+                                    strCAmark = drCO_CAScroedMarkTOT[0]["Mark"].ToString();
+                                    strMaxCAmark = drCO_CAScroedMarkTOT[0]["MaxMark"].ToString();
+                                    if (strCAmark != "" && strCAmark != null)
+                                    {
+                                        sqlstr1 = "sp_getCalculateGrade " + "'Co-Curricular Activities'" + "," + Convert.ToInt32(Math.Ceiling(Convert.ToDouble(strCAmark))) + "," + "'" + Session["AcademicID"].ToString() + "'";
+                                        string CO_Grade = utl.ExecuteScalar(sqlstr1);
+
+                                        stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%'align='right' style='padding-right: 20px;'>" + CO_Grade + "</td></tr>";
+                                       // stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%' align='right' style='padding-right: 20px;'>" + Math.Ceiling(Convert.ToDouble(strCAmark)) + "/" + Math.Ceiling(Convert.ToDouble(strMaxCAmark)) + "</td></tr>";
+                                    }
+                                    else
+                                    {
+                                        stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%' align='right' style='padding-right: 8px;'>ABSENT</td></tr>";
+                                    }
+                                }
+                            }
+
+                            stroption += @"</tbody></table></div>";
+                        }
+
+                        //Co-scholastic Type only - Cocurricular Activities Result -END
+
+
+                        //Co-scholastic Type only - General Activities Result -START
+
+                        string[] GA_SUBList = GA_SubjectListID.Split(',');
+
+                        stroption += @"<div class='performance general-block'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tr><td class='heading' width='100%'align='left' colspan='2'>Disciplinary Activities</td></tr><tbody>";
+
+                        foreach (string GA_SUBListID in GA_SUBList)
+                        {
+                            DataRow[] drCO_GAScroedMarkTOT = dsGet.Tables[0].Select("SubjectType='General Activities' and RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " and SubExperienceid='" + GA_SUBListID + "'");
+
+                            if (drCO_GAScroedMarkTOT.Length > 0)
+                            {
+                                string strGAmark = "";
+                                string strMaxGAmark = "";
+                                sqlstr1 = "select SubExperienceName from m_SubExperiences where SubExperienceId=" + GA_SUBListID + "";
                                 string SubjectName = utl.ExecuteScalar(sqlstr1);
 
-                                strCAmark = drCO_CAScroedMarkTOT[0]["Mark"].ToString();
-                                if (strCAmark != "" && strCAmark != null)
+                                strGAmark = drCO_GAScroedMarkTOT[0]["Mark"].ToString();
+                                strMaxGAmark = drCO_GAScroedMarkTOT[0]["MaxMark"].ToString();
+                                if (strGAmark != "" && strGAmark != null)
                                 {
-                                    sqlstr1 = "sp_getCalculateGrade " + "'Co-Curricular Activities'" + "," + Convert.ToInt32(Math.Ceiling(Convert.ToDouble(strCAmark))) + "," + "'" + Session["AcademicID"].ToString() + "'"; 
-                                    string CO_Grade = utl.ExecuteScalar(sqlstr1);
 
-                                    stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%' align='right' style='padding-right: 20px;'>" + CO_Grade + "</td></tr>";
+                                    sqlstr1 = "sp_getCalculateGrade " + "'General Activities'" + "," + Convert.ToInt32(Math.Ceiling(Convert.ToDouble(strGAmark))) + "," + "'" + Session["AcademicID"].ToString() + "'";
+                                    string GA_Grade = utl.ExecuteScalar(sqlstr1);
+
+                                    stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%'align='right' style='padding-right: 20px;'>" + GA_Grade + "</td></tr>";
+                                    //stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%' align='right' style='padding-right: 20px;'>" + Math.Ceiling(Convert.ToDouble(strGAmark)) + "/" + Math.Ceiling(Convert.ToDouble(strMaxGAmark)) + "</td></tr>";
                                 }
                                 else
                                 {
                                     stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%' align='right' style='padding-right: 8px;'>ABSENT</td></tr>";
                                 }
-
-
                             }
                         }
 
                         stroption += @"</tbody></table></div>";
+
+
+                        //Co-scholastic Type only - General Activities Result -END
+
+                        stroption += @"</div></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table></div></td></tr>";
                     }
-
-                    //Co-scholastic Type only - Cocurricular Activities Result -END
-
-
-                    //Co-scholastic Type only - General Activities Result -START
-
-                    string[] GA_SUBList = GA_SubjectListID.Split(',');
-
-                    stroption += @"<div class='performance general-block'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tr><td class='heading' width='100%' colspan='2' align='left'>General Activities</td></tr><tbody>";
-
-                    foreach (string GA_SUBListID in GA_SUBList)
-                    {
-                        DataRow[] drCO_GAScroedMarkTOT = dsGet.Tables[0].Select("SubjectType='General Activities' and RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " and SubExperienceid='" + GA_SUBListID + "'");
-
-                        if (drCO_GAScroedMarkTOT.Length > 0)
-                        {
-                            string strGAmark = "";
-                            sqlstr1 = "select SubExperienceName from m_SubExperiences where SubExperienceId=" + GA_SUBListID + "";
-                            string SubjectName = utl.ExecuteScalar(sqlstr1);
-
-                            strGAmark = drCO_GAScroedMarkTOT[0]["Mark"].ToString();
-                            if (strGAmark != "" && strGAmark != null)
-                            {
-
-                                sqlstr1 = "sp_getCalculateGrade " + "'General Activities'" + "," + Convert.ToInt32(Math.Ceiling(Convert.ToDouble(strGAmark))) + "," + "'" + Session["AcademicID"].ToString() + "'"; 
-                                string GA_Grade = utl.ExecuteScalar(sqlstr1);
-
-                                stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%'align='right' style='padding-right: 20px;'>" + GA_Grade + "</td></tr>";
-                            }
-                            else
-                            {
-                                stroption += @"<tr><td width='80%' align='left'><b>" + SubjectName + "</b></td><td width='20%'align='right' style='padding-right: 8px;'>ABSENT</td></tr>";
-                            }
-                        }
-
-                    }
-
-                    //Student Attendance Details
-
-                    string StudRegno = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
-                    //double StudPresentdays = Attenance(StudRegno);
-                    //double Attpercentage = (StudPresentdays / totdays);
-                    string studAtt = Attenance(StudRegno);
-
-                    stroption += @"</tbody><tr><td><b>Attendance</b></td><td align='right' style='padding-right: 15px;'>" + studAtt + "/" + totdays + " </td></tr></table></div>";
-
-
-                    //Co-scholastic Type only - General Activities Result -END
-
-                    stroption += @"</div></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table></div></td></tr>";
-
 
                     //Signature List Row - start
-
-
-
 
                     stroption += @"<tr><td>&nbsp;</td></tr></table></div></td></tr></table> <p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
 
 
+                    #region Subject Header Tab starts
 
+                    decimal MaxTotal = 0;
+                    decimal ObtainedTotal = 0;
+                    string subexp = "";
+
+                    DataTable dsheader = new DataTable();
+                    dsheader = utl.GetDataTable(@"select a.Regno,a.ClassID,e.SubExperienceName,SubjectHeaderName,isnull(MaxMark,0)MaxMark,isnull(k.Mark,0) as Mark from 
+Vw_GetStudent a inner join m_class c on a.classid=c.classid                   
+inner join m_schooltypes b on a.schooltypeid=b.schooltypeid                   
+inner join [p_ClassSubjects] d on d.schooltypeid=b.schooltypeid and d.ClassId=c.ClassId                   
+inner join m_subexperiences e on d.subjectid=e.subexperienceid 
+left join p_subjectheaders j on (j.ClassSubjectID=d.ClassSubjectID and j.isactive=1)                   
+inner join p_examheadermarks k on (k.regno=a.regno and k.sectionid=a.sectionid and j.SubjectheaderID=k.SubjectheaderID and k.isactive=1)
+inner join p_examtypes pe on pe.ExamTypeID=k.ExamTypeId and pe.AcademicID=k.AcademicID and pe.IsActive=1
+inner join p_examnamelist px on px.ExamNameID=pe.ExamNameID and px.AcademicID=px.AcademicID and px.isactive=1
+   where d.isactive=1 and a.active in ('C','N')  and a.Classid='" + ddlClass.SelectedValue + "' and a.SectionId='" + ddlSection.SelectedValue + "' and px.ExamNameID='" + ddlExamName.SelectedValue + "' and a.AcademicYear=" + AcademicID + " and a.RegNo='" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "' order by a.Regno,d.subjectid,Sortorder");
+                    string str = "";
+                    if (dsheader.Rows.Count > 0)
+                    {
+                        int cnt = 0;
+                        str = str + @"<table width='95%' margin: 3px 15px; border='1' cellspacing='0' cellpadding='0' style='margin-left: 30px !important;'>";
+
+                        for (int l = 0; l < dsheader.Rows.Count; l++)
+                        {
+                            if (cnt == 0)
+                            {
+                                str = str + "<tr><td width='19%' class='terms-title' style='padding-left:3px;' height='35'>Student Name : " + dsGet.Tables[0].Rows[i]["StudentName"].ToString() + "</td><td class='terms-title' style='padding-left:3px;' height='35'>Reg. No : " + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "</td></tr><td height='35' align='center' colspan='3' class='terms-title'>DESCRIPTION OF SCHOLASTIC AREAS </td><tr>";
+                            }
+                            if (subexp != dsheader.Rows[l]["SubExperienceName"].ToString())
+                            {
+                                string alignstr = "";
+
+                                MaxTotal = 0;
+                                ObtainedTotal = 0;
+
+                                DataTable dtrow = new DataTable();
+                                DataRow[] drrow = dsheader.Select("RegNo=" + dsheader.Rows[l]["RegNo"].ToString() + " and SubExperienceName='" + dsheader.Rows[l]["SubExperienceName"].ToString() + "'");
+                                if (drrow.Length > 0)
+                                {
+                                    str = str + @"<td width='50%' style='border:1px solid #dfdfdf;font-family: Arial, Helvetica, sans-serif;'><table width='100%' cellpadding='0' cellspacing='0' style='border:0px solid #dfdfdf;font-size: 13px;'> <tr  style='background-color: #bfbdbd;'> <td style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;' align='center'> <b>Description</b></p></td><td style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;' align='center'> <b>Max Marks</b></p></td><td style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;'  align='center'> <b>Marks Obtained</b></p></td></tr>";
+                                    str = str + @"<tr  style='background-color:#edebeb;'><td style='border:1px solid #dfdfdf;' width='312' colspan='3'><p style='margin:3px 15px' align='center'> <b> " + dsheader.Rows[l]["SubExperienceName"].ToString() + " </b> </p></td></tr>";
+                                    for (int m = 0; m < drrow.Length; m++)
+                                    {
+                                        MaxTotal += Convert.ToDecimal(drrow[m].Field<double>("MaxMark").ToString());
+                                        ObtainedTotal += Convert.ToDecimal(drrow[m].Field<double>("Mark").ToString());
+                                        str = str + @"<tr style='line-height: 25px !important;'> <td style='border:1px solid #dfdfdf;' width='312'><p style='margin: 3px 15px;'  align='left'> " + drrow[m].Field<string>("SubjectHeaderName").ToString() + "  </p></td><td  style='border:1px solid #dfdfdf;' valign='top'><p style='margin: 3px 15px;' align='right'>" + drrow[m].Field<double>("MaxMark").ToString() + "</p></td><td  style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;'  align='right'>" + drrow[m].Field<double>("Mark").ToString() + "</p></td>";
+                                    }
+                                }
+
+                                str = str + @"<tr style='background-color: #edebeb;'> <td  style='border:1px solid #dfdfdf;' valign='top'><p style='margin: 3px 15px;'  align='right'> <b> TOTAL </b> </p></td><td  style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;'  align='right'><b>" + MaxTotal + " </b> </p></td><td  style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;'  align='right'><b>" + ObtainedTotal + " </b> </p></td></tr><tr> <td  style='border:1px solid #dfdfdf;' valign='top'><p style='margin: 3px 15px;' >&nbsp;</p></td><td  style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;' align='right'>&nbsp;</p></td><td  style='border:1px solid #dfdfdf;'><p style='margin: 3px 15px;'  align='right'>&nbsp;</p></td></tr></table></td>";
+                                if (cnt > 0)
+                                {
+                                    if (((cnt + 1) % 2) == 0)
+                                    {
+                                        str = str + "</tr><tr>";
+                                    }
+                                }
+                                cnt = cnt + 1;
+                                subexp = dsheader.Rows[l]["SubExperienceName"].ToString();
+                            }
+
+                        }
+                        str = str + @"</table>";
+
+                        str = str + "<br/><p style='margin-left:30px'>MA : Multiple Assessment</p>";
+                        str = str + "<p style='margin-left:30px'>SE : Subject Enrichment </p>";
+                        str = str + "<p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
+
+                    }
+                    stroption += str;
+                    //  stroption += @"<tr><p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p></tr>";
+
+                    #endregion Subject Header TabSubject Header Tab end
+
+
+                    examnochk = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
                 }
-
-                examnochk = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
             }
         }
     }
 
 
-
-    int totdays;
+    decimal totdays;
     string startdate;
     string enddate;
     string SD;
     string ED;
     int monthcnt = 0;
-    int Retval = 0;
+    decimal Retval = 0;
     private void LOAD_Totdays()
     {
         utl2 = new Utilities();
@@ -772,18 +858,30 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
         if (MonthCount != "" && MonthCount != "0")
         {
 
-            sql = "select DATEDIFF(d,startdate,enddate) as totdays,convert(varchar(10),StartDate,121)as sdate ,convert(varchar(10),EndDate,121)as edate,convert(varchar(2),datepart(d,StartDate),121)as SD ,convert(varchar(2),datepart(d,EndDate),121)as ED  from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1";
+            sql = "select DATEDIFF(d,startdate,enddate) as totdays,convert(varchar(10),StartDate,121)as sdate ,convert(varchar(10),EndDate,121)as edate,convert(varchar(2),datepart(d,StartDate),121)as SD ,convert(varchar(2),datepart(d,EndDate),121)as ED from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1";
             dsTotdays = utl.GetDataset(sql);
 
-            sql = "select COUNT(*) from m_DaysList where dayvalue >= (select convert(varchar(2),datepart(d,StartDate),121)  from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "'  and AcademicID='" + AcademicID + "' and isactive=1 ) and MonthID=(select convert(varchar(2),datepart(m,StartDate),121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "'   and AcademicID='" + AcademicID + "' and isactive=1) and ClassID=" + Session["strClassID"].ToString() + "  and AcademicID='" + AcademicID + "' and isactive=1";
+            sql = " select isnull(convert(decimal(18,1),NoofDays),0) from m_DaysinMonths where  ClassID=" + Session["strClassID"].ToString() + " and AcademicID='" + AcademicID + "' and isactive=1   and MonthID=(select MONTH(StartDate) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1 )";
+
+           // sql = "select COUNT(*) from m_DaysList where dayvalue >= (select convert(varchar(2),datepart(d,StartDate),121)  from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "'  and AcademicID='" + AcademicID + "' and isactive=1 ) and MonthID=(select convert(varchar(2),datepart(m,StartDate),121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "'   and AcademicID='" + AcademicID + "' and isactive=1) and ClassID=" + Session["strClassID"].ToString() + "  and AcademicID='" + AcademicID + "' and isactive=1";
 
             dsStartMonthCount = utl.ExecuteScalar(sql);
 
-            sql = "select COUNT(*) from m_DaysList where dayvalue <= (select convert(varchar(2),datepart(d,EndDate),121)  from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "'  and AcademicID='" + AcademicID + "' and isactive=1) and MonthID=(select convert(varchar(2),datepart(m,EndDate),121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1) and ClassID=" + Session["strClassID"].ToString() + "  and AcademicID='" + AcademicID + "' and isactive=1";
+            if (dsStartMonthCount=="" || dsStartMonthCount==null)
+            {
+                dsStartMonthCount = "0";
+            }
+           // sql = "select COUNT(*) from m_DaysList where dayvalue <= (select convert(varchar(2),datepart(d,EndDate),121)  from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "'  and AcademicID='" + AcademicID + "' and isactive=1) and MonthID=(select convert(varchar(2),datepart(m,EndDate),121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1) and ClassID=" + Session["strClassID"].ToString() + "  and AcademicID='" + AcademicID + "' and isactive=1";
+
+            sql = " select isnull(convert(decimal(18,1),NoofDays),0) from m_DaysinMonths where  ClassID=" + Session["strClassID"].ToString() + " and AcademicID='" + AcademicID + "' and isactive=1  and MonthID=(select MONTH(EndDate) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1 )";
 
             dsEndMonthCount = utl.ExecuteScalar(sql);
 
 
+            if (dsEndMonthCount == "" || dsEndMonthCount == null)
+            {
+                dsEndMonthCount = "0";
+            }
             if (dsTotdays != null && dsTotdays.Tables.Count > 0 && dsTotdays.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < dsTotdays.Tables[0].Rows.Count; i++)
@@ -799,35 +897,37 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
             DataTable dt = utl2.GetDataTable("select * from dbo.[fn_getMonthNumber]((select convert(varchar(10),StartDate,121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1),(select convert(varchar(10),EndDate,121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "'  and AcademicID='" + AcademicID + "' and isactive=1))");
             if (dt.Rows.Count > 0)
             {
-
-                for (int k = 1; k < dt.Rows.Count-1; k++)
+                for (int k = 1; k < dt.Rows.Count - 1; k++)
                 {
-                    sqlstr = "select COUNT(*) from m_DaysList where ClassID=" + Session["strClassID"] + " and AcademicID=" + AcademicID + " and MonthID ='" + dt.Rows[k]["Month_Number"].ToString() + "' and IsActive=1";
-                    Retval += Convert.ToInt32(utl.ExecuteScalar(sqlstr));                  
+                    sqlstr = " select convert(decimal(18,1),isnull(NoofDays,0)) from m_DaysinMonths where  ClassID=" + Session["strClassID"].ToString() + " and AcademicID='" + AcademicID + "' and isactive=1   and MonthID='" + dt.Rows[k]["Month_Number"].ToString() + "' ";
+
+                  //  sqlstr = "select COUNT(*) from m_DaysList where ClassID=" + Session["strClassID"] + " and AcademicID=" + AcademicID + " and MonthID ='" + dt.Rows[k]["Month_Number"].ToString() + "' and IsActive=1";
+                    string days = utl.ExecuteScalar(sqlstr);
+                    if (days != null && days != "" && days != "0")
+                    {
+                        Retval += Convert.ToDecimal(utl.ExecuteScalar(sqlstr));
+                    }                
 
                 }
-
             }
-           
         }
         else
         {
             DataTable dt1 = utl2.GetDataTable("select * from dbo.[fn_getMonthNumber]((select convert(varchar(10),StartDate,121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1),(select convert(varchar(10),EndDate,121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1))");
             if (dt1.Rows.Count > 0)
             {
-
                 for (int k = 0; k < dt1.Rows.Count; k++)
                 {
-                    sqlstr = "select COUNT(*) from m_DaysList where ClassID=" + Session["strClassID"] + " and AcademicID=" + AcademicID + " and MonthID ='" + dt1.Rows[k]["Month_Number"].ToString() + "' and IsActive=1";
-                    Retval += Convert.ToInt32(utl.ExecuteScalar(sqlstr));
+                   // sqlstr = "select COUNT(*) from m_DaysList where ClassID=" + Session["strClassID"] + " and AcademicID=" + AcademicID + " and MonthID ='" + dt1.Rows[k]["Month_Number"].ToString() + "' and IsActive=1";
 
+                    sqlstr = " select convert(decimal(18,1),NoofDays) from m_DaysinMonths where  ClassID=" + Session["strClassID"].ToString() + " and AcademicID='" + AcademicID + "' and isactive=1   and MonthID='" + dt1.Rows[k]["Month_Number"].ToString() + "' ";
+                    Retval += Convert.ToDecimal(utl.ExecuteScalar(sqlstr));
                 }
-
             }
-        }      
-       
-        totdays = Convert.ToInt32(dsStartMonthCount) + Convert.ToInt32(Retval) + Convert.ToInt32(dsEndMonthCount);
-     
+        }
+
+        totdays = Convert.ToDecimal(dsStartMonthCount) + Convert.ToDecimal(Retval) + Convert.ToDecimal(dsEndMonthCount);
+
 
     }
 
@@ -838,20 +938,48 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
         string AttendanceDetail;
 
         double presentdays = 0;
-        string sql2;
+        string sql2="";
 
         double NoofPresent = 0;
 
 
-        sql2 = "select (convert(float,((dbo.[fn_GetFNCount]('" + regno + "','" + AcademicID + "','" + startdate + "','" + enddate + "','" + totdays + "'))+(dbo.[fn_GetANCount]('" + regno + "','" + AcademicID + "','" + startdate + "','" + enddate + "','" + totdays + "')))/2)) as PresentDays";
+        DataTable dt1 = utl2.GetDataTable("select * from dbo.[fn_getMonthNumber]((select convert(varchar(10),StartDate,121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1),(select convert(varchar(10),EndDate,121) from p_examnamelist where ExamNameID='" + ddlExamName.SelectedValue + "' and AcademicID='" + AcademicID + "' and isactive=1))");
+        if (dt1.Rows.Count > 0)
+        {
+            for (int k = 0; k < dt1.Rows.Count; k++)
+            {
+                sqlstr = "select COUNT(*) from m_DaysList where ClassID=" + ddlClass.SelectedValue + " and MonthID='" + dt1.Rows[k]["Month_Number"].ToString() + "' and AcademicID=" + AcademicID + " and IsActive=1";
+                string strtotdays = utl.ExecuteScalar(sqlstr);
 
+                sql2 = "select (convert(float,((dbo.[fn_GetFNAttCount]('" + regno + "','" + AcademicID + "','" + dt1.Rows[k]["Month_Number"].ToString() + "','" + strtotdays + "'))+(dbo.[fn_GetANAttCount]('" + regno + "','" + AcademicID + "','" + dt1.Rows[k]["Month_Number"].ToString() + "','" + strtotdays + "')))/2)) as PresentDays";
+                presentdays = Convert.ToDouble(utl2.ExecuteScalar(sql2));
 
-        presentdays = Convert.ToDouble(utl2.ExecuteScalar(sql2));
+                NoofPresent += presentdays;
+            }
+        }
 
-        NoofPresent += presentdays;
+       // sql2 = "select (convert(float,((dbo.[fn_GetFNCount]('" + regno + "','" + AcademicID + "','" + startdate + "','" + enddate + "','" + totdays + "'))+(dbo.[fn_GetANCount]('" + regno + "','" + AcademicID + "','" + startdate + "','" + enddate + "','" + totdays + "')))/2)) as PresentDays";
+
+      
 
         AttendanceDetail = NoofPresent.ToString();
 
         return AttendanceDetail;
+    }
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        utl = new Utilities();
+        string dateofissue = "";
+        if (ddlClass.Text!="" && ddlExamName.Text!="" && txtIssueDate.Text!="")
+        {
+            if (txtIssueDate.Text != "")
+            {
+                string[] myDateTimeString = txtIssueDate.Text.Split('/');
+                dateofissue = "'" + myDateTimeString[2] + "/" + myDateTimeString[1] + "/" + myDateTimeString[0] + "'";
+
+                utl.ExecuteQuery("update xmark set xmark.dateofissue=" + dateofissue + " from p_exammarks xmark inner join p_examtypes xtype on (xmark.ClassId=xtype.ClassId and xmark.ExamTypeId=xtype.ExamTypeID and xmark.AcademicID=xtype.AcademicID and xmark.IsActive=1)  where  xmark.ClassID= '" + ddlClass.SelectedValue + "' and xtype.ExamNameID= '" + ddlExamName.SelectedValue + "' and type='General' and xmark.academicId='" + AcademicID + "' and xtype.isactive=1");
+            }
+        }     
+       
     }
 }

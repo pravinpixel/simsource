@@ -227,7 +227,7 @@
                                 <div id="divWrapper" runat="server">
                                     <div id="headWrapper" runat="server">
                                         <div class="txt-heading">
-                                            Today's Birthday Celebrities -
+                                            Today's Birthday Celebration -
                                             <asp:Label ID="lblDate" runat="server"></asp:Label></div>
                                     </div>
                                     <div class="clear">

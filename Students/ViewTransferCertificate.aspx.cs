@@ -177,10 +177,11 @@ public partial class Students_ViewTransferCertificate : System.Web.UI.Page
             {
                 string sqls = "select isnull(max(TCID)+1,1) from s_studenttc where TcSlno<>''";
                 string Slno = utl.ExecuteScalar(sqls);
-                sqls = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear from m_academicyear  where academicID='" + Session["AcademicID"] + "'";
+                sqls = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear   from m_academicyear  where academicID='" + Session["AcademicID"] + "'";
                 string AcademicYear = utl.ExecuteScalar(sqls);
                 _SerialNo = Slno + " / " + AcademicYear;
             }
+
 
             txtPromotion.Text = dsTCDetail.Tables[0].Rows[0]["PromotionText"].ToString();
             if (dsTCDetail.Tables[0].Rows[0]["MedicalCheckup"].ToString() != string.Empty)
@@ -192,6 +193,7 @@ public partial class Students_ViewTransferCertificate : System.Web.UI.Page
             txtTCDate.Value = dsTCDetail.Tables[0].Rows[0]["TcDate"].ToString();
             txtTCCoures.Value = dsTCDetail.Tables[0].Rows[0]["CourseofStudy"].ToString();
         }
+
 
     }
     protected void BindConduct()

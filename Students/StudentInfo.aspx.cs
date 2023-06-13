@@ -1259,7 +1259,7 @@ public partial class StudentInfo : System.Web.UI.Page
                 }
                 else
                 {
-                    sqlstr = "update s_studentinfo set Active='" + sstatus + "',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
+                    sqlstr = "update s_studentinfo set Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
                     strQueryStatus = utl.ExecuteScalar(sqlstr);
                 }
 
@@ -2089,7 +2089,7 @@ public partial class StudentInfo : System.Web.UI.Page
         if (!string.IsNullOrEmpty(id))
         {
 
-            sqlstr = "select count(*) from f_studentbillmaster a inner join f_studentbills b on a.billid=b.billid inner join m_feescategoryhead c on c.feescatheadid=b.feescatheadid inner join m_feeshead d on d.feesheadid=c.feesheadid inner join s_studentinfo e on e.regno=a.regno  where e.active in('C','N') and a.isactive=1 and b.isactive=1 and c.isactive=1 and d.isactive=1  and d.feesheadcode='B' and convert(varchar(3),a.billmonth)='" + strmonthname + "' and a.regno=" + id + " and b.AcademicID='" + academicid.Replace("'", "''") + "' ";
+            sqlstr = "select count(*) from f_studentbillmaster a inner join f_studentbills b on a.billid=b.billid inner join m_feescategoryhead c on c.feescatheadid=b.feescatheadid inner join m_feeshead d on d.feesheadid=c.feesheadid inner join s_studentinfo e on e.regno=a.regno  where e.active in('C','N') and a.isactive=1 and b.isactive=1 and c.isactive=1 and d.isactive=1  and d.feesheadcode='B' and convert(varchar(3),a.billmonth)='" + strmonthname + "' and a.regno=" + id + " and a.AcademicID='" + academicid.Replace("'", "''") + "' ";
             string iCount = utl.ExecuteScalar(sqlstr);
             if (iCount == "0" || iCount == "")
             {

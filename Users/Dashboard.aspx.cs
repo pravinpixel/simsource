@@ -125,7 +125,7 @@ public partial class Users_Dashboard : System.Web.UI.Page
         {
             string[] splitModules = module.Split('|');
             DataSet ds = GetModulMenuId(Session["UserId"].ToString(), splitModules[0].ToString());
-            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 menuId = ds.Tables[0].Rows[0]["menuid"].ToString();
                 moduleMenuUd = ds.Tables[0].Rows[0]["modulemenuid"].ToString();

@@ -22,7 +22,7 @@
             }
         }
     </style>
-
+  
     <script type="text/javascript">
 
     </script>
@@ -35,11 +35,14 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script type="text/javascript">
+        $(document).ready(function () {
+            setDatePicker("[id*=txtIssueDate]");
+        });
         function Print() {
 
             $(".formsc").printElement(
             {
-                leaveOpen: false,
+                leaveOpen: true,
                 printBodyOptions:
             {
                 styleToAdd: 'padding:5px 20px 0px 20px;margin:5px 25px 0px 20px;color:#000 !important;'
@@ -93,20 +96,29 @@
                             </asp:DropDownList>
                              <label>
                                 Display Type :</label>
-                            <asp:DropDownList ID="ddlType" CssClass="jsrequired" runat="server" 
+                            <asp:DropDownList ID="ddlType" runat="server" 
                                 AutoPostBack="True">
                                 <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                 <asp:ListItem Value="Grade">Grade</asp:ListItem>
-                                  <asp:ListItem Value="Result">Result</asp:ListItem>
                             </asp:DropDownList>
+                            
                         </td>
+                    </tr>
+                    <tr>
+                    <td>
+                      <label>
+                                Date of Issue :</label>
+                            <asp:TextBox ID="txtIssueDate" CssClass="dateNL date-picker"
+                                                runat="server"></asp:TextBox>
+                        
                     </tr>
                 </table>
                 <table class="form">
                     <tr>
                         <td align="center" class="col1">
-                            <asp:Button ID="btnSearch" runat="server" class="btn-icon button-search" OnClick="btnSearch_Click"
-                                Text="Search" />
+                        &nbsp;<asp:Button ID="btnUpdate" runat="server" class="btn-icon button-search" 
+                                OnClick="btnUpdate_Click" Text="Update" /> 
+                            <asp:Button ID="btnSearch" runat="server" class="btn-icon button-search" Text="Search" OnClick="btnSearch_Click" />
                             <asp:Button ID="Button2" runat="server" class="btn-icon button-cancel" OnClientClick="return Cancel();"
                                 Text="Cancel" />
                             <asp:Button ID="btnPrint" runat="server" class="btn-icon button-print" OnClientClick="Print();"

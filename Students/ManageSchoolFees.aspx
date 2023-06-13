@@ -35,6 +35,7 @@
     <script type="text/javascript">
 
         $(function () {
+            $('#dvbus').css("display", "none");
             $('#txtRegNo').focus();
             //        GetStudentInfos Function on page load
             var view = $("[id*=hfViewPrm]").val();
@@ -50,7 +51,7 @@
             if ($("[id*=hdnRegNo]").length > 0) {
                 $('#txtRegNo').val($("[id*=hdnRegNo]").val());
                 BindStudDetails();
-                GetAcademicDetails();
+               // GetAcademicDetails();
             }
         });
     </script>
@@ -68,6 +69,10 @@
     </style>
     <%--Get Academic Details--%>
     <script type="text/javascript">
+        $(document).ready(function () {
+            setDatePicker("[id*=txtDateofBusReg]");
+        });
+
         function GetAcademicDetails() {
             var btype = "";
             if ($("[id*=rbtnMonth]").is(':checked')) {
@@ -313,7 +318,17 @@
             $('#divBillDetials').css("display", "none");
         }
 
+        function showbus() {
+            if (document.getElementById('rbtnBusYes').checked == true) {
+                $("#dvbus").slideDown("slow");
+                $("[id*=btnBusRouteSubmit]").removeAttr("disabled");
+                $("[id*=txtDateofBusReg]").val('');
+            }
+            if (document.getElementById('rbtnBusNo').checked == true) {
+                $("#dvbus").slideUp("slow");
+            }
 
+        }
 
 
         function IgnoreExistingBill(Billid, AcademicId, FeesHeadIds, FeesAmount, FeesCatId, FeesMonthName, FeestotalAmount) {
@@ -431,7 +446,7 @@
 
         function LoadData() {
             $("[id*=hdnRegNo]").val($('#txtBarcode').val());
-            GetAcademicDetails();
+           // GetAcademicDetails();
             BindStudDetails();
             $("[id*=txtRegNo]").focus();
         }
@@ -444,8 +459,7 @@
                     $("[id*=txtBarcode]").focus();
                 }
         }
-
-
+ 
     </script>
     <script type="text/javascript">
         function BindStudDetails() {
@@ -472,12 +486,59 @@
             $('#txtstudName').val(xml.find("stname").text());
             $('#txtstudClass').val(xml.find("classname").text());
             $('#txtstudSections').val(xml.find("sectionname").text());
-            if (xml.find("PresentStatus").text() == "Inactive") {
-                jAlert('Can\'t Display the Fees Bill, B\'coz he/she is not active. !!!');
+            if (xml.find("AcademicStatus").text() == "Active") {
+                if ($('#txtstudName').val() != "") {
+                    if (xml.find("AdminNo").text() == "0" || xml.find("AdminNo").text() == "") {
+                        jAlert('Can\'t Display the Fees Bill, B\'coz the student admission is not approved. !!!');
+                    }
+                    else if (xml.find("PresentStatus").text() == "Active") {
+                        checkConcession();
+                    }
+                }
+            }
+            else {
+                GetAcademicDetails();
             }
         }
 
+        function checkConcession() {
+            var parameters = '{"regno": "' + $("[id*=hdnRegNo]").val() + '"}';
+            $.ajax({
+                type: "POST",
+                url: "../Students/ManageFees.aspx/checkConcession",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.d == "F") {
+                        $('#divAcademicFees').html("");
+                        $('#divAdvanceFee').html("");
+                        $("#divBillContents").html("");
+                        $("#divAdvanceFeeContent").html("");
+                        jAlert("Student has full Concession");
+                    }
+                    else {
+                        GetAcademicDetails();
+                    }
+                },
+                failure: function (response) {
+                    AlertMessage('info', response.d);
+                },
+                error: function (response) {
+                    AlertMessage('info', response.d);
+                }
+            });
+        }
 
+        $(document).ready(function () {
+            $("input[type='radio']").click(function () {
+                var radioValue = $("input[name='btype']:checked").val();
+                if (radioValue) {
+                    GetAcademicDetails();
+                }
+            });
+
+        });
         function ViewBiMonthBill(BillId) {
             $.ajax({
                 type: "POST",
@@ -589,7 +650,6 @@
             });
 
             $('.numericswithdecimals').keyup(function () {
-                alert('f');
                 this.value = this.value.replace(/[^0-9\.]/g, '');
             })
         });
@@ -616,7 +676,82 @@
                 return false;
             }
         }
-        
+
+
+        function SaveBusRouteDetails() {
+            if (($("[id*=hfAddPrm]").val() == 'true') ||
+            ($("[id*=hfEditPrm]").val() == 'true')
+            ) {
+                if ($("[id*=hfRegNo]").val() != '') {
+                    if ($('#aspnetForm').valid()) {
+                        $("[id*=btnBusRouteSubmit]").attr("disabled", "true");
+                        var RegNo = $("[id*=hdnRegNo]").val();
+                        var BusFacility;
+                        if ($("[id*=rbtnBusYes]").is(':checked')) {
+                            BusFacility = "Y";
+                        }
+
+                        else if ($("[id*=rbtnBusNo]").is(':checked')) {
+                            BusFacility = "N";
+                        }
+                        var RouteCode = $("[id*=ddlRouteCode]").val();
+                        var Academicyear = $("[id*=hfAcademicyear]").val();
+                        var RegDate = $("[id*=txtDateofBusReg]").val();
+                        var parameters = '{"id": "' + RegNo + '","routeid": "' + RouteCode + '","regdate": "' + RegDate + '"}';
+                        var baseurl = "../Students/ManageSchoolFees.aspx/SaveBusRouteInfo";
+
+                        $.ajax({
+                            type: "POST",
+                            url: baseurl,
+                            data: parameters,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: OnSaveBusRouteDetailsSuccess,
+                            failure: function (response) {
+                                AlertMessage('info', response.d);
+                            },
+                            error: function (response) {
+                                AlertMessage('info', response.d);
+                            }
+                        });
+                    }
+                }
+                else {
+                    AlertMessage('info', "Please Enter Personal Details");
+                    changeAccordion(0);
+                }
+            }
+        }
+
+        function OnSaveBusRouteDetailsSuccess(response) {
+            var currentPage = $("[id*=currentPage]").text();
+            if (response.d == "Updated") {
+                AlertMessage('success', 'Updated');
+                var RegNo = $("[id*=hdnRegNo]").val();
+                LoadData();
+
+            }
+            else if (response.d == "Update Failed") {
+                AlertMessage('fail', 'Update');
+            }
+            else if (response.d == "Inserted") {
+                AlertMessage('success', 'Inserted');
+                var RegNo = $("[id*=hdnRegNo]").val();
+                LoadData();
+
+            }
+            else if (response.d == "Insert Failed") {
+                AlertMessage('fail', 'Insert');
+            }
+            else {
+                AlertMessage('info', response.d);
+                $("[id*=btnBusRouteSubmit]").attr("disabled", "false");
+                $("[id*=rbtnBusNo]").attr("checked", "checked");
+                showbus();
+            }
+
+        };
+
     </script>
     <%="<script src='" + ResolveUrl("~/js/jquery.printElement.js") + "' type='text/javascript'></script>"%>
 </asp:Content>
@@ -681,11 +816,7 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td height="30" class="formsubheading">
-                            <span>Billing Type</span>
-                        </td>
-                    </tr>
+                    
                     <tr>
                         <td height="30" class="formsubheading">
                             <span>Academic Year Fee Structure</span>
@@ -701,6 +832,35 @@
                                     value="Double" />Bi-month Billing</label>
                         </td>
                     </tr>
+                    <tr>
+                        <td height="30" class="formsubheading">
+                            <span>Do you want to enroll for Bus?</span>&nbsp;
+                            <label>
+                                <input type="radio" onclick="showbus();"  name="bustype" id="rbtnBusYes"
+                                    value="Yes" />Yes</label>
+                            <label>
+                                <input type="radio" id="rbtnBusNo" onclick="showbus();" checked="checked" name="bustype" value="No" />No</label>
+
+                           
+                        </td>
+                    </tr>
+                     <tr>
+                     <td>
+                      <div id="dvbus" style="display: none;">
+                                <span>Select Bus Route</span>&nbsp;
+                                <asp:DropDownList ID="ddlRouteCode" CssClass="jsrequired" runat="server" AppendDataBoundItems="True">
+                                    <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                </asp:DropDownList>&nbsp;
+                                    <asp:TextBox ID="txtDateofBusReg" CssClass="jsrequired dateNL date-picker" runat="server"></asp:TextBox>&nbsp;
+                                   <button id="btnBusRouteSubmit" type="button" runat="server" class="btn-icon btn-navy btn-update"
+                                                    onclick="SaveBusRouteDetails();">
+                                                    <span></span>
+                                                    <div id="Div1">
+                                                        Update</div>
+                                                </button>
+                            </div>
+                     </td>
+                     </tr>
                     <tr>
                         <td height="30">
                             <div class="block1">

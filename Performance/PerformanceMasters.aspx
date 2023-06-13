@@ -24,6 +24,7 @@
                 GetExamName(1);
             GetExamType(1);
             GetClassSubjects(1);
+            GetSubjectheaders(1);
             GetExamSetup(1);
             GetGradeSetups(1);
             var add = $("[id*=hfAddPrm]").val();
@@ -318,45 +319,47 @@
         });
 
 
-
-
-
-        function BindClass(ID) {
+        function BindSubjectExamType() {
             if ($("[id*=hfViewPrm]").val() == 'true') {
-                $.ajax({
-                    type: "POST",
-                    url: "../Performance/PerformanceMasters.aspx/BindClassByExamType",
-                    data: '{ExamTypeID: ' + ID + '}',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: OnBindClassSuccess,
-                    failure: function (response) {
-                        AlertMessage('info', response.d);
-                    },
-                    error: function (response) {
-                        AlertMessage('info', response.d);
-                    }
-                });
-            }
-            else {
-                return false;
+                var ExamNameID = $("[id*=ddlSubjectExamName]").val();
+                var ClassID = $("[id*=ddlCls]").val();
+                if (ExamNameID != "" && ClassID != "") {
+                    $.ajax({
+                        type: "POST",
+                        url: "../Performance/PerformanceMasters.aspx/BindSubjectExamType",
+                        data: '{ExamNameID: ' + ExamNameID + ',ClassID: ' + ClassID + '}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: OnBindSubjectExamTypeSuccess,
+                        failure: function (response) {
+                            AlertMessage('info', response.d);
+                        },
+                        error: function (response) {
+                            AlertMessage('info', response.d);
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
             }
         }
-        function OnBindClassSuccess(response) {
+        function OnBindSubjectExamTypeSuccess(response) {
             var xmlDoc = $.parseXML(response.d);
             var xml = $(xmlDoc);
-            var cls = xml.find("ClassByExamType");
-            var select = $("[id*=ddlClass3]");
+            var cls = xml.find("ExamNameByType");
+            var select = $("[id*=ddlSubjectExamType]");
             select.children().remove();
             $.each(cls, function () {
                 var icls = $(this);
-                var ClassID = $(this).find("ClassID").text();
-                var ClassName = $(this).find("ClassName").text();
-                select.append($("<option>").val(ClassID).text(ClassName));
+                var ExamTypeID = $(this).find("ExamTypeID").text();
+                var ExamTypeName = $(this).find("ExamTypeName").text();
+                select.append($("<option>").val(ExamTypeID).text(ExamTypeName));
 
             });
-            BindClassSubjects(1);
-
+            if (EditEId != -1) {
+                $("[id*=ddlSubjectExamType] option[value='" + EditEId + "']").attr("selected", "true");
+            }
         };
 
 
@@ -429,7 +432,43 @@
             });
         };
 
+        function BindClass(ID) {
+            if ($("[id*=hfViewPrm]").val() == 'true') {
+                $.ajax({
+                    type: "POST",
+                    url: "../Performance/PerformanceMasters.aspx/BindClassByExamType",
+                    data: '{ExamTypeID: ' + ID + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnBindClassSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        }
+        function OnBindClassSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var cls = xml.find("ClassByExamType");
+            var select = $("[id*=ddlClass3]");
+            select.children().remove();
+            $.each(cls, function () {
+                var icls = $(this);
+                var ClassID = $(this).find("ClassID").text();
+                var ClassName = $(this).find("ClassName").text();
+                select.append($("<option>").val(ClassID).text(ClassName));
 
+            });
+            BindClassSubjects(1);
+
+        };
         function SaveExamSetup() {
             var sqlstr = "";
             subQuery = "";
@@ -515,7 +554,6 @@
             var row = $("[id*=dgExamSetup] tr:last-child").clone(true);
             $("[id*=dgExamSetup] tr").not($("[id*=dgExamSetup] tr:first-child")).remove();
 
-
             if (ExamSetups.length == 0) {
                 $("td", row).eq(0).html("");
                 $("td", row).eq(1).html("No Records Found").attr("align", "left");
@@ -552,6 +590,388 @@
                 RecordCount: parseInt(ExamSetupPager.find("RecordCount").text())
             });
         };
+        function GetExamClassSubjectID() {
+            var SchoolTypeID = $("[id*=ddlSchType]").val();
+            var ClassID = $("[id*=ddlCls]").val();
+            var SubjectType = $("[id*=ddlSubType]").val();
+            var Subjects = $("[id*=ddlSubjects]").val();
+            var ExamTypeID = $("[id*=ddlSubjectExamType]").val();
+            var parameters = '{"schooltypeid": "' + SchoolTypeID + '","classid": "' + ClassID + '","examtypeid": "' + ExamTypeID + '","subjecttype": "' + SubjectType + '","subjects": "' + Subjects + '"}';
+            $.ajax({
+                type: "POST",
+                url: "../Performance/PerformanceMasters.aspx/GetExamClassSubjectID",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnGetExamClassSubjectIDSuccess,
+                failure: function (response) {
+                    AlertMessage('info', response.d);
+                },
+                error: function (response) {
+                    AlertMessage('info', response.d);
+                }
+            });
+        }
+
+        // Save On Success
+        function OnGetExamClassSubjectIDSuccess(response) {
+
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var ClassSub = xml.find("GetExamClassSubjectID");
+            if (ClassSub.length > 0) {
+                $.each(ClassSub, function () {
+                    var iClassSub = $(this);
+                    var ClassSubjectID = $(this).find("ClassSubjectID").text();
+                    $("[id*=hfSubjectheaders]").val(ClassSubjectID);
+                });
+            }
+            else {
+                // AlertMessage('info', "Not yet Mapped! Create new headers");
+            }
+
+        };
+
+        function GetClassSubjectID() {
+            var SchoolTypeID = $("[id*=ddlSchType]").val();
+            var ClassID = $("[id*=ddlCls]").val();
+            var SubjectType = $("[id*=ddlSubType]").val();
+            var Subjects = $("[id*=ddlSubjects]").val();
+            var parameters = '{"schooltypeid": "' + SchoolTypeID + '","classid": "' + ClassID + '","subjecttype": "' + SubjectType + '","subjects": "' + Subjects + '"}';
+            $.ajax({
+                type: "POST",
+                url: "../Performance/PerformanceMasters.aspx/GetClassSubjectID",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnGetClassSubjectIDSuccess,
+                failure: function (response) {
+                    AlertMessage('info', response.d);
+                },
+                error: function (response) {
+                    AlertMessage('info', response.d);
+                }
+            });
+        }
+
+        // Save On Success
+        function OnGetClassSubjectIDSuccess(response) {
+
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var ClassSub = xml.find("GetClassSubjectID");
+            if (ClassSub.length > 0) {
+                $.each(ClassSub, function () {
+                    var iClassSub = $(this);
+                    var ClassSubjectID = $(this).find("ClassSubjectID").text();
+                    $("[id*=hfSubjectheaders]").val(ClassSubjectID);
+                });
+            }
+            else {
+                // AlertMessage('info', "Not yet Mapped! Create new headers");
+            }
+
+        };
+
+
+        // Save ClassSubjects
+        function SaveSubjectheaders() {
+            if (($("[id*=hfAddPrm]").val() == 'true' && $("[id*=hfSubjectheaders]").val() == '') ||
+            ($("[id*=hfEditPrm]").val() == 'true' && $("[id*=hfSubjectheaders]").val() != '')
+            ) {
+                if ($('#aspnetForm').valid()) {
+                    var ClassSubjectID = $("[id*=hfSubjectheaders]").val();
+                    var HeaderID = $("[id*=hfID]").val();
+                    var ExamTypeID = $("[id*=ddlSubjectExamType]").val();
+                    var Subjectheaders = $("[id*=txtHeader]").val();
+                    var MaxMark = $("[id*=txtMaxMark]").val();
+                    var SortOrder = $("[id*=txtSortOrder]").val();
+                    if (ClassSubjectID == "") {
+                        AlertMessage('info', "Subject is not mapped for the selected class!");
+                        return;
+                    }
+                    var parameters = '{"id": "' + ClassSubjectID + '","ExamTypeID": "' + ExamTypeID + '","HeaderID": "' + HeaderID + '","subjectheaders": "' + Subjectheaders + '","MaxMark": "' + MaxMark + '","SortOrder": "' + SortOrder + '"}';
+                    $.ajax({
+                        type: "POST",
+                        url: "../Performance/PerformanceMasters.aspx/SaveSubjectheaders",
+                        data: parameters,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: OnSaveSubjectheadersSuccess,
+                        failure: function (response) {
+                            AlertMessage('info', response.d);
+                        },
+                        error: function (response) {
+                            AlertMessage('info', response.d);
+                        }
+                    });
+
+                }
+            }
+        }
+
+        // Save On Success
+        function OnSaveSubjectheadersSuccess(response) {
+            var currentPage = $("[id*=currentPage]").text();
+            if (response.d == "Updated") {
+                AlertMessage('success', 'Updated');
+                location.reload();
+                SubjectheadersCancel();
+            }
+            else if (response.d == "Update Failed") {
+                AlertMessage('fail', 'Update');
+                SubjectheadersCancel();
+            }
+            else if (response.d == "Inserted") {
+                AlertMessage('success', 'Inserted');
+                location.reload();
+                SubjectheadersCancel();
+            }
+            else if (response.d == "Insert Failed") {
+                AlertMessage('fail', 'Insert');
+                SubjectheadersCancel();
+            }
+            else {
+                AlertMessage('fail', response.d);
+                SubjectheadersCancel();
+            }
+        };
+
+
+        function GetSubjectheaders(pageIndex) {
+            if ($("[id*=hfViewPrm]").val() == 'true') {
+                var ClassID = $("[id*=cmbClass]").val();
+                var parameters = '{pageIndex: ' + pageIndex + ',"ClassID": "' + ClassID + '"}';
+                $.ajax({
+                    type: "POST",
+                    url: "../Performance/PerformanceMasters.aspx/GetSubjectheaders",
+
+                    data: parameters,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnGetSubjectheadersSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        }
+
+        function OnGetSubjectheadersSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var Subjectheaders = xml.find("Subjectheaders");
+            var row = $("[id*=dgSubjectheaders] tr:last-child").clone(true);
+            $("[id*=dgSubjectheaders] tr").not($("[id*=dgSubjectheaders] tr:first-child")).remove();
+            var eanchor = ''
+            var eanchorEnd = '';
+            var danchor = ''
+            var danchorEnd = '';
+            if ($("[id*=hfEditPrm]").val() == 'false') {
+                eanchor = "<a>";
+                eanchorEnd = "</a>";
+            }
+            else {
+                eanchor = "<a  href=\"javascript:EditSubjectheaders('";
+                eanchorEnd = "');\">Edit</a>";
+            }
+            if ($("[id*=hfDeletePrm]").val() == 'false') {
+                danchor = "<a>";
+                danchorEnd = "</a>";
+            }
+            else {
+                danchor = "<a  href=\"javascript:DeleteSubjectheaders('";
+                danchorEnd = "');\">Delete</a>";
+            }
+            if (Subjectheaders.length == 0) {
+                $("td", row).eq(0).html("");
+                $("td", row).eq(1).html("");
+                $("td", row).eq(2).html("No Records Found").attr("align", "left");
+                $("td", row).eq(3).html("");
+                $("td", row).eq(4).html("");
+                $("td", row).eq(5).html("");
+                $("td", row).eq(6).html("");
+                $("td", row).eq(7).html("").removeClass("editacc edit-links");
+                $("td", row).eq(8).html("").removeClass("deleteacc delete-links");
+                $("[id*=dgSubjectheaders]").append(row);
+                row = $("[id*=dgSubjectheaders] tr:last-child").clone(true);
+
+            }
+            else {
+                $.each(Subjectheaders, function () {
+                    var iSubjectheaders = $(this);
+                    var ehref = eanchor + $(this).find("SubjectheaderID").text() + eanchorEnd;
+                    var dhref = danchor + $(this).find("SubjectheaderID").text() + danchorEnd;
+                    row.addClass("even");
+                    $("td", row).eq(0).html($(this).find("SchoolTypeName").text());
+                    $("td", row).eq(1).html($(this).find("ClassName").text());
+                    $("td", row).eq(2).html($(this).find("SubjectType").text());
+                    $("td", row).eq(3).html($(this).find("SubjectName").text());
+                    $("td", row).eq(4).html($(this).find("ExamTypeName").text());
+                    $("td", row).eq(5).html($(this).find("subjectheadername").text());
+                    $("td", row).eq(6).html($(this).find("MaxMark").text());
+                    $("td", row).eq(7).html(ehref).addClass("editacc edit-links");
+                    $("td", row).eq(8).html(dhref).addClass("deleteacc delete-links");
+                    $("[id*=dgSubjectheaders]").append(row);
+                    row = $("[id*=dgSubjectheaders] tr:last-child").clone(true);
+                });
+            }
+            if ($("[id*=hfEditPrm]").val() == 'false') {
+                $('.editacc').hide();
+            }
+            else {
+                $('.editacc').show();
+            }
+            if ($("[id*=hfDeletePrm]").val() == 'false') {
+                $('.deleteacc').hide();
+            }
+            else {
+                $('.deleteacc').show();
+            }
+            var iSubjectheadersPager = xml.find("Pager");
+
+            $("#SubjectheadersPager").ASPSnippets_Pager({
+                ActiveCssClass: "current",
+                PagerCssClass: "pager",
+                PageIndex: parseInt(iSubjectheadersPager.find("PageIndex").text()),
+                PageSize: parseInt(iSubjectheadersPager.find("PageSize").text()),
+                RecordCount: parseInt(iSubjectheadersPager.find("RecordCount").text())
+            });
+        };
+
+        function EditSubjectheaders(SubjectheaderID) {
+            if ($("[id*=hfEditPrm]").val() == 'true') {
+
+                $("table.form :input").prop('disabled', false);
+                $.ajax({
+                    type: "POST",
+                    url: "../Performance/PerformanceMasters.aspx/EditSubjectheaders",
+                    data: '{SubjectheaderID: ' + SubjectheaderID + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnEditEditSubjectheadersSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+            else {
+                $("table.form :input").prop('disabled', true);
+                return false;
+            }
+        }
+
+        //        Edit On Success Function
+        var EditEId = -1;
+        var ExamNameID;
+        var ExamTypeID;
+        function OnEditEditSubjectheadersSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var Subjectheader = xml.find("EditSubjectheader");
+            $.each(Subjectheader, function () {
+                var Subjectheaders = $(this);
+                $("[id*=ddlSchType]").val($(this).find("SchoolTypeId").text());
+                GetClassBySchoolType($(this).find("SchoolTypeId").text());
+                FlagClassID = $(this).find("ClassID").text();
+                $("[id*=ddlCls]").val($(this).find("ClassID").text());
+                $("[id*=hfSubjectheaders]").val($(this).find("ClassSubjectId").text());
+                $("[id*=hfID]").val($(this).find("SubjectheaderID").text());
+                ExamNameID = $(this).find("ExamNameID").text();
+                ExamTypeID = $(this).find("ExamTypeID").text();
+                EditEId = $(this).find("ExamTypeID").text();
+                BindSubjectExamType();
+                $("[id*=ddlSubjectExamName]").val($(this).find("ExamNameID").text());
+                $("[id*=ddlSubjectExamType]").val($(this).find("ExamTypeID").text().trim());
+              //  $("[id*=ddlSubjectExamName] option[value='" + ExamNameID + "']").attr("selected", "true");
+               // $("[id*=ddlSubjectExamType] option[value='" + ExamTypeID + "']").attr("selected", "true");
+                $("[id*=txtHeader]").val($(this).find("SubjectHeaderName").text());
+                $("[id*=txtMaxMark]").val($(this).find("MaxMark").text());
+                $("[id*=txtSortOrder]").val($(this).find("SortOrder").text());
+                $("[id*=ddlSubjects]").val($(this).find("SubjectId").text());
+                $("[id*=ddlSubType]").val($(this).find("Type").text());
+                $("[id*=dvSPHeaderSubmit]").html("Update");
+
+
+            });             
+        };
+
+        // Delete ClassSubjects
+        function DeleteSubjectheaders(id) {
+            var parameters = '{"SubjectheaderID": "' + id + '"}';
+            if (jConfirm('Are you sure to delete this?', 'Confirm', function (r) {
+                if (r) {
+                    $.ajax({
+
+                        type: "POST",
+                        url: "../Performance/PerformanceMasters.aspx/DeleteSubjectheaders",
+                        data: parameters,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: OnDeleteSubjectheadersSuccess,
+                        failure: function (response) {
+                            AlertMessage('info', response.d);
+                        },
+                        error: function (response) {
+                            AlertMessage('info', response.d);
+                        }
+                    });
+                }
+
+            })) {
+            }
+
+        }
+
+        // Delete On Success
+        function OnDeleteSubjectheadersSuccess(response) {
+            var currentPage = $("[id*=currentPage]").text();
+            if (response.d == "Deleted") {
+                AlertMessage('success', 'Deleted');
+                GetSubjectheaders(1);
+                SubjectheadersCancel();
+            }
+            else if (response.d == "Delete Failed") {
+                AlertMessage('fail', 'Delete');
+                SubjectheadersCancel();
+            }
+            else {
+                AlertMessage('reference', response.d);
+                SubjectheadersCancel();
+            }
+        };
+
+        //        Pager Click Function
+        $("#SubjectheadersPager .page").live("click", function (e) {
+            GetSubjectheaders(parseInt($(this).attr('page')));
+        });
+
+        function SubjectheadersCancel() {
+            $("[id*=ddlSchType]").val("");
+            $("[id*=hfSubjectheaders]").val("");
+            $("[id*=hfID]").val("");
+            $("[id*=txtHeader]").val("");
+            $("[id*=txtMaxMark]").val("");
+            $("[id*=txtSortOrder]").val("");
+            $("[id*=ddlSubType]").val("");
+            $("[id*=ddlSubjects]").val("");
+            $('#aspnetForm').validate().resetForm();
+            if ($("[id*=hfAddPrm]").val() == 'false') {
+                $("table.form :input").prop('disabled', true);
+            }
+            else
+                $("table.form :input").prop('disabled', false);
+        };
+
         function GetClassBySchoolType(ID) {
             if (ID) {
 
@@ -589,6 +1009,22 @@
                     $("[id*=ddlClass2] option[value='" + FlagClassID + "']").attr("selected", "true");
             });
 
+            var slt = $("[id*=ddlCls]");
+            slt.children().remove();
+            slt.append($("<option>").val('').text('---Select---'));
+            $.each(cls, function () {
+                var icls = $(this);
+                var ClassID = $(this).find("ClassID").text();
+                var ClassName = $(this).find("ClassName").text();
+                slt.append($("<option>").val(ClassID).text(ClassName));
+                if (FlagClassID != -1)
+                    $("[id*=ddlCls] option[value='" + FlagClassID + "']").attr("selected", "true");
+            });
+
+            if (EditEId!= -1 ) {
+                BindSubjectExamType();
+                $("[id*=ddlSubjectExamType] option[value='" + EditEId + "']").attr("selected", "true");
+            }
         };
 
         function GetClassSubject() {
@@ -1368,8 +1804,8 @@
         function GetExamType(pageIndex) {
             if ($("[id*=hfViewPrm]").val() == 'true') {
                 var ClassID = $("[id*=ddlClassSearch]").val();
-               
-                if (ClassID == 'null' || ClassID=="---Select---") {
+
+                if (ClassID == 'null' || ClassID == "---Select---") {
                     ClassID = "";
                 }
                 $.ajax({
@@ -2011,11 +2447,15 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                             <tr>
-                                            <td>&nbsp;</td>
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
                                                 <td>
                                                     <label>
-                                                        Class : </label>&nbsp;
+                                                        Class :
+                                                    </label>
+                                                    &nbsp;
                                                     <asp:DropDownList ID="ddlClassSearch" CssClass="jsrequired" runat="server" onchange="javascript:GetExamType(1);">
                                                         <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                                     </asp:DropDownList>
@@ -2164,10 +2604,14 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                            <td>&nbsp;</td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
                                                 <td>
                                                     <label>
-                                                        Class : </label>&nbsp;
+                                                        Class :
+                                                    </label>
+                                                    &nbsp;
                                                     <asp:DropDownList ID="ddlClassSearch1" CssClass="jsrequired" runat="server" onchange="javascript:GetClassSubjects(1);">
                                                         <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                                     </asp:DropDownList>
@@ -2218,6 +2662,229 @@
                                             <tr>
                                                 <td>
                                                     <div class="Pager" id="ClassPager">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                            Create Subject Headers </a>
+                            <ul class="johnmenu">
+                                <li>
+                                    <div style="border-bottom-style: none; border-bottom-width: 0px;" class="frm-block">
+                                        <table class="form" width="100%">
+                                            <tr valign="top">
+                                                <td valign="top">
+                                                    <div id="Div1" style="float: left; width: 550px" runat="server">
+                                                        <table class="form">
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        School Type</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:DropDownList ID="ddlSchType" CssClass="jsrequired" runat="server" AppendDataBoundItems="True"
+                                                                        onchange="GetClassBySchoolType(this.value);">
+                                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                                <td rowspan="4">
+                                                                    <div class="block">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Class</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:DropDownList ID="ddlCls" CssClass="jsrequired" runat="server" onchange="GetClassSubjectID();"
+                                                                        AppendDataBoundItems="True">
+                                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Subject Type</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:DropDownList ID="ddlSubType" CssClass="jsrequired" runat="server" onchange="GetClassSubjectID();"
+                                                                        AppendDataBoundItems="True">
+                                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                                        <asp:ListItem Value="General">General</asp:ListItem>
+                                                                        <asp:ListItem Value="Samacheer">Samacheer</asp:ListItem>
+                                                                        <asp:ListItem Value="Co-Curricular Activities">Co-Curricular Activities</asp:ListItem>
+                                                                        <asp:ListItem Value="General Activities">General Activities</asp:ListItem>
+                                                                        <asp:ListItem>Slip Test</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Subject</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:DropDownList ID="ddlSubjects" runat="server" AppendDataBoundItems="True" CssClass="jsrequired"
+                                                                        onchange="GetClassSubjectID();">
+                                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                                <td rowspan="4">
+                                                                    <div class="block">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Exam Name</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:DropDownList ID="ddlSubjectExamName" runat="server" AppendDataBoundItems="True"
+                                                                        CssClass="jsrequired" onchange="BindSubjectExamType();">
+                                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Exam Type</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                <select id="ddlSubjectExamType" name="ddlSubjectExamType" class="jsrequired" onchange="GetClassSubjectID();">
+                                                                <option value="">---Select---</option>
+                                                                </select>
+                                                                   
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Subject Headers</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:TextBox ID="txtHeader" CssClass="jsrequired" runat="server"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Max Mark</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:TextBox ID="txtMaxMark" CssClass="jsrequired bloodgroup" runat="server"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <label>
+                                                                        Sort Order</label>
+                                                                </td>
+                                                                <td class="col2">
+                                                                    <asp:TextBox ID="txtSortOrder" CssClass="jsrequired bloodgroup" runat="server"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="col1">
+                                                                    <asp:HiddenField ID="hfSubjectheaders" runat="server" />
+                                                                    <asp:HiddenField ID="hfID" runat="server" />
+                                                                </td>
+                                                                <td>
+                                                                    <button id="btnSavesubject" type="button" class="btn-icon btn-orange btn-saving"
+                                                                        onclick="SaveSubjectheaders();">
+                                                                        <span></span>
+                                                                        <div id="dvSPHeaderSubmit">
+                                                                            Save</div>
+                                                                    </button>
+                                                                    <button id="btncancelsubject" type="button" class="btn-icon btn-navy btn-cancel1"
+                                                                        runat="server" onclick="return SubjectheadersCancel();">
+                                                                        <span></span>Cancel</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        Class :
+                                                    </label>
+                                                    &nbsp;
+                                                    <asp:DropDownList ID="cmbClass" runat="server" AppendDataBoundItems="True"
+                                                        onchange="GetSubjectheaders(1);">
+                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr valign="top">
+                                                <td valign="top" colspan="2">
+                                                    <asp:GridView ID="dgSubjectheaders" runat="server" Width="100%" AutoGenerateColumns="False"
+                                                        AllowPaging="True" ShowFooter="True" HorizontalAlign="Center" RowStyle-CssClass="even"
+                                                        AlternatingRowStyle-CssClass="odd" EnableModelValidation="True" CssClass="display">
+                                                        <Columns>
+                                                            <asp:BoundField DataField="SchoolType" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                HeaderText="School Type" SortExpression="SchoolType">
+                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                            </asp:BoundField>
+                                                            <asp:BoundField DataField="Class" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                HeaderText="Class" SortExpression="Class">
+                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                            </asp:BoundField>
+                                                            <asp:BoundField DataField="SubjectType" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                HeaderText="Subject Type" SortExpression="SubjectType">
+                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                            </asp:BoundField>
+                                                            <asp:BoundField DataField="ClassSubjectName" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                HeaderText="Subjects" SortExpression="ClassSubjectName">
+                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                            </asp:BoundField>
+                                                             <asp:BoundField DataField="ExamTypeName" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                HeaderText="ExamTypeName" SortExpression="ExamTypeName">
+                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                            </asp:BoundField>
+                                                            <asp:BoundField DataField="SubjectHeaderName" HeaderStyle-CssClass="sorting_mod"
+                                                                ItemStyle-HorizontalAlign="Center" HeaderText="Subject Header" SortExpression="SubjectHeaderName">
+                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                            </asp:BoundField>
+                                                            <asp:BoundField DataField="MaxMark" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                HeaderText="Max Mark" SortExpression="MaxMark">
+                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                            </asp:BoundField>
+                                                            <asp:TemplateField HeaderStyle-CssClass="sorting_mod editacc">
+                                                                <HeaderTemplate>
+                                                                    Edit</HeaderTemplate>
+                                                                <ItemTemplate>
+                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Edit" CommandArgument='<%# Eval("SubjectHeaderID") %>'
+                                                                        CommandName="Edit" CausesValidation="false" CssClass="links"></asp:LinkButton>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderStyle-CssClass="sorting_mod deleteacc">
+                                                                <HeaderTemplate>
+                                                                    Delete</HeaderTemplate>
+                                                                <ItemTemplate>
+                                                                    <asp:LinkButton ID="lnkDelete" runat="server" Text="Delete" CommandArgument='<%# Eval("SubjectHeaderID") %>'
+                                                                        CommandName="Delete" CausesValidation="false" CssClass="links"></asp:LinkButton>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                    </asp:GridView>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="Pager" id="SubjectheadersPager">
                                                     </div>
                                                 </td>
                                             </tr>

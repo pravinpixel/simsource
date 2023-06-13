@@ -220,7 +220,7 @@ public partial class Performance_PromotionList : System.Web.UI.Page
         }
     }
 
-    int totdays;
+    double totdays;
     string startdate;
     string enddate;
     private void LOAD_Totdays()
@@ -229,8 +229,8 @@ public partial class Performance_PromotionList : System.Web.UI.Page
         DataSet ds = new DataSet();
         string sql;
 
-        sql = "select isnull(SUM(convert(int,noofdays)),0)as Totaldays from m_DaysinMonths where AcademicID='" + AcademicID + "' and ClassID='" + Session["strClassID"] + "' and IsActive=1 ";
-        totdays = Convert.ToInt32(utl2.ExecuteScalar(sql));
+        sql = "select isnull(SUM(convert(float,noofdays)),0)as Totaldays from m_DaysinMonths where AcademicID='" + AcademicID + "' and ClassID='" + Session["strClassID"] + "' and IsActive=1 ";
+        totdays = Convert.ToDouble(utl2.ExecuteScalar(sql));
 
         string query = "select convert(varchar(10),StartDate,121) as StartDate, convert(varchar(10),EndDate,121) as EndDate from m_academicyear where AcademicId='" + AcademicID + "'";
         ds = utl.GetDataset(query);
@@ -461,10 +461,7 @@ public partial class Performance_PromotionList : System.Web.UI.Page
                         LOAD_RESULT_SAMACHEER();
                     }
                 }
-
             }
-
-
         }
 
         catch (Exception ex)

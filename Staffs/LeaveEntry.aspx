@@ -594,13 +594,13 @@
             script: function (input) { return "../Handlers/GetEmployee.ashx?type=code&input=" + input + "&testid=" + document.getElementById('testid').value; },
             varname: "input",
             maxentries: 15,
-            callback: function (obj) { GetEmpByCode(); }
+            callback: function (obj) { GetEmpByCode(); GetStaffInfo(); }
         };
         var options_xml2 = {
             script: function (input) { return "../Handlers/GetEmployee.ashx?type=name&input=" + input + "&testid=" + document.getElementById('testid').value; },
             varname: "input",
             maxentries: 15,
-            callback: function (obj) { GetEmpByName(); }
+            callback: function (obj) { GetEmpByName(); GetStaffInfo(); }
         };
 
         var as_xml = new bsn.AutoSuggest('<%= txtEmpCode.ClientID %>', options_xml);

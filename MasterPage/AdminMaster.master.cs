@@ -325,10 +325,13 @@ public partial class AdminMaster : System.Web.UI.MasterPage
         DataTable dt = new DataTable();
         dt = utl.GetDataTable(sqlstr);
         string menuName = string.Empty;
-
-        ViewState["menuDataTable"] = dt;
-        DataTable uniqueCols = dt.DefaultView.ToTable(true, "ParentId", "ParentMenuName");
-        BindParentMenu(uniqueCols);
+        if (dt.Rows.Count>0)
+        {
+            ViewState["menuDataTable"] = dt;
+            DataTable uniqueCols = dt.DefaultView.ToTable(true, "ParentId", "ParentMenuName");
+            BindParentMenu(uniqueCols);
+        }
+      
 
     }
     private void BindParentMenu(DataTable dt)

@@ -317,12 +317,11 @@
                         }
                     });
 
-                    if ((iCnt < Days) || (iCnt > Days) || (iCnt == 0) || (DayValue == "")) {
-                        AlertMessage('info', "No of Working days mismatch with the selected dates");
-                        Cancel();
-                        return true;
-
-                    }
+//                    if ((iCnt < Days) || (iCnt > Days) || (iCnt == 0) || (DayValue == "")) {
+//                        AlertMessage('info', "No of Working days mismatch with the selected dates");
+//                        Cancel();
+//                        return true;
+//                    }
                     var parameters = '{"id": "' + DaysID + '","ClassID": "' + ClassID + '","Days": "' + Days + '","MonthID": "' + MonthID + '","DayValue": "' + DayValue + '"}';
                     $.ajax({
                         type: "POST",

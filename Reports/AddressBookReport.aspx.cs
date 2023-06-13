@@ -242,7 +242,6 @@ public partial class Reports_AddressBookReport : System.Web.UI.Page
 
                 if (i > 0)
                 {
-
                     if (((i + 1) % 2) == 0)
                     {
                         str.Append(@"</tr><tr><td height='20'></td></tr><tr>");
@@ -252,9 +251,7 @@ public partial class Reports_AddressBookReport : System.Web.UI.Page
                     {
                         str.Append(@"</tr></table> <p class='pagebreakhere' style='page-break-after: always; color: Red;'></p><table width='1000' height='1000' ><tr>");
                     }
-
                 }
-
             }
 
             str.Append(@"</tr></table>");
@@ -265,7 +262,5 @@ public partial class Reports_AddressBookReport : System.Web.UI.Page
         {
             dvCard.InnerHtml = string.Empty;
         }
-
-
     }
 }

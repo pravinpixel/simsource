@@ -1,14 +1,41 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/AdminMaster.master"
-    AutoEventWireup="true" CodeFile="ManageFees.aspx.cs" Inherits="Students_ManageFees" %>
+    AutoEventWireup="true" CodeFile="ApproveDC.aspx.cs" Inherits="Students_ApproveDC" %>
 
 <%@ MasterType VirtualPath="~/MasterPage/AdminMaster.master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <%="<link href='" + ResolveUrl("~/css/managefees.css") + "' rel='stylesheet' type='text/css'  media='screen' />"%>
+    <%="<link href='" + ResolveUrl("~/css/ManageFees.css") + "' rel='stylesheet' type='text/css'  media='screen' />"%>
+    <%="<link href='" + ResolveUrl("~/css/PrintschoolFees.css") + "' rel='stylesheet' type='text/css'  media='screen' />"%>
+    <link type="text/css" href="../css/Barcodeprint.css" />
+    <style type="text/css">
+        /*  img.barcode
+        {
+            width: 201px !important;
+            height: 75px !important;
+            max-width: none;
+            max-height: none;
+        }*/
+        
+        .barcodeimage img
+        {
+            max-width: inherit;
+        }
+        .barcodefont
+        {
+            font-family: "Free 3 of 9";
+            font-size: 40px;
+        }
+        .barcodetext
+        {
+            letter-spacing: 7px;
+            font-size: 18px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head2" runat="Server">
     <script type="text/javascript">
 
         $(function () {
+            $('#dvbus').css("display", "none");
             $('#txtRegNo').focus();
             //        GetStudentInfos Function on page load
             var view = $("[id*=hfViewPrm]").val();
@@ -24,35 +51,29 @@
             if ($("[id*=hdnRegNo]").length > 0) {
                 $('#txtRegNo').val($("[id*=hdnRegNo]").val());
                 BindStudDetails();
-               
+                GetAcademicDetails();
             }
         });
-
-        function bindpaymode(sel) {
-            if (sel.value == "4") {
-                $("#txtcashamt").removeAttr("disabled");
-                $("#txtcardamt").removeAttr("disabled");
-                $("#modes").css("display", "block");
-            }
-            else {
-                $("#txtcashamt").attr("disabled", "disabled");
-                $("#txtcardamt").attr("disabled", "disabled");
-                $("#modes").css("display", "none");
-            }
-        }
-        function checkval(sel) {
-            if (!$.isNumeric(sel.value)) {
-                sel.value = "0";
-                return false;
-            }
-        }
     </script>
+    <style type="text/css">
+        .billcont
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 19px;
+        }
+        .ph
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+    </style>
     <%--Get Academic Details--%>
     <script type="text/javascript">
+        $(document).ready(function () {
+            setDatePicker("[id*=txtDateofBusReg]");
+        });
 
         function GetAcademicDetails() {
-
-
             var btype = "";
             if ($("[id*=rbtnMonth]").is(':checked')) {
                 btype = "Single";
@@ -60,11 +81,10 @@
             else if ($("[id*=rbtnBiMonth]").is(':checked')) {
                 btype = "Double";
             }
-
             var parameters = '{"regNo": "' + $("[id*=hdnRegNo]").val() + '","academicId": "' + $("[id*=hdnAcademicId]").val() + '","editPrm": "' + $("[id*=hfEditPrm]").val() + '","delPrm": "' + $("[id*=hfDeletePrm]").val() + '","btype": "' + btype + '"}';
             $.ajax({
                 type: "POST",
-                url: "../Students/ManageFees.aspx/BindAcademicYearMonth",
+                url: "../Students/ApproveDC.aspx/BindAcademicYearMonth",
                 data: parameters,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -77,7 +97,6 @@
                 }
             });
         }
-
         function OnGetAcademicSuccess(response) {
             var xmlDoc = $.parseXML(response.d);
             var xml = $(xmlDoc);
@@ -85,7 +104,6 @@
             var secondContent = xml.find("SecondContent");
             var thirdContent = xml.find("ThirdContent");
             $('#divAdvanceFee').css("display", "none");
-            
             $.each(firstContent, function () {
                 $("[id*=divAcademicFees]").html($(this).find("firsthtml").text())
             });
@@ -104,35 +122,19 @@
                     $('#divAdvanceFee').css("display", "block");
                 }
 
+
             });
-          
             $('#txtRegNo').focus();
         }
     </script>
     <script type="text/javascript">
 
 
-        function ViewBiMonthBill(BillId) {
-            $.ajax({
-                type: "POST",
-                url: "../Students/ManageFees.aspx/ViewBiMonthBillDetails",
-                data: '{"billId":"' + BillId + '"}',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: OnViewBillSuccess,
-                failure: function (response) {
-                    AlertMessage('info', response.d);
-                },
-                error: function (response) {
-                    AlertMessage('info', response.d);
-                }
-            });
-        }
 
         function ViewBill(BillId) {
             $.ajax({
                 type: "POST",
-                url: "../Students/ManageFees.aspx/ViewBillDetails",
+                url: "../Students/ApproveDC.aspx/ViewBillDetails",
                 data: '{"billId":"' + BillId + '"}',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -195,14 +197,13 @@
 
         function SaveFeesBill(Regno, AcademicId, FeesHeadIds, FeesAmount, FeesCatId, FeesMonthName, FeestotalAmount) {
             $("#btnSubmit").attr("disabled", "true");
-         
 
             if ($("[id*=hdnUpdateBillID]").val().length == 0) {
-              
+
                 $.ajax({
                     type: "POST",
-                    url: "../Students/ManageFees.aspx/SaveBillDetails",
-                    data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                    url: "../Students/ApproveDC.aspx/SaveBillDetails",
+                    data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {
@@ -214,7 +215,7 @@
                             AlertMessage('fail', 'Failed');
                         }
                         $('#divBillDetials').css("display", "none");
-                        BindStudDetails();
+                        GetAcademicDetails();
 
                     },
                     failure: function (response) {
@@ -230,8 +231,8 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "../Students/ManageFees.aspx/UpdateBillDetails",
-                    data: '{"BillId":"' + $("[id*=hdnUpdateBillID]").val() + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                    url: "../Students/ApproveDC.aspx/UpdateBillDetails",
+                    data: '{"BillId":"' + $("[id*=hdnUpdateBillID]").val() + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {
@@ -243,73 +244,7 @@
                             AlertMessage('fail', 'Failed');
                         }
                         $('#divBillDetials').css("display", "none");
-                        BindStudDetails();
-
-                    },
-                    failure: function (response) {
-                        AlertMessage('info', response.d);
-                    },
-                    error: function (response) {
-                        AlertMessage('info', response.d);
-                    }
-                });
-
-                $("[id*=hdnUpdateBillID]").val('');
-            }
-
-        }
-
-
-        function SaveFeesBiMonthBill(Regno, AcademicId, FeesHeadIds, FeesAmount, FeesCatId, FeesMonthName, FeestotalAmount) {
-            $("#btnSubmit").attr("disabled", "true");
-  
-            if ($("[id*=hdnUpdateBillID]").val().length == 0) {
-
-                $.ajax({
-                    type: "POST",
-                    url: "../Students/ManageFees.aspx/SaveBiMonthBillDetails",
-                    data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.d == "Updated") {
-                            AlertMessage('success', 'Saved');
-                            $("#btnSubmit").attr("disabled", "disabled");
-                        }
-                        else if (response.d == "Failed") {
-                            AlertMessage('fail', 'Failed');
-                        }
-                        $('#divBillDetials').css("display", "none");
-                        BindStudDetails();
-
-                    },
-                    failure: function (response) {
-                        AlertMessage('info', response.d);
-                    },
-                    error: function (response) {
-                        AlertMessage('info', response.d);
-                    }
-                });
-            }
-            else {
-
-
-                $.ajax({
-                    type: "POST",
-                    url: "../Students/ManageFees.aspx/UpdateBiMonthBillDetails",
-                    data: '{"BillId":"' + $("[id*=hdnUpdateBillID]").val() + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.d == "Updated") {
-                            AlertMessage('success', 'Saved');
-                            $("#btnSubmit").attr("disabled", "disabled");
-                        }
-                        else if (response.d == "Failed") {
-                            AlertMessage('fail', 'Failed');
-                        }
-                        $('#divBillDetials').css("display", "none");
-                        BindStudDetails();
+                        GetAcademicDetails();
 
                     },
                     failure: function (response) {
@@ -331,7 +266,7 @@
                 if (r) {
                     $.ajax({
                         type: "POST",
-                        url: "../Students/ManageFees.aspx/DeleteBill",
+                        url: "../Students/ApproveDC.aspx/DeleteBill",
                         data: '{"billId":"' + billId + '"}',
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -352,7 +287,7 @@
         function OnDeleteBillSuccess(response) {
             if (response.d == '') {
                 AlertMessage('success', "Deleted");
-                BindStudDetails();
+                GetAcademicDetails();
             }
             else {
                 AlertMessage('fail', "Delete");
@@ -383,7 +318,17 @@
             $('#divBillDetials').css("display", "none");
         }
 
+        function showbus() {
+            if (document.getElementById('rbtnBusYes').checked == true) {
+                $("#dvbus").slideDown("slow");
+                $("[id*=btnBusRouteSubmit]").removeAttr("disabled");
+                $("[id*=txtDateofBusReg]").val('');
+            }
+            if (document.getElementById('rbtnBusNo').checked == true) {
+                $("#dvbus").slideUp("slow");
+            }
 
+        }
 
 
         function IgnoreExistingBill(Billid, AcademicId, FeesHeadIds, FeesAmount, FeesCatId, FeesMonthName, FeestotalAmount) {
@@ -392,8 +337,8 @@
                 if (r) {
                     $.ajax({
                         type: "POST",
-                        url: "../Students/ManageFees.aspx/UpdateBillDetails",
-                        data: '{"BillId":"' + Billid + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"0","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                        url: "../Students/ApproveDC.aspx/UpdateBillDetails",
+                        data: '{"BillId":"' + Billid + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"0","CashAmt":"0","CardAmt":"0","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (response) {
@@ -404,7 +349,7 @@
                             else if (response.d == "Failed") {
                                 AlertMessage('fail', 'Failed');
                             }
-                            BindStudDetails();
+                            GetAcademicDetails();
 
                         },
                         failure: function (response) {
@@ -430,8 +375,8 @@
                 if (r) {
                     $.ajax({
                         type: "POST",
-                        url: "../Students/ManageFees.aspx/SaveBillDetails",
-                        data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"0","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                        url: "../Students/ApproveDC.aspx/SaveBillDetails",
+                        data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"0","CashAmt":"0","CardAmt":"0","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (response) {
@@ -442,7 +387,7 @@
                             else if (response.d == "Failed") {
                                 AlertMessage('fail', 'Failed');
                             }
-                            BindStudDetails();
+                            GetAcademicDetails();
 
                         },
                         failure: function (response) {
@@ -462,14 +407,11 @@
         function PrintBill(BillId) {
             $.ajax({
                 type: "POST",
-                url: "../Students/ManageFees.aspx/PrintBillDetails",
+                url: "../Students/ApproveDC.aspx/PrintBillDetails",
                 data: '{"billId":"' + BillId + '"}',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (response) {
-
-
-                },
+                success: OnPrintSuccess,
                 failure: function (response) {
                     AlertMessage('info', response.d);
                 },
@@ -479,34 +421,35 @@
             });
         }
 
-        function PrintBiMonthBill(BillId) {
-            $.ajax({
-                type: "POST",
-                url: "../Students/ManageFees.aspx/PrintBiMonthBillDetails",
-                data: '{"billId":"' + BillId + '"}',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
 
-                },
-                failure: function (response) {
-                    AlertMessage('info', response.d);
-                },
-                error: function (response) {
-                    AlertMessage('info', response.d);
-                }
+        function OnPrintSuccess(response) {
+
+            if (response.d != '') {
+                $(".dvPrint").html(response.d);
+
+                $(".dvPrint").printElement(
+            {
+                async: false,
+                leaveOpen: false,
+
+                overrideElementCSS: [
+
+                        '../css/PrintschoolFees.css',
+
+                        { href: '../css/PrintschoolFees.css', media: 'print'}]
             });
+
+
+            }
         }
+
 
         function LoadData() {
             $("[id*=hdnRegNo]").val($('#txtBarcode').val());
-            // GetAcademicDetails();
+            GetAcademicDetails();
             BindStudDetails();
-
             $("[id*=txtRegNo]").focus();
-            $("[id*=rbtnMonth]").attr('checked', 'checked');            
         }
-
         function onEnter(event) {
             if (event)
                 if (event.keyCode == 13) {
@@ -514,20 +457,16 @@
                     $("[id*=hdnRegNo]").val($('#txtBarcode').val());
                     $("[id*=txtRegNo]").val("");
                     $("[id*=txtBarcode]").focus();
-                    $("[id*=rbtnMonth]").attr('checked', 'checked');
-
-                    get_cocurricular_payment_details();
                 }
-        }      
-
+        }
+ 
     </script>
-
     <script type="text/javascript">
         function BindStudDetails() {
             var parameters = '{"regNo": "' + $("[id*=hdnRegNo]").val() + '","academicId": "' + $("[id*=hdnAcademicId]").val() + '"}';
             $.ajax({
                 type: "POST",
-                url: "../Students/ManageFees.aspx/BindStudDetails",
+                url: "../Students/ApproveDC.aspx/BindStudDetails",
                 data: parameters,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -547,58 +486,20 @@
             $('#txtstudName').val(xml.find("stname").text());
             $('#txtstudClass').val(xml.find("classname").text());
             $('#txtstudSections').val(xml.find("sectionname").text());
-            if (xml.find("AcademicStatus").text() == "Active") {
-
-                if ($('#txtstudName').val() != "") {
-                    if (xml.find("AdminNo").text() == "0" || xml.find("AdminNo").text() == "") {
-                        jAlert('Can\'t Display the Fees Bill, B\'coz the student admission is not approved. !!!');
-                    }
-                    else if (xml.find("PresentStatus").text() == "Inactive") {
-                        jAlert('Can\'t Display the Fees Bill, B\'coz he/she is not active. !!!');
-                    }
-
-                    else if (xml.find("PresentStatus").text() == "Active") {
-                        checkConcession();
-                    }
-                }
+            if (xml.find("PresentStatus").text() == "Inactive") {
+                jAlert('Can\'t Display the Fees Bill, B\'coz he/she is not active. !!!');
             }
-            else {
-                GetAcademicDetails();    
-            }
-            if (xml.find("FeesType").text() == "Term") {
-                $('#rbtnBiMonth').attr('disabled', true);
-                $('#rbtnBiMonth').attr('checked', false);
-                $('#rbtnMonth').attr('checked', true); 
-            }
-            else if (xml.find("FeesType").text() == "Monthly") {
-                $('#rbtnBiMonth').attr('disabled', false);
-                $('#rbtnBiMonth').attr('checked', false);
-                $('#rbtnMonth').attr('checked', true);
-            }
-
-                      
         }
 
-        function checkConcession() {
-            var parameters = '{"regno": "' + $("[id*=hdnRegNo]").val() + '"}';
+
+        function ViewBiMonthBill(BillId) {
             $.ajax({
                 type: "POST",
-                url: "../Students/ManageFees.aspx/checkConcession",
-                data: parameters,
+                url: "../Students/ApproveDC.aspx/ViewBiMonthBillDetails",
+                data: '{"billId":"' + BillId + '"}',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (response) {
-                    if (response.d == "F") {
-                        $('#divAcademicFees').html("");
-                        $('#divAdvanceFee').html("");
-                        $("#divBillContents").html("");
-                        $("#divAdvanceFeeContent").html("");
-                        jAlert("Student has full Concession");
-                    }
-                    else {
-                        GetAcademicDetails();                       
-                    }
-                },
+                success: OnViewBillSuccess,
                 failure: function (response) {
                     AlertMessage('info', response.d);
                 },
@@ -607,6 +508,91 @@
                 }
             });
         }
+
+
+        function SaveFeesBiMonthBill(Regno, AcademicId, FeesHeadIds, FeesAmount, FeesCatId, FeesMonthName, FeestotalAmount) {
+            $("#btnSubmit").attr("disabled", "true");
+
+            if ($("[id*=hdnUpdateBillID]").val().length == 0) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/ApproveDC.aspx/SaveBiMonthBillDetails",
+                    data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.d == "Updated") {
+                            AlertMessage('success', 'Saved');
+                            $("#btnSubmit").attr("disabled", "disabled");
+                        }
+                        else if (response.d == "Failed") {
+                            AlertMessage('fail', 'Failed');
+                        }
+                        $('#divBillDetials').css("display", "none");
+                        GetAcademicDetails();
+
+                    },
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+            else {
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/ApproveDC.aspx/UpdateBillDetails",
+                    data: '{"BillId":"' + $("[id*=hdnUpdateBillID]").val() + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.d == "Updated") {
+                            AlertMessage('success', 'Saved');
+                            $("#btnSubmit").attr("disabled", "disabled");
+                        }
+                        else if (response.d == "Failed") {
+                            AlertMessage('fail', 'Failed');
+                        }
+                        $('#divBillDetials').css("display", "none");
+                        GetAcademicDetails();
+
+                    },
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+
+                $("[id*=hdnUpdateBillID]").val('');
+            }
+
+        }
+
+
+        function PrintBiMonthBill(BillId) {
+            $.ajax({
+                type: "POST",
+                url: "../Students/ApproveDC.aspx/PrintBiMonthBillDetails",
+                data: '{"billId":"' + BillId + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnPrintSuccess,
+                failure: function (response) {
+                    AlertMessage('info', response.d);
+                },
+                error: function (response) {
+                    AlertMessage('info', response.d);
+                }
+            });
+        }
+
 
         $(document).ready(function () {
             $("input[type='radio']").click(function () {
@@ -616,40 +602,112 @@
                 }
             });
 
+            $('.numericswithdecimals').keyup(function () {
+                alert('f');
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            })
         });
 
+        //        $('select').on('change', function () {
+        //            alert(this.value);
+        //        });
 
-        function View_dv_cocurricular_details() {
-            $('#dv_cocurricular_details').css("display", "block");
+        function bindpaymode(sel) {
+            if (sel.value == "4") {
+                $("#txtcashamt").removeAttr("disabled");
+                $("#txtcardamt").removeAttr("disabled");
+                $("#modes").css("display", "block");
+            }
+            else {
+                $("#txtcashamt").attr("disabled", "disabled");
+                $("#txtcardamt").attr("disabled", "disabled");
+                $("#modes").css("display", "none");
+            }
+        }
+        function checkval(sel) {
+            if (!$.isNumeric(sel.value)) {
+                sel.value = "0";
+                return false;
+            }
         }
 
-        function close_dv_cocurricular_detailsView() {
-            $('#dv_cocurricular_details').css("display", "none");
-        }
 
-        function get_cocurricular_payment_details() {
-            $.ajax({
-                type: "POST",
-                url: "../Students/ManageFees.aspx/get_cocurricular_paymentDetails",
-                data: '{"regNo": "' + $("[id*=hdnRegNo]").val() + '","academicId": "' + $("[id*=hdnAcademicId]").val() + '"}',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: OnGetPaymentDetailsSuccess,
-                failure: function (response) {
-                    alert(response.d);
-                },
-                error: function (response) {
-                    alert(response.d);
+        function SaveBusRouteDetails() {
+            if (($("[id*=hfAddPrm]").val() == 'true') ||
+            ($("[id*=hfEditPrm]").val() == 'true')
+            ) {
+                if ($("[id*=hfRegNo]").val() != '') {
+                    if ($('#aspnetForm').valid()) {
+                        $("[id*=btnBusRouteSubmit]").attr("disabled", "true");
+                        var RegNo = $("[id*=hdnRegNo]").val();
+                        var BusFacility;
+                        if ($("[id*=rbtnBusYes]").is(':checked')) {
+                            BusFacility = "Y";
+                        }
+
+                        else if ($("[id*=rbtnBusNo]").is(':checked')) {
+                            BusFacility = "N";
+                        }
+                        var RouteCode = $("[id*=ddlRouteCode]").val();
+                        var Academicyear = $("[id*=hfAcademicyear]").val();
+                        var RegDate = $("[id*=txtDateofBusReg]").val();
+                        var parameters = '{"id": "' + RegNo + '","routeid": "' + RouteCode + '","regdate": "' + RegDate + '"}';
+                        var baseurl = "../Students/ApproveDC.aspx/SaveBusRouteInfo";
+
+                        $.ajax({
+                            type: "POST",
+                            url: baseurl,
+                            data: parameters,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: OnSaveBusRouteDetailsSuccess,
+                            failure: function (response) {
+                                AlertMessage('info', response.d);
+                            },
+                            error: function (response) {
+                                AlertMessage('info', response.d);
+                            }
+                        });
+                    }
                 }
-            });
+                else {
+                    AlertMessage('info', "Please Enter Personal Details");
+                    changeAccordion(0);
+                }
+            }
         }
 
-        function OnGetPaymentDetailsSuccess(response) {
-            $("#result_list_html").html(response.d.toString());
-        }  
-   
-    </script>
+        function OnSaveBusRouteDetailsSuccess(response) {
+            var currentPage = $("[id*=currentPage]").text();
+            if (response.d == "Updated") {
+                AlertMessage('success', 'Updated');
+                var RegNo = $("[id*=hdnRegNo]").val();
+                LoadData();
 
+            }
+            else if (response.d == "Update Failed") {
+                AlertMessage('fail', 'Update');
+            }
+            else if (response.d == "Inserted") {
+                AlertMessage('success', 'Inserted');
+                var RegNo = $("[id*=hdnRegNo]").val();
+                LoadData();
+
+            }
+            else if (response.d == "Insert Failed") {
+                AlertMessage('fail', 'Insert');
+            }
+            else {
+                AlertMessage('info', response.d);
+                $("[id*=btnBusRouteSubmit]").attr("disabled", "false");
+                $("[id*=rbtnBusNo]").attr("checked", "checked");
+                showbus();
+            }
+
+        };
+
+    </script>
+    <%="<script src='" + ResolveUrl("~/js/jquery.printElement.js") + "' type='text/javascript'></script>"%>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="grid_10">
@@ -660,7 +718,6 @@
             <div class="clear">
             </div>
             <div align="center" class="block content-wrapper2">
-            
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
@@ -686,7 +743,7 @@
                                         <input type="text" id="txtBarcode" name="txtBarcode" onfocus="LoadData();" class="barcode"
                                             style="height: 50px; width: 200px; font-size: 30px;" />
                                     </td>
-                                    <td colspan="3">
+                                    <td>
                                         <h5>
                                             <label>
                                                 Name :</label><input type="text" id="txtstudName" readonly="readonly" style="border-style: none;
@@ -713,69 +770,18 @@
                             </table>
                         </td>
                     </tr>
-                                                         
-                    <tr>
-                        <td height="30" class="formsubheading">
-                            <span>Billing Type</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td height="30" class="formsubheading">
-                            <span>Academic Year Fee Structure</span>
-                        </td>
-                    </tr>
                     
-                    <tr>
+                    <tr style="display:none;">
                         <td>
                             <label>
-                                <input type="radio" checked="checked" onkeydown="GetAcademicDetails();"  name="btype" id="rbtnMonth" value="Single" />Single
-                                Month Billing</label>
+                                <input type="radio" onkeydown="GetAcademicDetails();" checked="checked" name="btype"
+                                    id="rbtnMonth" value="Single" />Single Month Billing</label>
                             <label>
-                                <input type="radio" id="rbtnBiMonth" onkeydown="GetAcademicDetails();" name="btype" value="Double" />Bi-month Billing</label>
-                        </td>                        
+                                <input type="radio" id="rbtnBiMonth" onkeydown="GetAcademicDetails();" name="btype"
+                                    value="Double" />Bi-month Billing</label>
+                        </td>
                     </tr>
-
-                    <tr>
-                        <td>&nbsp;</td>
-                    </tr>                    
-
-<tr>
-    <td id="co_curricular_payment_details"> 
-         Co-Curricular Details - <a class="creat-link" href="javascript:View_dv_cocurricular_details();"> View </a>
-                            
-    <div id="dv_cocurricular_details" style="background: url(../img/overly.png) repeat; width: 100%; display: none; height: 100%; position: fixed; top: 0; left: 0; z-index: 10000;">
-        <div style="position: absolute; top: 15%; left: 31%;">
-            <table width="600" border="0" cellpadding="0" cellspacing="0" id="table1" class="tblViewMain">
-                <tr>
-                    <td class="ViewClose">
-                        <a href="javascript:close_dv_cocurricular_detailsView()">Close</a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td class="viewTDPadding"> 
-                    <div style=" height:400px; overflow-y:scroll; ">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">   
-                            <tr>
-                                <td colspan="2" id="result_list_html"> 
-                                    
-                                </td>
-                            </tr>
-                         </table>
-                     </div>
-                    </td>
-                  </tr>
-               </table>
-        </div>
-    </div>
-                       
-    </td>
-</tr>
-
-                    <tr><td>&nbsp;</td></tr>   
-                    <tr><td>&nbsp;</td></tr>  
-
-
+                  
                     <tr>
                         <td height="30">
                             <div class="block1">
@@ -949,8 +955,6 @@
                         </td>
                     </tr>
                 </table>
-                
-
             </div>
             <div id="divBillDetials" style="background: url(../img/overly.png) repeat; width: 100%;
                 display: none; height: 100%; position: fixed; top: 0; left: 0; z-index: 10000;">
@@ -958,16 +962,13 @@
                 </div>
             </div>
         </div>
-
-
-        
-
-
         <asp:HiddenField ID="hdnUserId" runat="server" />
         <asp:HiddenField ID="hdnRegNo" runat="server" />
         <asp:HiddenField ID="hdnAcademicId" runat="server" />
         <asp:HiddenField ID="hdnFinancialId" runat="server" />
         <asp:HiddenField ID="hdnDate" runat="server" />
         <asp:HiddenField ID="hdnUpdateBillID" runat="server" />
+    </div>
+    <div class="dvPrint">
     </div>
 </asp:Content>
