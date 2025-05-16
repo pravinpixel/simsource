@@ -4,7 +4,2086 @@
 <%@ MasterType VirtualPath="~/MasterPage/AdminMaster.master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <%="<script src='" + ResolveUrl("~/js/ASPSnippets_Pager.min.js") + "' type='text/javascript'></script>"%>
+    <%="<script src='" + ResolveUrl("~/js/bsn.AutoSuggest_2.1.3.js") + "' type='text/javascript'></script>"%>
+    <%="<link href='" + ResolveUrl("~/css/autosuggest_inquisitor.css") + "' rel='stylesheet' type='text/css'/>"%>
     <script type="text/javascript">
+
+        function GetASSGeneralInfo(val) {
+            var RegNo = $("[id*=hfRegNo]").val();
+            if (RegNo != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/StudentInfo.aspx/GetASSGeneralInfo",
+                    data: '{RegNo:"' + RegNo + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnGetASSGeneralInfoSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+        }
+
+        function OnGetASSGeneralInfoSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var rel = xml.find("GeneralInfo");
+            $.each(rel, function () {
+                var breakfast = $(this).find("HasBreakfast").text();
+                if (breakfast == "1") {
+                    $("[id*=rtbnBreakYes]").attr("checked", true);
+                }
+                else if (breakfast == "2") {
+                    $("[id*=rtbnBreakNo]").attr("checked", true);
+                }
+
+                var lunch = $(this).find("HasLunch").text();
+                if (lunch == "1") {
+                    $("[id*=rtbnLunchYes]").attr("checked", true);
+                }
+                else if (lunch == "2") {
+                    $("[id*=rtbnLunchNo]").attr("checked", true);
+                }
+
+                var trans = $(this).find("HasTransport").text();
+                if (trans == "1") {
+                    $("[id*=rtbnTransYes]").attr("checked", true);
+                }
+                else if (trans == "2") {
+                    $("[id*=rtbnTransNo]").attr("checked", true);
+                }
+
+                var birth = $(this).find("HasBirthCert").text();
+                if (birth == "1") {
+                    $("[id*=rbtnbcYes]").attr("checked", true);
+                }
+                else if (trans == "2") {
+                    $("[id*=rbtnbcNo]").attr("checked", true);
+                }
+
+                var hostel = $(this).find("HasHostel").text();
+                if (hostel == "1") {
+                    $("[id*=rbtnHotelYes]").attr("checked", true);
+                }
+                else if (hostel == "2") {
+                    $("[id*=rbtnHotelNo]").attr("checked", true);
+                }
+                $("[id*=txtidentify1]").val($(this).find("Identification1").text());
+                $("[id*=txtidentify2]").val($(this).find("Identification2").text());
+
+            });
+        };
+
+
+
+        function GetASSWellnessInfo(val) {
+            var RegNo = $("[id*=hfRegNo]").val();
+            if (RegNo != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/StudentInfo.aspx/GetASSWellnessInfo",
+                    data: '{RegNo:"' + RegNo + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnGetASSWellnessInfoSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+        }
+
+        function OnGetASSWellnessInfoSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var rel = xml.find("WellnessInfo");
+            $.each(rel, function () {
+                var allergy = $(this).find("HasAllergics").text();
+                if (allergy == "1") {
+                    $("[id*=rbtnAllergicYes]").attr("checked", true);
+                }
+                else if (allergy == "2") {
+                    $("[id*=rbtnAllergicNo]").attr("checked", true);
+                }
+
+                if ($(this).find("Attachment").text() != "") {
+                    $("[id*=AllergicAttachment]").css("display", "block");
+                    $("[id*=AllergicAttachment]").attr("href", "../Students/AllergicAttachment/" + $(this).find("Attachment").text() + "");
+                }
+
+                var skin = $(this).find("HasInfection").text();
+                if (skin == "1") {
+                    $("[id*=rbtnSkinYes]").attr("checked", true);
+                }
+                else if (skin == "2") {
+                    $("[id*=rbtnSkinNo]").attr("checked", true);
+                }
+
+                var tetanus = $(this).find("HasTetanus").text();
+                if (tetanus == "1") {
+                    $("[id*=rbtnTetanusYes]").attr("checked", true);
+                }
+                else if (tetanus == "2") {
+                    $("[id*=rbtnTetanusNo]").attr("checked", true);
+                }
+
+                var polio = $(this).find("HasPolio").text();
+                if (polio == "1") {
+                    $("[id*=rbtnPolioYes]").attr("checked", true);
+                }
+                else if (polio == "2") {
+                    $("[id*=rbtnPolioNo]").attr("checked", true);
+                }
+
+                var tb = $(this).find("HasTB").text();
+                if (tb == "1") {
+                    $("[id*=rbtnTBYes]").attr("checked", true);
+                }
+                else if (tb == "2") {
+                    $("[id*=rbtnTBNo]").attr("checked", true);
+                }
+
+                var hepa = $(this).find("HasHepatitis").text();
+                if (hepa == "1") {
+                    $("[id*=rbtnHepatitisYes]").attr("checked", true);
+                }
+                else if (hepa == "2") {
+                    $("[id*=rbtnHepatitisNo]").attr("checked", true);
+                }
+
+                var covid = $(this).find("HasCovid").text();
+                if (covid == "1") {
+                    $("[id*=rbtnCovidYes]").attr("checked", true);
+                }
+                else if (covid == "2") {
+                    $("[id*=rbtnCovidNo]").attr("checked", true);
+                }
+
+                var hpv = $(this).find("HasHPV").text();
+                if (hpv == "1") {
+                    $("[id*=rbtnHPVYes]").attr("checked", true);
+                }
+                else if (hpv == "2") {
+                    $("[id*=rbtnHPVNo]").attr("checked", true);
+                }
+
+                var glass = $(this).find("HasSpecs").text();
+                if (glass == "1") {
+                    $("[id*=rbtnGlassYes]").attr("checked", true);
+                }
+                else if (glass == "2") {
+                    $("[id*=rbtnGlassNo]").attr("checked", true);
+                }
+
+                var lens = $(this).find("HasLens").text();
+                if (lens == "1") {
+                    $("[id*=rbtnLensYes]").attr("checked", true);
+                }
+                else if (lens == "2") {
+                    $("[id*=rbtnLensNo]").attr("checked", true);
+                }
+
+                var hear = $(this).find("HasHearing").text();
+                if (hear == "1") {
+                    $("[id*=rbtnhearYes]").attr("checked", true);
+                }
+                else if (hear == "2") {
+                    $("[id*=rbtnhearNo]").attr("checked", true);
+                }
+
+                var chicken = $(this).find("HasChickenPox").text();
+                if (chicken == "1") {
+                    $("[id*=rbtnChickenYes]").attr("checked", true);
+                }
+                else if (chicken == "2") {
+                    $("[id*=rbtnChickenNo]").attr("checked", true);
+                }
+
+                var rubella = $(this).find("HasRubella").text();
+                if (rubella == "1") {
+                    $("[id*=rbtnRubellaYes]").attr("checked", true);
+                }
+                else if (rubella == "2") {
+                    $("[id*=rbtnRubellaNo]").attr("checked", true);
+                }
+
+                var jaundice = $(this).find("HasJaundice").text();
+                if (jaundice == "1") {
+                    $("[id*=rbtnJaundiceYes]").attr("checked", true);
+                }
+                else if (jaundice == "2") {
+                    $("[id*=rbtnJaundiceNo]").attr("checked", true);
+                }
+
+                var measles = $(this).find("HasMeasles").text();
+                if (measles == "1") {
+                    $("[id*=rbtnMeaslesYes]").attr("checked", true);
+                }
+                else if (measles == "2") {
+                    $("[id*=rbtnMeaslesNo]").attr("checked", true);
+                }
+
+                var mumps = $(this).find("HasMumps").text();
+                if (mumps == "1") {
+                    $("[id*=rbtnMumpsYes]").attr("checked", true);
+                }
+                else if (mumps == "2") {
+                    $("[id*=rbtnMumpsNo]").attr("checked", true);
+                }
+
+                var scarlet = $(this).find("HasScarlet").text();
+                if (scarlet == "1") {
+                    $("[id*=rbtnScarletYes]").attr("checked", true);
+                }
+                else if (scarlet == "2") {
+                    $("[id*=rbtnScarletNo]").attr("checked", true);
+                }
+
+                var cough = $(this).find("HasCough").text();
+                if (cough == "1") {
+                    $("[id*=rbtnCoughYes]").attr("checked", true);
+                }
+                else if (cough == "2") {
+                    $("[id*=rbtnCoughNo]").attr("checked", true);
+                }
+                var anorexia = $(this).find("HasAnorexia").text();
+                if (anorexia == "1") {
+                    $("[id*=chkAnorexia]").attr("checked", true);
+                }
+                else if (anorexia == "0") {
+                    $("[id*=chkAnorexia]").attr("checked", false);
+                }
+
+                var arthrititis = $(this).find("HasArthritis").text();
+                if (arthrititis == "1") {
+                    $("[id*=chkArthritis]").attr("checked", true);
+                }
+                else if (arthrititis == "0") {
+                    $("[id*=chkArthritis]").attr("checked", false);
+                }
+
+                var asthma = $(this).find("HasAsthma").text();
+                if (asthma == "1") {
+                    $("[id*=chkAsthma]").attr("checked", true);
+                }
+                else if (asthma == "0") {
+                    $("[id*=chkAsthma]").attr("checked", false);
+                }
+
+                var bone = $(this).find("HasBone").text();
+                if (bone == "1") {
+                    $("[id*=chkBone]").attr("checked", true);
+                }
+                else if (bone == "0") {
+                    $("[id*=chkBone]").attr("checked", false);
+                }
+
+                var cancer = $(this).find("HasCancer").text();
+                if (cancer == "1") {
+                    $("[id*=chkCancer]").attr("checked", true);
+                }
+                else if (cancer == "0") {
+                    $("[id*=chkCancer]").attr("checked", false);
+                }
+
+                var cardio = $(this).find("HasCardiovascular").text();
+                if (cardio == "1") {
+                    $("[id*=chkCardiovascular]").attr("checked", true);
+                }
+                else if (cardio == "0") {
+                    $("[id*=chkCardiovascular]").attr("checked", false);
+                }
+
+                var dia = $(this).find("HasDiabetes").text();
+                if (dia == "1") {
+                    $("[id*=chkDiabetes]").attr("checked", true);
+                }
+                else if (dia == "0") {
+                    $("[id*=chkDiabetes]").attr("checked", false);
+                }
+                var eczema = $(this).find("HasEczema").text();
+                if (eczema == "1") {
+                    $("[id*=chkEczema]").attr("checked", true);
+                }
+                else if (eczema == "0") {
+                    $("[id*=chkEczema]").attr("checked", false);
+                }
+
+                var enuresis = $(this).find("HasEnuresis").text();
+                if (enuresis == "1") {
+                    $("[id*=chkEnuresis]").attr("checked", true);
+                }
+                else if (enuresis == "0") {
+                    $("[id*=chkEnuresis]").attr("checked", false);
+                }
+
+
+                var epilepsy = $(this).find("HasEpilepsy").text();
+                if (epilepsy == "1") {
+                    $("[id*=chkEpilepsy]").attr("checked", true);
+                }
+                else if (epilepsy == "0") {
+                    $("[id*=chkEpilepsy]").attr("checked", false);
+                }
+
+                var genetic = $(this).find("HasGenetic").text();
+                if (genetic == "1") {
+                    $("[id*=chkGenetic]").attr("checked", true);
+                }
+                else if (genetic == "0") {
+                    $("[id*=chkGenetic]").attr("checked", false);
+                }
+
+                var hay = $(this).find("HasHay").text();
+                if (hay == "1") {
+                    $("[id*=chkHay]").attr("checked", true);
+                }
+                else if (hay == "0") {
+                    $("[id*=chkHay]").attr("checked", false);
+                }
+
+                var head = $(this).find("HasHead").text();
+                if (head == "1") {
+                    $("[id*=chkHead]").attr("checked", true);
+                }
+                else if (arthrititis == "0") {
+                    $("[id*=chkHead]").attr("checked", false);
+                }
+
+                var hearing = $(this).find("HasHearingInjury").text();
+                if (hearing == "1") {
+                    $("[id*=chkHearing]").attr("checked", true);
+                }
+                else if (hearing == "0") {
+                    $("[id*=chkHearing]").attr("checked", false);
+                }
+
+                var heart = $(this).find("HasHeart").text();
+                if (heart == "1") {
+                    $("[id*=chkHeart]").attr("checked", true);
+                }
+                else if (heart == "0") {
+                    $("[id*=chkHeart]").attr("checked", false);
+                }
+
+                var hiv = $(this).find("HasHIV").text();
+                if (hiv == "1") {
+                    $("[id*=chkHIV]").attr("checked", true);
+                }
+                else if (hiv == "0") {
+                    $("[id*=chkHIV]").attr("checked", false);
+                }
+
+                var hepatits = $(this).find("HasHepatits").text();
+                if (hepatits == "1") {
+                    $("[id*=chkHepatitis]").attr("checked", true);
+                }
+                else if (hepatits == "0") {
+                    $("[id*=chkHepatitis]").attr("checked", false);
+                }
+
+                var learn = $(this).find("HasLearning").text();
+                if (learn == "1") {
+                    $("[id*=chkLearning]").attr("checked", true);
+                }
+                else if (learn == "0") {
+                    $("[id*=chkLearning]").attr("checked", false);
+                }
+
+                var mens = $(this).find("HasMenstrual").text();
+                if (mens == "1") {
+                    $("[id*=chkMenstrual]").attr("checked", true);
+                }
+                else if (mens == "0") {
+                    $("[id*=chkMenstrual]").attr("checked", false);
+                }
+
+                var migraine = $(this).find("HasMigraine").text();
+                if (migraine == "1") {
+                    $("[id*=chkMigraine]").attr("checked", true);
+                }
+                else if (migraine == "0") {
+                    $("[id*=chkMigraine]").attr("checked", false);
+                }
+
+                var phobia = $(this).find("HasPhobia").text();
+                if (phobia == "1") {
+                    $("[id*=chkPhobia]").attr("checked", true);
+                }
+                else if (phobia == "0") {
+                    $("[id*=chkPhobia]").attr("checked", false);
+                }
+
+                var deform = $(this).find("HasDeformity").text();
+                if (deform == "1") {
+                    $("[id*=chkDeformity]").attr("checked", true);
+                }
+                else if (deform == "0") {
+                    $("[id*=chkDeformity]").attr("checked", false);
+                }
+
+                var physic = $(this).find("HasDisability").text();
+                if (physic == "1") {
+                    $("[id*=chkPhysical]").attr("checked", true);
+                }
+                else if (physic == "0") {
+                    $("[id*=chkPhysical]").attr("checked", false);
+                }
+
+                var pneumo = $(this).find("HasPneumonia").text();
+                if (pneumo == "1") {
+                    $("[id*=chkPneumonia]").attr("checked", true);
+                }
+                else if (pneumo == "0") {
+                    $("[id*=chkPneumonia]").attr("checked", false);
+                }
+
+                var rheumat = $(this).find("HasRheumatic").text();
+                if (rheumat == "1") {
+                    $("[id*=chkRheumatic]").attr("checked", true);
+                }
+                else if (rheumat == "0") {
+                    $("[id*=chkRheumatic]").attr("checked", false);
+                }
+
+                var skins = $(this).find("HasSkin").text();
+                if (skins == "1") {
+                    $("[id*=chkSkin]").attr("checked", true);
+                }
+                else if (skins == "0") {
+                    $("[id*=chkSkin]").attr("checked", false);
+                }
+
+                var stomach = $(this).find("HasStomach").text();
+                if (stomach == "1") {
+                    $("[id*=chkStomach]").attr("checked", true);
+                }
+                else if (stomach == "0") {
+                    $("[id*=chkStomach]").attr("checked", false);
+                }
+
+                var syndrome = $(this).find("HasSyndromes").text();
+                if (syndrome == "1") {
+                    $("[id*=chkSyndromes]").attr("checked", true);
+                }
+                else if (syndrome == "0") {
+                    $("[id*=chkSyndromes]").attr("checked", false);
+                }
+
+                var urinary = $(this).find("HasUrinary").text();
+                if (urinary == "1") {
+                    $("[id*=chkUrinary]").attr("checked", true);
+                }
+                else if (urinary == "0") {
+                    $("[id*=chkUrinary]").attr("checked", false);
+                }
+
+                var anxiety = $(this).find("HasAnxiety").text();
+                if (anxiety == "1") {
+                    $("[id*=chkAnxiety]").attr("checked", true);
+                }
+                else if (anxiety == "0") {
+                    $("[id*=chkAnxiety]").attr("checked", false);
+                }
+
+                var autism = $(this).find("HasAutism").text();
+                if (autism == "1") {
+                    $("[id*=chkAutism]").attr("checked", true);
+                }
+                else if (autism == "0") {
+                    $("[id*=chkAutism]").attr("checked", false);
+                }
+
+                var mood = $(this).find("HasMood").text();
+                if (mood == "1") {
+                    $("[id*=chkMood]").attr("checked", true);
+                }
+                else if (mood == "0") {
+                    $("[id*=chkMood]").attr("checked", false);
+                }
+
+
+                var speech = $(this).find("HasSpeech").text();
+                if (speech == "1") {
+                    $("[id*=chkSpeech]").attr("checked", true);
+                }
+                else if (speech == "0") {
+                    $("[id*=chkSpeech]").attr("checked", false);
+                }
+                $("[id*=txtPrescribed]").val($(this).find("PrescribedMedication").text());
+                $("[id*=txtallergies]").val($(this).find("OtherAllergics").text());
+                $("[id*=txtMedication]").val($(this).find("MedicationTaken").text());
+                $("[id*=txtMedicationPurpose]").val($(this).find("Purpose").text());
+                $("[id*=txtPeriod]").val($(this).find("PeriodOfPerscription").text());
+                $("[id*=txtOtherlist]").val($(this).find("OtherList").text());
+                $("[id*=txtAnyMedication]").val($(this).find("OthersDesc").text());
+                $("[id*=txtOperation]").val($(this).find("OperationDesc").text());
+
+            });
+        };
+
+
+        function GetASSSportsInfo(val) {
+            var RegNo = $("[id*=hfRegNo]").val();
+            if (RegNo != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/StudentInfo.aspx/GetASSSportsInfo",
+                    data: '{RegNo:"' + RegNo + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnGetASSSportsInfoSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+        }
+
+        function OnGetASSSportsInfoSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var rel = xml.find("SportsInfo");
+            $.each(rel, function () {
+                var sporttype = $(this).find("Type").text();
+                if (sporttype == "1") {
+                    $("[id*=rbbadminton]").attr("checked", true);
+                }
+                else if (sporttype == "2") {
+                    $("[id*=rbchess]").attr("checked", true);
+                }
+                else if (sporttype == "3") {
+                    $("[id*=rbtennis]").attr("checked", true);
+                }
+
+                var sporttime = $(this).find("Frequency").text();
+                if (sporttime == "1") {
+                    $("[id*=rbtnfivehours]").attr("checked", true);
+                }
+                else if (sporttime == "2") {
+                    $("[id*=rbtnforenoon]").attr("checked", true);
+                }
+                else if (sporttime == "3") {
+                    $("[id*=rbtnevening]").attr("checked", true);
+                }
+                else if (sporttime == "4") {
+                    $("[id*=rbtnweekend]").attr("checked", true);
+                }
+
+                var abledtype = $(this).find("IsSpecial").text();
+                if (abledtype == "1") {
+                    $("[id*=brntabledYes]").attr("checked", true);
+                }
+                else if (abledtype == "2") {
+                    $("[id*=brntabledNo]").attr("checked", true);
+                }
+
+                if ($(this).find("SplAttachment").text() != "") {
+                    $("[id*=AbledAttachment]").css("display", "block");
+                    $("[id*=AbledAttachment]").attr("href", "../Students/AbledAttachment/" + $(this).find("SplAttachment").text() + "");
+                }
+                else {
+                    $("[id*=AbledAttachment]").css("display", "none");
+                }
+                if ($(this).find("AwdAttachment").text() != "") {
+                    $("[id*=AwardAttachment]").css("display", "block");
+                    $("[id*=AwardAttachment]").attr("href", "../Students/AwardAttachment/" + $(this).find("AwdAttachment").text() + "");
+                }
+                else {
+                    $("[id*=AwardAttachment]").css("display", "none");
+                }
+                if ($(this).find("Attachment").text() != "") {
+                    $("[id*=SportAttachment]").css("display", "block");
+                    $("[id*=SportAttachment]").attr("href", "../Students/SportAttachment/" + $(this).find("Attachment").text() + "");
+                }
+                else {
+                    $("[id*=SportAttachment]").css("display", "none");
+                }
+                $("[id*=txtabled]").val($(this).find("Description").text());
+                //                FlagFeesCatHeadID = $(this).find("FeesCatHeadID").text();
+                //                GetSportsByClass();
+                var RegNo = $("[id*=hfRegNo]").val();
+                GetSportsFeesInfo(RegNo);
+
+
+                //$("[id*=ddlSportFees] option[value='" + FlagFeesCatHeadID + "']").attr("selected", "true");
+            });
+        };
+
+        function DeleteSportFeesInfo(FeesID) {
+
+            if (jConfirm('Are you sure to delete this?', 'Confirm', function (r) {
+                if (r) {
+                    $.ajax({
+
+                        type: "POST",
+                        url: "../Students/StudentInfo.aspx/DeleteSportFeesInfo",
+                        data: '{FeesID: ' + FeesID + '}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: OnDeleteSportFeesInfoSuccess,
+                        failure: function (response) {
+                            AlertMessage('info', response.d);
+                        },
+                        error: function (response) {
+                            AlertMessage('info', response.d);
+                        }
+
+                    });
+                }
+
+            })) {
+            }
+
+        }
+        function OnDeleteSportFeesInfoSuccess(response) {
+            var currentPage = $("[id*=currentPage]").text();
+            if (response.d == "Deleted") {
+                AlertMessage('success', 'Deleted');
+                var RegNo = $("[id*=hfRegNo]").val();
+                if (RegNo != "") {
+                    GetSportsFeesInfo(RegNo);
+                }
+            }
+            else if (response.d == "Delete Failed") {
+                AlertMessage('fail', 'Delete');
+            }
+        };
+
+
+        function OnGetSportsFeesInfoSuccess(response) {
+
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var SportsFees = xml.find("SportsFees");
+            var row = $("[id*=dgsportsfees] tr:last-child").clone(true);
+            $("[id*=dgsportsfees] tr").not($("[id*=dgsportsfees] tr:first-child")).remove();
+            var danchor = ''
+            var danchorEnd = '';
+            if ($("[id*=hfDeletePrm]").val() == 'false') {
+                danchor = "<a>";
+                danchorEnd = "</a>";
+            }
+            else {
+                danchor = "<a  href=\"javascript:DeleteSportFeesInfo('";
+                danchorEnd = "');\">Delete</a>";
+            }
+
+            if (SportsFees.length == 0) {
+                $("td", row).eq(0).html("");
+                $("td", row).eq(1).html("");
+                $("td", row).eq(2).html("No Records Found").attr("align", "center");
+                $("td", row).eq(3).html("").removeClass("deleteacc delete-links");
+                $("[id*=dgsportsfees]").append(row);
+                row = $("[id*=dgsportsfees] tr:last-child").clone(true);
+
+            }
+            else {
+
+
+                $.each(SportsFees, function () {
+                    row.addClass("even");
+                    var dhref = danchor + $(this).find("FeesID").text() + danchorEnd;
+                    $("td", row).eq(0).html($(this).find("ForMonth").text());
+                    $("td", row).eq(1).html($(this).find("FeesHeadName").text());
+                    $("td", row).eq(2).html($(this).find("Amount").text());
+                    // $("td", row).eq(4).html(ehref).addClass("editacc edit-links");
+                    $("td", row).eq(3).html(dhref).addClass("deleteacc delete-links");
+                    $("[id*=dgsportsfees]").append(row);
+                    row = $("[id*=dgsportsfees] tr:last-child").clone(true);
+
+                });
+
+                if ($("[id*=hfDeletePrm]").val() == 'false') {
+                    $('.deleteacc').hide();
+                }
+                else {
+                    $('.deleteacc').show();
+                }
+            }
+        }
+
+
+        function GetSportsFeesInfo(RegNo) {
+            if ($("[id*=hfViewPrm]").val() == 'true') {
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/StudentInfo.aspx/GetSportsFeesInfo",
+                    data: '{regno: ' + RegNo + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnGetSportsFeesInfoSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        }
+
+
+
+        function SaveSportFees() {
+            if (($("[id*=hfAddPrm]").val() == 'true') ||
+            ($("[id*=hfEditPrm]").val() == 'true')
+            ) {
+                if ($("[id*=hfRegNo]").val() != '') {
+                    if ($('#aspnetForm').valid()) {
+                        var Regno = $("[id*=hfRegNo]").val();
+                        var ForMonth = $("[id*=ddlMonth]").val();
+                        var FeesCatHeadID = $("[id*=ddlSportFees]").val();
+                        var parameters = '{"ForMonth": "' + ForMonth + '","FeesCatHeadID": "' + FeesCatHeadID + '","Regno": "' + Regno + '"}';
+                        var baseurl = "../Students/StudentInfo.aspx/SaveSportFees";
+
+                        $.ajax({
+                            type: "POST",
+                            url: baseurl,
+                            data: parameters,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: OnSaveSportFeesSuccess,
+                            failure: function (response) {
+                                AlertMessage('info', response.d);
+                            },
+                            error: function (response) {
+                                AlertMessage('info', response.d);
+                            }
+                        });
+                    }
+                }
+                else {
+                    AlertMessage('info', "Please Enter Personal Details");
+                    changeAccordion(0);
+                }
+            }
+        }
+
+        function OnSaveSportFeesSuccess(response) {
+            if (response.d == "Update Failed") {
+                AlertMessage('fail', 'Update');
+            }
+            else if (response.d == "Updated") {
+                AlertMessage('success', 'Updated');
+                var RegNo = $("[id*=hfRegNo]").val();
+                SaveFeesClear();
+                GetSportsFeesInfo(RegNo);
+            }
+
+        };
+
+
+        var FlagFeesCatHeadID;
+        // Save General
+        function SaveASSSportsDetails() {
+            if (($("[id*=hfAddPrm]").val() == 'true') || ($("[id*=hfEditPrm]").val() == 'true')
+            ) {
+                if ($('#aspnetForm').valid()) {
+                    var RegNo = $("[id*=hfRegNo]").val();
+                    var sporttype = "";
+                    if ($("[id*=rbbadminton]").is(':checked')) {
+                        sporttype = "1";
+                    }
+                    else if ($("[id*=rbchess]").is(':checked')) {
+                        sporttype = "2";
+                    }
+                    else if ($("[id*=rbtennis]").is(':checked')) {
+                        sporttype = "3";
+                    }
+
+                    var sportstempfile = $('#fusports').val().replace(/C:\\fakepath\\/i, ''); ;
+                    var sportsFile = sportstempfile.substring(sportstempfile.lastIndexOf('\\') + 1);
+
+                    var sporttime = "";
+                    if ($("[id*=rbtnfivehours]").is(':checked')) {
+                        sporttime = "1";
+                    }
+                    else if ($("[id*=rbtnforenoon]").is(':checked')) {
+                        sporttime = "2";
+                    }
+                    else if ($("[id*=rbtnevening]").is(':checked')) {
+                        sporttime = "3";
+                    }
+                    else if ($("[id*=rbtnweekend]").is(':checked')) {
+                        sporttime = "4";
+                    }
+
+                    var awardstempfile = $('#fuawards').val().replace(/C:\\fakepath\\/i, ''); ;
+                    var awardsFile = awardstempfile.substring(awardstempfile.lastIndexOf('\\') + 1);
+
+                    var abledtype = "";
+                    if ($("[id*=brntabledYes]").is(':checked')) {
+                        abledtype = "1";
+                    }
+                    else if ($("[id*=brntabledNo]").is(':checked')) {
+                        abledtype = "2";
+                    }
+                    var abled = $("[id*=txtabled]").val();
+
+                    var abledtempfile = $('#fuabled').val().replace(/C:\\fakepath\\/i, ''); ;
+                    var abledFile = abledtempfile.substring(abledtempfile.lastIndexOf('\\') + 1);
+
+                    var sportfees = $("[id*=ddlSportFees]").val();
+
+                    var Academicyear = $("[id*=hfAcademicyear]").val();
+                    var parameters = '{"regno": "' + RegNo + '","sporttype": "' + sporttype + '","sporttime": "' + sporttime + '","sportsFile": "' + sportsFile + '","awardsFile": "' + awardsFile + '","abledFile": "' + abledFile + '","abled": "' + abled + '","abledtype": "' + abledtype + '","sportfees": "' + sportfees + '"}';
+                    $.ajax({
+                        type: "POST",
+                        url: "../Students/StudentInfo.aspx/SaveASSSports",
+                        data: parameters,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: OnSaveASSSportsSuccess,
+                        failure: function (response) {
+                            AlertMessage('info', response.d);
+                        },
+                        error: function (response) {
+                            AlertMessage('info', response.d);
+                        }
+                    });
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        // Save On Success
+        function OnSaveASSSportsSuccess(response) {
+            if (response.d == "Updated") {
+                AlertMessage('success', 'Updated');
+                var RegNo = $("[id*=hfRegNo]").val();
+                if (formdata) {
+                    formdata.append("StudenInfoId", RegNo);
+                    formdata.append("AbledAttachment", $('#fuabled')[0].files[0]);
+                    formdata.append("AwardAttachment", $('#fuawards')[0].files[0]);
+                    formdata.append("SportAttachment", $('#fusports')[0].files[0]);
+                    if (formdata) {
+                        $.ajax({
+                            url: "../Students/StudentInfo.aspx",
+                            type: "POST",
+                            data: formdata,
+                            processData: false,
+                            contentType: false,
+                            success: function (res) {
+                            }
+                        });
+                    }
+                }
+                SportsDetailsClear();
+                GetStudentInfo($("[id*=hfStudentInfoID]").val());
+                changeAccordion(18);
+            }
+            else if (response.d == "Update Failed") {
+                AlertMessage('fail', 'Update');
+            }
+            else if (response.d == "Inserted") {
+                AlertMessage('success', 'Updated');
+                var RegNo = $("[id*=hfRegNo]").val();
+                if (formdata) {
+                    formdata.append("StudenInfoId", RegNo);
+                    formdata.append("AbledAttachment", $('#fuabled')[0].files[0]);
+                    formdata.append("AwardAttachment", $('#fuawards')[0].files[0]);
+                    formdata.append("SportAttachment", $('#fusports')[0].files[0]);
+                    if (formdata) {
+                        $.ajax({
+                            url: "../Students/StudentInfo.aspx",
+                            type: "POST",
+                            data: formdata,
+                            processData: false,
+                            contentType: false,
+                            success: function (res) {
+                            }
+                        });
+                    }
+                }
+                SportsDetailsClear();
+                GetStudentInfo($("[id*=hfStudentInfoID]").val());
+                changeAccordion(18);
+            }
+            else if (response.d == "Insert Failed") {
+                AlertMessage('fail', 'Insert');
+            }
+
+            GetASSSportsInfo($("[id*=hfRegNo]").val());
+        };
+
+
+        // Save General
+        function SaveASSGeneralDetails() {
+            if (($("[id*=hfAddPrm]").val() == 'true') || ($("[id*=hfEditPrm]").val() == 'true')
+            ) {
+                if ($('#aspnetForm').valid()) {
+                    var RegNo = $("[id*=hfRegNo]").val();
+
+                    var iden1 = $("[id*=txtidentify1]").val();
+                    var iden2 = $("[id*=txtidentify2]").val();
+
+                    var breaks = "";
+                    if ($("[id*=rtbnBreakYes]").is(':checked')) {
+                        breaks = "1";
+                    }
+                    else if ($("[id*=rtbnBreakNo]").is(':checked')) {
+                        breaks = "2";
+                    }
+
+                    var lunch = "";
+                    if ($("[id*=rtbnLunchYes]").is(':checked')) {
+                        lunch = "1";
+                    }
+                    else if ($("[id*=rtbnLunchNo]").is(':checked')) {
+                        lunch = "2";
+                    }
+
+                    var trans = "";
+                    if ($("[id*=rtbnTransYes]").is(':checked')) {
+                        trans = "1";
+                    }
+                    else if ($("[id*=rtbnTransNo]").is(':checked')) {
+                        trans = "2";
+                    }
+
+                    var bc = "";
+                    if ($("[id*=rbtnbcYes]").is(':checked')) {
+                        bc = "1";
+                    }
+                    else if ($("[id*=rbtnbcNo]").is(':checked')) {
+                        bc = "2";
+                    }
+
+                    var hostel = "";
+                    if ($("[id*=rbtnHotelYes]").is(':checked')) {
+                        hostel = "1";
+                    }
+                    else if ($("[id*=rbtnHotelNo]").is(':checked')) {
+                        hostel = "2";
+                    }
+
+                    var Academicyear = $("[id*=hfAcademicyear]").val();
+                    var parameters = '{"regno": "' + RegNo + '","hasbreak": "' + breaks + '","hastrans": "' + trans + '","haslunch": "' + lunch + '","hasbirth": "' + bc + '","hashostel": "' + hostel + '","iden1": "' + iden1 + '","iden2": "' + iden2 + '"}';
+                    $.ajax({
+                        type: "POST",
+                        url: "../Students/StudentInfo.aspx/SaveASSGeneral",
+                        data: parameters,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: OnSaveASSSportsSuccess,
+                        failure: function (response) {
+                            AlertMessage('info', response.d);
+                        },
+                        error: function (response) {
+                            AlertMessage('info', response.d);
+                        }
+                    });
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        // Save On Success
+        function OnSaveASSGeneralSuccess(response) {
+            if (response.d == "Updated") {
+                AlertMessage('success', 'Updated');
+                GeneralDetailsClear();
+                GetStudentInfo($("[id*=hfStudentInfoID]").val());
+                changeAccordion(20);
+            }
+            else if (response.d == "Update Failed") {
+                AlertMessage('fail', 'Update');
+            }
+            else if (response.d == "Inserted") {
+                AlertMessage('success', 'Updated');
+                GeneralDetailsClear();
+                changeAccordion(20);
+            }
+            else if (response.d == "Insert Failed") {
+                AlertMessage('fail', 'Insert');
+            }
+
+            GetASSGeneralInfo($("[id*=hfRegNo]").val());
+        };
+
+        function SaveASSWellnessDetails() {
+            if (($("[id*=hfAddPrm]").val() == 'true') || ($("[id*=hfEditPrm]").val() == 'true')
+            ) {
+                if ($('#aspnetForm').valid()) {
+                    var RegNo = $("[id*=hfRegNo]").val();
+
+
+                    var allergictempfile = $('#fuAllergic').val().replace(/C:\\fakepath\\/i, ''); ;
+                    var allergicFile = allergictempfile.substring(allergictempfile.lastIndexOf('\\') + 1);
+
+                    var allergic = "";
+                    if ($("[id*=rbtnAllergicYes]").is(':checked')) {
+                        allergic = "1";
+                    }
+                    else if ($("[id*=rbtnAllergicNo]").is(':checked')) {
+                        allergic = "2";
+                    }
+
+
+                    var skin = "";
+                    if ($("[id*=rbtnSkinYes]").is(':checked')) {
+                        skin = "1";
+                    }
+                    else if ($("[id*=rbtnSkinNo]").is(':checked')) {
+                        skin = "2";
+                    }
+
+                    var tetanus = "";
+                    if ($("[id*=rbtnTetanusYes]").is(':checked')) {
+                        tetanus = "1";
+                    }
+                    else if ($("[id*=rbtnTetanusNo]").is(':checked')) {
+                        tetanus = "2";
+                    }
+
+                    var polio = "";
+                    if ($("[id*=rbtnPolioYes]").is(':checked')) {
+                        polio = "1";
+                    }
+                    else if ($("[id*=rbtnPolioNo]").is(':checked')) {
+                        polio = "2";
+                    }
+
+                    var tb = "";
+                    if ($("[id*=rbtnTBYes]").is(':checked')) {
+                        tb = "1";
+                    }
+                    else if ($("[id*=rbtnTBNo]").is(':checked')) {
+                        tb = "2";
+                    }
+
+                    var hepa = "";
+                    if ($("[id*=rbtnHepatitisYes]").is(':checked')) {
+                        hepa = "1";
+                    }
+                    else if ($("[id*=rbtnHepatitisNo]").is(':checked')) {
+                        hepa = "2";
+                    }
+
+                    var covid = "";
+                    if ($("[id*=rbtnCovidYes]").is(':checked')) {
+                        covid = "1";
+                    }
+                    else if ($("[id*=rbtnCovidNo]").is(':checked')) {
+                        covid = "2";
+                    }
+
+                    var hpv = "";
+                    if ($("[id*=rbtnHPVYes]").is(':checked')) {
+                        hpv = "1";
+                    }
+                    else if ($("[id*=rbtnHPVNo]").is(':checked')) {
+                        hpv = "2";
+                    }
+
+                    var glass = "";
+                    if ($("[id*=rbtnGlassYes]").is(':checked')) {
+                        glass = "1";
+                    }
+                    else if ($("[id*=rbtnGlassNo]").is(':checked')) {
+                        glass = "2";
+                    }
+
+                    var lens = "";
+                    if ($("[id*=rbtnLensYes]").is(':checked')) {
+                        lens = "1";
+                    }
+                    else if ($("[id*=rbtnLensNo]").is(':checked')) {
+                        lens = "2";
+                    }
+
+                    var hear = "";
+                    if ($("[id*=rbtnhearYes]").is(':checked')) {
+                        hear = "1";
+                    }
+                    else if ($("[id*=rbtnhearNo]").is(':checked')) {
+                        hear = "2";
+                    }
+
+                    var chicken = "";
+                    if ($("[id*=rbtnChickenYes]").is(':checked')) {
+                        chicken = "1";
+                    }
+                    else if ($("[id*=rbtnChickenNo]").is(':checked')) {
+                        chicken = "2";
+                    }
+
+                    var rubella = "";
+                    if ($("[id*=rbtnRubellaYes]").is(':checked')) {
+                        rubella = "1";
+                    }
+                    else if ($("[id*=rbtnRubellaNo]").is(':checked')) {
+                        rubella = "2";
+                    }
+
+                    var jaundice = "";
+                    if ($("[id*=rbtnJaundiceYes]").is(':checked')) {
+                        jaundice = "1";
+                    }
+                    else if ($("[id*=rbtnJaundiceNo]").is(':checked')) {
+                        jaundice = "2";
+                    }
+
+
+                    var measles = "";
+                    if ($("[id*=rbtnMeaslesYes]").is(':checked')) {
+                        measles = "1";
+                    }
+                    else if ($("[id*=rbtnMeaslesNo]").is(':checked')) {
+                        measles = "2";
+                    }
+
+                    var mumps = "";
+                    if ($("[id*=rbtnMumpsYes]").is(':checked')) {
+                        mumps = "1";
+                    }
+                    else if ($("[id*=rbtnMumpsNo]").is(':checked')) {
+                        mumps = "2";
+                    }
+
+                    var scarlet = "";
+                    if ($("[id*=rbtnScarletYes]").is(':checked')) {
+                        scarlet = "1";
+                    }
+                    else if ($("[id*=rbtnScarletNo]").is(':checked')) {
+                        scarlet = "2";
+                    }
+
+                    var cough = "";
+                    if ($("[id*=rbtnCoughYes]").is(':checked')) {
+                        cough = "1";
+                    }
+                    else if ($("[id*=rbtnCoughNo]").is(':checked')) {
+                        cough = "2";
+                    }
+
+                    var anorexia = "";
+                    if ($("[id*=chkAnorexia]").is(':checked')) {
+                        anorexia = "1";
+                    }
+                    else if (!$("[id*=chkAnorexia]").is(':checked')) {
+                        anorexia = "2";
+                    }
+
+
+                    var arthrititis = "";
+                    if ($("[id*=chkArthritis]").is(':checked')) {
+                        arthrititis = "1";
+                    }
+                    else if (!$("[id*=chkArthritis]").is(':checked')) {
+                        arthrititis = "2";
+                    }
+
+                    var asthma = "";
+                    if ($("[id*=chkAsthma]").is(':checked')) {
+                        asthma = "1";
+                    }
+                    else if (!$("[id*=chkAsthma]").is(':checked')) {
+                        asthma = "0";
+                    }
+
+                    var bone = "";
+                    if ($("[id*=chkBone]").is(':checked')) {
+                        bone = "1";
+                    }
+                    else if (!$("[id*=chkBone]").is(':checked')) {
+                        bone = "0";
+                    }
+
+                    var cancer = "";
+                    if ($("[id*=chkCancer]").is(':checked')) {
+                        cancer = "1";
+                    }
+                    else if (!$("[id*=chkCancer]").is(':checked')) {
+                        cancer = "0";
+                    }
+
+                    var cardio = "";
+                    if ($("[id*=chkCardiovascular]").is(':checked')) {
+                        cardio = "1";
+                    }
+                    else if (!$("[id*=chkCardiovascular]").is(':checked')) {
+                        cardio = "0";
+                    }
+
+                    var dia = "";
+                    if ($("[id*=chkDiabetes]").is(':checked')) {
+                        dia = "1";
+                    }
+                    else if (!$("[id*=chkDiabetes]").is(':checked')) {
+                        dia = "0";
+                    }
+
+                    var eczema = "";
+                    if ($("[id*=chkEczema]").is(':checked')) {
+                        eczema = "1";
+                    }
+                    else if (!$("[id*=chkEczema]").is(':checked')) {
+                        eczema = "0";
+                    }
+
+
+                    var epilepsy = "";
+                    if ($("[id*=chkEpilepsy]").is(':checked')) {
+                        epilepsy = "1";
+                    }
+                    else if ($("[id*=chkEpilepsy]").is(':checked')) {
+                        epilepsy = "0";
+                    }
+
+
+                    var enuresis = "";
+                    if ($("[id*=chkEnuresis]").is(':checked')) {
+                        enuresis = "1";
+                    }
+                    else if ($("[id*=chkEnuresis]").is(':checked')) {
+                        enuresis = "0";
+                    }
+
+                    var genetic = "";
+                    if ($("[id*=chkGenetic]").is(':checked')) {
+                        genetic = "1";
+                    }
+                    else if (!$("[id*=chkGenetic]").is(':checked')) {
+                        genetic = "0";
+                    }
+
+                    var hay = "";
+                    if ($("[id*=chkHay]").is(':checked')) {
+                        hay = "1";
+                    }
+                    else if (!$("[id*=chkHay]").is(':checked')) {
+                        hay = "0";
+                    }
+
+                    var head = "";
+                    if ($("[id*=chkHead]").is(':checked')) {
+                        head = "1";
+                    }
+                    else if ($("[id*=chkHead]").is(':checked')) {
+                        head = "0";
+                    }
+
+                    var hearing = "";
+                    if ($("[id*=chkHearing]").is(':checked')) {
+                        hearing = "1";
+                    }
+                    else if (!$("[id*=chkHearing]").is(':checked')) {
+                        hearing = "0";
+                    }
+
+                    var heart = "";
+                    if ($("[id*=chkHeart]").is(':checked')) {
+                        heart = "1";
+                    }
+                    else if (!$("[id*=chkHeart]").is(':checked')) {
+                        heart = "0";
+                    }
+
+                    var hepatitis = "";
+                    if ($("[id*=chkHepatitis]").is(':checked')) {
+                        hepatitis = "1";
+                    }
+                    else if (!$("[id*=chkHepatitis]").is(':checked')) {
+                        hepatitis = "0";
+                    }
+
+
+                    var hiv = "";
+                    if ($("[id*=chkHIV]").is(':checked')) {
+                        hiv = "1";
+                    }
+                    else if (!$("[id*=chkHIV]").is(':checked')) {
+                        hiv = "0";
+                    }
+
+
+                    var learn = "";
+                    if ($("[id*=chkLearning]").is(':checked')) {
+                        learn = "1";
+                    }
+                    else if (!$("[id*=chkLearning]").is(':checked')) {
+                        learn = "0";
+                    }
+
+
+                    var mens = "";
+                    if ($("[id*=chkMenstrual]").is(':checked')) {
+                        mens = "1";
+                    }
+                    else if (!$("[id*=chkMenstrual]").is(':checked')) {
+                        mens = "0";
+                    }
+
+
+                    var migraine = "";
+                    if ($("[id*=chkMigraine]").is(':checked')) {
+                        migraine = "1";
+                    }
+                    else if (!$("[id*=chkMigraine]").is(':checked')) {
+                        migraine = "0";
+                    }
+
+
+                    var phobia = "";
+                    if ($("[id*=chkPhobia]").is(':checked')) {
+                        phobia = "1";
+                    }
+                    else if (!$("[id*=chkPhobia]").is(':checked')) {
+                        phobia = "0";
+                    }
+
+
+                    var deform = "";
+                    if ($("[id*=chkDeformity]").is(':checked')) {
+                        deform = "1";
+                    }
+                    else if (!$("[id*=chkDeformity]").is(':checked')) {
+                        deform = "0";
+                    }
+
+                    var physic = "";
+                    if ($("[id*=chkPhysical]").is(':checked')) {
+                        physic = "1";
+                    }
+                    else if (!$("[id*=chkPhysical]").is(':checked')) {
+                        physic = "0";
+                    }
+
+                    var pneumo = "";
+                    if ($("[id*=chkPneumonia]").is(':checked')) {
+                        pneumo = "1";
+                    }
+                    else if (!$("[id*=chkPneumonia]").is(':checked')) {
+                        pneumo = "0";
+                    }
+
+                    var rheumat = "";
+                    if ($("[id*=chkRheumatic]").is(':checked')) {
+                        rheumat = "1";
+                    }
+                    else if (!$("[id*=chkRheumatic]").is(':checked')) {
+                        rheumat = "0";
+                    }
+
+
+                    var skins = "";
+                    if ($("[id*=chkSkin]").is(':checked')) {
+                        skins = "1";
+                    }
+                    else if (!$("[id*=chkSkin]").is(':checked')) {
+                        skins = "0";
+                    }
+
+
+                    var stomach = "";
+                    if ($("[id*=chkStomach]").is(':checked')) {
+                        stomach = "1";
+                    }
+                    else if (!$("[id*=chkStomach]").is(':checked')) {
+                        stomach = "0";
+                    }
+
+
+                    var syndrome = "";
+                    if ($("[id*=chkSyndromes]").is(':checked')) {
+                        syndrome = "1";
+                    }
+                    else if (!$("[id*=chkSyndromes]").is(':checked')) {
+                        syndrome = "0";
+                    }
+
+
+                    var urinary = "";
+                    if ($("[id*=chkUrinary]").is(':checked')) {
+                        urinary = "1";
+                    }
+                    else if (!$("[id*=chkUrinary]").is(':checked')) {
+                        urinary = "0";
+                    }
+
+
+                    var anxiety = "";
+                    if ($("[id*=chkAnxiety]").is(':checked')) {
+                        anxiety = "1";
+                    }
+                    else if (!$("[id*=chkAnxiety]").is(':checked')) {
+                        anxiety = "0";
+                    }
+
+
+                    var autism = "";
+                    if ($("[id*=chkAutism]").is(':checked')) {
+                        autism = "1";
+                    }
+                    else if (!$("[id*=chkAutism]").is(':checked')) {
+                        autism = "0";
+                    }
+
+
+
+                    var mood = "";
+                    if ($("[id*=chkMood]").is(':checked')) {
+                        mood = "1";
+                    }
+                    else if (!$("[id*=chkMood]").is(':checked')) {
+                        mood = "0";
+                    }
+
+
+                    var speech = "";
+                    if ($("[id*=chkSpeech]").is(':checked')) {
+                        speech = "1";
+                    }
+                    else if (!$("[id*=chkSpeech]").is(':checked')) {
+                        speech = "0";
+                    }
+
+                    var prescribed = $("[id*=txtPrescribed]").val();
+                    var allergies = $("[id*=txtallergies]").val();
+                    var medication = $("[id*=txtMedication]").val();
+                    var medicationpurpose = $("[id*=txtMedicationPurpose]").val();
+                    var period = $("[id*=txtPeriod]").val();
+                    var otherlist = $("[id*=txtOtherlist]").val();
+                    var anymedication = $("[id*=txtAnyMedication]").val();
+                    var operation = $("[id*=txtOperation]").val();
+                    var Academicyear = $("[id*=hfAcademicyear]").val();
+                    var desc = "";
+                    var parameters = '{"regno": "' + RegNo + '","hasallergic": "' + allergic + '","hasinfection": "' + skin + '","attachment": "' + allergictempfile + '","prescribed": "' + prescribed + '","desc": "' + desc + '","otheraller": "' + allergies + '","medication": "' + medication + '","purpose": "' + medicationpurpose + '","period": "' + period + '","hastetanus": "' + tetanus + '","haspolio": "' + polio + '","hastb": "' + tb + '","hashepatitis": "' + hepa + '","hascovid": "' + covid + '","hashpv": "' + hpv + '","otherdesc": "' + otherlist + '","hasspecs": "' + glass + '","haslens": "' + lens + '","hashearing": "' + hear + '","haschicken": "' + chicken + '","hasrubella": "' + rubella + '","hasjaundice": "' + jaundice + '","hasmeasles": "' + measles + '","hasmumps": "' + mumps + '","hasscarlet": "' + scarlet + '","hascough": "' + cough + '","otherlist": "' + anymedication + '","operation": "' + operation + '","anorexia": "' + anorexia + '","arthitis": "' + arthrititis + '","asthma": "' + asthma + '","hasbone": "' + bone + '","hascancer": "' + cancer + '","hascardio": "' + cardio + '","hasdia": "' + dia + '","eczema": "' + eczema + '","enuresis": "' + enuresis + '","epilepsy": "' + epilepsy + '","genetic": "' + genetic + '","hashay": "' + hay + '","hashead": "' + head + '","hashearinjury": "' + hearing + '","heart": "' + heart + '","hepatitis": "' + hepatitis + '","hashiv": "' + hiv + '","learning": "' + learn + '","hasmensural": "' + mens + '","hasmigraine": "' + migraine + '","hasphobia": "' + phobia + '","hasdeformity": "' + deform + '","hasdisability": "' + physic + '","pneumonia": "' + pneumo + '","hasrheumatic": "' + rheumat + '","hasskin": "' + skins + '","hasstomach": "' + stomach + '","hassyndrome": "' + syndrome + '","hasurinary": "' + urinary + '","hasanxiety": "' + anxiety + '","hasautism": "' + autism + '","hasmood": "' + mood + '","haspseech": "' + speech + '"}';
+                    $.ajax({
+                        type: "POST",
+                        url: "../Students/StudentInfo.aspx/SaveASSWellness",
+                        data: parameters,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: OnSaveASSSportsSuccess,
+                        failure: function (response) {
+                            AlertMessage('info', response.d);
+                        },
+                        error: function (response) {
+                            AlertMessage('info', response.d);
+                        }
+                    });
+                }
+            }
+            else {
+                return false;
+            }
+        }
+
+        // Save On Success
+        function OnSaveASSWellnessSuccess(response) {
+            if (response.d == "Updated") {
+                AlertMessage('success', 'Updated');
+                var RegNo = $("[id*=hfRegNo]").val();
+                if (formdata) {
+                    formdata.append("StudenInfoId", RegNo);
+                    formdata.append("AllergicAttachment", $('#fuAllergic')[0].files[0]);
+                    if (formdata) {
+                        $.ajax({
+                            url: "../Students/StudentInfo.aspx",
+                            type: "POST",
+                            data: formdata,
+                            processData: false,
+                            contentType: false,
+                            success: function (res) {
+                            }
+                        });
+                    }
+                }
+                WellnessDetailsClear();
+                GetStudentInfo($("[id*=hfStudentInfoID]").val());
+                changeAccordion(20);
+            }
+            else if (response.d == "Update Failed") {
+                AlertMessage('fail', 'Update');
+            }
+            else if (response.d == "Inserted") {
+                AlertMessage('success', 'Updated');
+                var RegNo = $("[id*=hfRegNo]").val();
+                if (formdata) {
+                    formdata.append("StudenInfoId", RegNo);
+                    formdata.append("AllergicAttachment", $('#fuAllergic')[0].files[0]);
+                    if (formdata) {
+                        $.ajax({
+                            url: "../Students/StudentInfo.aspx",
+                            type: "POST",
+                            data: formdata,
+                            processData: false,
+                            contentType: false,
+                            success: function (res) {
+                            }
+                        });
+                    }
+                }
+                WellnessDetailsClear();
+                GetStudentInfo($("[id*=hfStudentInfoID]").val());
+                changeAccordion(20);
+            }
+            else if (response.d == "Insert Failed") {
+                AlertMessage('fail', 'Insert');
+            }
+
+            GetASSWellnessInfo($("[id*=hfRegNo]").val());
+        };
+
+        var StudentType = "";
+        function showregno() {
+            $("[id*=txtSearchRegNo]").val("");
+            if ($("[id*=rbtnahss]").is(':checked')) {
+                $("[id*=txtSearchRegNo]").removeAttr("disabled");
+            }
+            else if ($("[id*=rbtnala]").is(':checked')) {
+                $("[id*=txtSearchRegNo]").removeAttr("disabled");
+            }
+            else if ($("[id*=rbtnoutside]").is(':checked')) {
+                $("[id*=txtSearchRegNo]").attr("disabled", "disabled");
+            }
+
+            PersonalDetailsClear();
+            FamilyDetailsClear();
+            BroSisDetailsClear();
+            MedicalDetailsClear();
+            AcademicDetailsClear();
+            MedRemDetailsClear();
+            AcademicRemarksDetailsClear();
+            BusRouteDetailsClear();
+            OldSchoolDetailsClear();
+            HostelDetailsClear();
+            NationalityDetailsClear();
+            AttachmentInfoClear();
+            ScholarshipDetailsClear();
+            SportsDetailsClear();
+            ASSWellnessClear();
+            GeneralDetailsClear();
+
+        }
+        function checkregno() {
+            $("[id*=txtSearchRegNo]").val("");
+            if ($("[id*=rbtnahss]").is(':checked')) {
+                $("[id*=txtSearchRegNo]").removeAttr("disabled");
+                StudentType = "ahss";
+                $("[id*=trpersonal]").css("display", "contents");
+                $("[id*=trfamily]").css("display", "none");
+                $("[id*=trbrosis]").css("display", "none");
+                $("[id*=trmedical]").css("display", "none");
+                $("[id*=trmedrem]").css("display", "none");
+            }
+            if ($("[id*=rbtnala]").is(':checked')) {
+                $("[id*=txtSearchRegNo]").removeAttr("disabled");
+                StudentType = "ala";
+                $("[id*=trpersonal]").css("display", "contents");
+                $("[id*=trfamily]").css("display", "none");
+                $("[id*=trbrosis]").css("display", "none");
+                $("[id*=trmedical]").css("display", "none");
+                $("[id*=trmedrem]").css("display", "none");
+            }
+            if ($("[id*=rbtnoutside]").is(':checked')) {
+                $("[id*=txtSearchRegNo]").attr("disabled", "disabled");
+                StudentType = "others";
+                $("[id*=trpersonal]").css("display", "contents");
+                $("[id*=trfamily]").css("display", "contents");
+                $("[id*=trbrosis]").css("display", "contents");
+                $("[id*=trmedical]").css("display", "contents");
+                $("[id*=trmedrem]").css("display", "contents");
+
+
+            }
+        }
+        function GetStudentData(val) {
+            var RegNo = "";
+            RegNo = $("[id*=txtSearchRegNo]").val();
+            if ($("[id*=rbtnahss]").is(':checked')) {
+                StudentType = "ahss";
+                $("[id*=trpersonal]").css("display", "contents");
+                $("[id*=trfamily]").css("display", "none");
+                $("[id*=trbrosis]").css("display", "none");
+                $("[id*=trmedical]").css("display", "none");
+                $("[id*=trmedrem]").css("display", "none");
+            }
+            if ($("[id*=rbtnala]").is(':checked')) {
+                StudentType = "ala";
+                $("[id*=trpersonal]").css("display", "contents");
+                $("[id*=trfamily]").css("display", "none");
+                $("[id*=trbrosis]").css("display", "none");
+                $("[id*=trmedical]").css("display", "none");
+                $("[id*=trmedrem]").css("display", "none");
+            }
+            if ($("[id*=rbtnoutside]").is(':checked')) {
+                StudentType = "others";
+                $("[id*=trpersonal]").css("display", "contents");
+                $("[id*=trfamily]").css("display", "contents");
+                $("[id*=trbrosis]").css("display", "contents");
+                $("[id*=trmedical]").css("display", "contents");
+                $("[id*=trmedrem]").css("display", "contents");
+
+            }
+
+            if (RegNo != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/StudentInfo.aspx/GetStudentData",
+                    data: '{RegNo:"' + RegNo + '",StudentType:"' + StudentType + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnGetStudentDataSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+            else {
+                PersonalDetailsClear();
+                FamilyDetailsClear();
+                BroSisDetailsClear();
+                MedicalDetailsClear();
+                AcademicDetailsClear();
+                MedRemDetailsClear();
+                AcademicRemarksDetailsClear();
+                BusRouteDetailsClear();
+                OldSchoolDetailsClear();
+                HostelDetailsClear();
+                NationalityDetailsClear();
+                AttachmentInfoClear();
+                ScholarshipDetailsClear();
+                SportsDetailsClear();
+                ASSWellnessClear();
+                GeneralDetailsClear();
+            }
+        }
+
+
+        function OnGetStudentDataSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var StudentInfos = xml.find("StudentInfo");
+            if (StudentInfos.length > 0) {
+                $("[id*=trpersonal]").css("display", "contents");
+                $("[id*=trfamily]").css("display", "contents");
+                $("[id*=trbrosis]").css("display", "contents");
+                $("[id*=trmedical]").css("display", "contents");
+                $("[id*=trmedrem]").css("display", "contents");
+            }
+            var frelation = xml.find("FRelation");
+            var mrelation = xml.find("MRelation");
+            var Guardian1 = xml.find("Guardian1");
+            var Guardian2 = xml.find("Guardian1");
+
+            row = $("[id*=dgRelationship] tr:last-child").clone(true);
+            $("[id*=dgRelationship] tr").not($("[id*=dgRelationship] tr:first-child")).remove();
+            var eanchor = ''
+            var eanchorEnd = '';
+            var danchor = ''
+            var danchorEnd = '';
+            if ($("[id*=hfEditPrm]").val() == 'false') {
+                eanchor = "<a>";
+                eanchorEnd = "</a>";
+            }
+            else {
+                eanchor = "<a  href=\"javascript:EditRelationshipInfo('";
+                eanchorEnd = "');\">Edit</a>";
+            }
+            if ($("[id*=hfDeletePrm]").val() == 'false') {
+                danchor = "<a>";
+                danchorEnd = "</a>";
+            }
+            else {
+                danchor = "<a  href=\"javascript:DeleteRelationshipInfo('";
+                danchorEnd = "');\">Delete</a>";
+            }
+
+            if (StudentInfos.length == 0) {
+                $("[id*=dgRelationship] tr").not($("[id*=dgRelationship] tr:first-child")).remove();
+                $("td", row).eq(0).html("");
+                $("td", row).eq(1).html("");
+                $("td", row).eq(2).html("");
+                $("td", row).eq(3).html("No Records Found").attr("align", "center");
+                $("td", row).eq(4).html("");
+                $("td", row).eq(5).html("");
+                $("td", row).eq(6).html("");
+                $("td", row).eq(7).html("");
+                $("td", row).eq(8).html("");
+                $("td", row).eq(9).html("");
+                $("td", row).eq(10).html("");
+                $("[id*=dgRelationship]").append(row);
+                row = $("[id*=dgRelationship] tr:last-child").clone(true);
+
+            }
+            else {
+
+                if (frelation.length == 0 && mrelation.length == 0 && Guardian1.length == 0 && Guardian2.length == 0) {
+                    $("[id*=dgRelationship] tr").not($("[id*=dgRelationship] tr:first-child")).remove();
+                    $("td", row).eq(0).html("");
+                    $("td", row).eq(1).html("");
+                    $("td", row).eq(2).html("");
+                    $("td", row).eq(3).html("No Records Found").attr("align", "center");
+                    $("td", row).eq(4).html("");
+                    $("td", row).eq(5).html("");
+                    $("td", row).eq(6).html("");
+                    $("td", row).eq(7).html("");
+                    $("td", row).eq(8).html("");
+                    $("td", row).eq(9).html("");
+                    $("td", row).eq(10).html("");
+                    $("[id*=dgRelationship]").append(row);
+                    row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                }
+                $.each(StudentInfos, function () {
+
+                    var ClassID = $(this).find("ClassID").text();
+                    $("[id*=ddlClass] option[value='" + ClassID + "']").attr("selected", "true");
+                    FlagSectionID = $(this).find("SectionID").text();
+                    GetSectionByClass();
+                    GetSportsByClass();
+                    $("[id*=hfStudentInfoID]").val();
+                    $("[id*=hfRegNo]").val($(this).find("RegNo").text());
+                    $("[id*=lblApplicationNo]").html($(this).find("ApplicationNo").text());
+                    $("[id*=lblRegNo]").html($(this).find("RegNo").text());
+
+                    if ($("[id*=lblApplicationNo]").html() != "") {
+                        $("[id*=spnRegno]").css("display", "none");
+                        $("[id*=spnAppno]").css("display", "block");
+                    } else {
+                        $("[id*=spnRegno]").css("display", "block");
+                        $("[id*=spnAppno]").css("display", "none");
+
+                    }
+                    $("[id*=lblASSRegNo]").html($(this).find("ASSNo").text());
+                    $("[id*=lblStudentName]").html($(this).find("StudentName").text());
+                    if ($(this).find("SectionID").text() == "") {
+                        $("[id*=lblClass]").html($(this).find("Class").text() + " / " + "New")
+                    }
+                    else {
+                        $("[id*=lblClass]").html($(this).find("Class").text() + " / " + $(this).find("Section").text())
+                    }
+
+
+                    $("[id*=txtStudentName]").val($(this).find("StudentName").text());
+
+                    $("[id*=hfRegNo]").val($(this).find("RegNo").text());
+                    $("[id*=txtRegNo]").val($(this).find("RegNo").text());
+                    $("[id*=txtConcessionReason]").val($(this).find("Reason").text());
+                    var Gender = $(this).find("Gender").text();
+
+                    if (Gender == "Male" || Gender == "M") {
+                        $("[id*=rbtnMale]").attr("checked", true);
+                    }
+                    else if (Gender == "Female" || Gender == "F") {
+                        $("[id*=rbtnFemale]").attr("checked", true);
+                    }
+                    $("[id*=txtDOB]").val($(this).find("DOB").text());
+                    $("[id*=txtMotherTongue]").val($(this).find("MotherTongue").text());
+
+
+                    var Religion = $(this).find("ReligionID").text();
+                    $("[id*=ddlReligion] option[value='" + Religion + "']").attr("selected", "true");
+
+                    var Community = $(this).find("CommunityID").text();
+                    $("[id*=ddlCommunity] option[value='" + Community + "']").attr("selected", "true");
+
+                    var Caste = $(this).find("CasteID").text();
+                    $("[id*=ddlCaste] option[value='" + Caste + "']").attr("selected", "true");
+
+                    $("[id*=txtAadhaar]").val($(this).find("AadhaarNo").text());
+                    $("[id*=txtFatherAadhaar]").val($(this).find("FatherAadhaarNo").text());
+                    $("[id*=txtMotherAadhaar]").val($(this).find("MotherAadhaarNo").text());
+                    $("[id*=txtTempAddress]").val($(this).find("TempAddr").text());
+                    $("[id*=txtPerAddress]").val($(this).find("PerAddr").text());
+                    $("[id*=txtEmail]").val($(this).find("Email").text());
+                    $("[id*=txtPhoneNo]").val($(this).find("PhoneNo").text());
+                    $("[id*=txtRationCardNo]").val($(this).find("RationCardNo").text());
+                    $("[id*=txtSmartCardNo]").val($(this).find("SmartCardNo").text());
+                    $("[id*=txtSSLC]").val($(this).find("SSLCNo").text());
+                    $("[id*=ddlSSLC]").val($(this).find("SSLCYear").text());
+                    $("[id*=txtHSC]").val($(this).find("HSCNo").text());
+                    $("[id*=ddlHSC]").val($(this).find("HSCYear").text());
+                    $("[id*=txtSUID]").val($(this).find("SUID").text());
+                    $("[id*=txtTamilname]").val($(this).find("tamilname").text());
+
+                    var CareTaker = $(this).find("CareTaker").text();
+
+                    if (CareTaker == "Parent") {
+                        $("[id*=rbtnParent]").attr("checked", true);
+                    }
+                    else if (CareTaker == "Guardian") {
+                        $("[id*=rbtnGuardian]").attr("checked", true);
+                    }
+                    var Sports = $(this).find("Sports").text();
+                    if (Sports == "true") {
+                        $("[id*=rbtnSports]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnFine]").attr("checked", true);
+                    }
+
+                    var FineArts = $(this).find("FineArts").text();
+                    if (FineArts == "true") {
+                        $("[id*=rbtnFine]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnSports]").attr("checked", true);
+                    }
+
+                    $("[id*=txtCurricularRemarks]").val($(this).find("CurricularRemarks").text());
+
+                    var Skills = $(this).find("Skills").text();
+                    if (Skills == "true") {
+                        $("[id*=rbtnSkillYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnSkillNo]").attr("checked", true);
+                    }
+
+                    $("[id*=txtSkillRemarks]").val($(this).find("SkillRemarks").text());
+
+                    var PhotoFile = $(this).find("PhotoFile").text();
+                    if (PhotoFile) {
+                        $("[id*=img_prev]").attr('src', "../Students/Photos/" + PhotoFile.toString() + "?rand=" + Math.random()).width(114).height(114)
+                    }
+                    else {
+                        $("[id*=img_prev]").attr('src', "../img/Photo.jpg").width(114).height(114);
+                    }
+
+                    $("[id*=ddlBloodGroup]").val($(this).find("BloodGroupID").text());
+                    $("[id*=txtDisease]").val($(this).find("DisOrders").text());
+                    $("[id*=txtHeight]").val($(this).find("Height").text());
+                    $("[id*=txtWeight]").val($(this).find("Weight").text());
+                    $("[id*=txtEmergencyPhNo]").val($(this).find("EmerPhNo").text());
+                    $("[id*=txtFamilyDocName]").val($(this).find("Doctor").text());
+                    $("[id*=txtFamilyDocAdd]").val($(this).find("DocAddr").text());
+                    $("[id*=txtFamilyDocPhNo]").val($(this).find("DocPhNo").text());
+                    if ($(this).find("IdMarks").text() != "") {
+                        var IDnMarks = $(this).find("IdMarks").text().split(":");
+                        if (IDnMarks.length > 1) {
+                            $("[id*=txtIdentificationMarks1]").val(IDnMarks[0]);
+                            $("[id*=txtIdentificationMarks2]").val(IDnMarks[1]);
+                        }
+                        else {
+                            $("[id*=txtIdentificationMarks1]").val(IDnMarks[0]);
+                            $("[id*=txtIdentificationMarks2]").val("");
+                        }
+                    }
+                    if ($(this).find("Handicap").text() == "Y") {
+                        $("[id*=rbtnPHYes]").attr('checked', true);
+                    }
+                    else {
+                        $("[id*=rbtnNoPH]").attr('checked', true);
+                    }
+                    showphysical();
+                    $("[id*=txtPhysicalHandicapped]").val($(this).find("HandicaptDetails").text());
+                    $("[id*=txtAdmissionNo]").val($(this).find("AdmissionNo").text());
+
+                    var AdClassID = $(this).find("AdClassID").text();
+                    $("[id*=ddlAdClass] option[value='" + AdClassID + "']").attr("selected", "true");
+                    FlagAdSectionID = $(this).find("AdSectionID").text();
+                    GetAdSectionByAdClass();
+
+                    $("[id*=txtDOJ]").val($(this).find("DOJ").text());
+                    $("[id*=txtDOA]").val($(this).find("DOA").text());
+
+                    var Mode = $(this).find("TransportId").text();
+                    $("[id*=ddlModeofTrans] option[value='" + Mode + "']").attr("selected", "true");
+
+                    $("[id*=ddlSchoolMedium]").val($(this).find("mediumID").text());
+                    $("[id*=txtFirstlang]").val($(this).find("Firstlang").text());
+                    //$("[id*=txtFirstlang]").html($(this).find("Firstlang").text());
+                    $("[id*=ddlSeclang]").val($(this).find("Seclang").text());
+                    var Scholar = $(this).find("Scholar").text();
+                    if (Scholar == "Y") {
+                        $("[id*=rbtnScholarYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnNoScholar]").attr("checked", true);
+                    }
+                    ShowScholarship();
+
+                    var Concession = $(this).find("Concession").text();
+
+                    if (Concession == "Y") {
+                        $("[id*=rbtnConcessYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnNoConcess]").attr("checked", true);
+                    }
+                    ShowConcession();
+
+
+                    var ScholarshipId = $(this).find("ScholarshipId").text();
+                    // $("[id*=ddlScholarship] option[value='" + ScholarshipId + "']").attr("selected", "true");
+
+                    $("[id*=hfAcademicyear]").val($(this).find("AcademicYear").text());
+                    $("[id*=ddlStatus]").val($(this).find("Active").text());
+                    $("[id*=lblStatus]").html($(this).find("Status").text());
+                    row.addClass("even");
+
+                    if ($(this).find("FRelation").text() == "Father") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("FRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("FName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("FQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("FOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("FIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("FOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("FEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("FatherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("MRelation").text() == "Mother") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("MRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("MName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("MQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("MOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("MIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word;'>" + $(this).find("MOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("MEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("MotherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian1").text() == "Guardian I") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian1").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName1").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual1").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc1").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc1").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr1").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail1").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno1").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian2").text() == "Guardian II") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian2").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName2").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual2").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc2").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc2").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr2").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail2").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno2").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+
+                    if ($("[id*=hfEditPrm]").val() == 'false') {
+                        $('.editacc').hide();
+                    }
+                    else {
+                        $('.editacc').show();
+                    }
+                    if ($("[id*=hfDeletePrm]").val() == 'false') {
+                        $('.deleteacc').hide();
+                    }
+                    else {
+                        $('.deleteacc').show();
+                    }
+                    var pager = xml.find("Pager");
+
+                    $(".Pager").ASPSnippets_Pager({
+                        ActiveCssClass: "current",
+                        PagerCssClass: "pager",
+                        PageIndex: parseInt(pager.find("PageIndex").text()),
+                        PageSize: parseInt(pager.find("PageSize").text()),
+                        RecordCount: parseInt(pager.find("RecordCount").text())
+                    });
+
+                });
+            }
+            var RegNo = $("[id*=hfRegNo]").val();
+            if (RegNo != "") {
+                GetBroSisInfo(RegNo);
+                GetFamilyInfo(RegNo);
+                ShowCurricular();
+                ShowSkill();
+                GetSportsInfo(RegNo);
+                //GetFineArtsInfo(RegNo);
+                // GetSkillInfo(RegNo);
+                GetActivitiesInfo(RegNo);
+                GetMedicalRemarkInfo(RegNo);
+                GetAcademicRemarkInfo(RegNo);
+                GetHostelInfo(RegNo);
+                GetBusRouteDetails(0);
+                GetStaffChildrenInfo(RegNo);
+                GetOldSchoolInfo(RegNo);
+                GetConcessionInfo(RegNo);
+                GetNationalityInfo(RegNo);
+                GetAttachmentInfo(RegNo);
+                GetScholarshipInfo(RegNo);
+                GetASSSportsInfo(RegNo);
+                GetASSGeneralInfo(RegNo);
+                GetASSWellnessInfo(RegNo);
+            }
+            else {
+                GetBroSisInfo("-1");
+                GetFamilyInfo("-1");
+                GetMedicalRemarkInfo("-1");
+                ShowCurricular();
+                ShowSkill();
+                GetSportsInfo("-1");
+                //GetFineArtsInfo("-1");
+                //GetSkillInfo("-1");
+                GetActivitiesInfo("-1");
+                GetAcademicRemarkInfo("-1");
+                GetHostelInfo("-1");
+                GetBusRouteDetails("-1");
+                GetStaffChildrenInfo("-1");
+                GetOldSchoolInfo("-1");
+                GetConcessionInfo("-1");
+                GetNationalityInfo("-1");
+                GetAttachmentInfo("-1");
+                GetScholarshipInfo("-1");
+                GetASSSportsInfo("-1");
+                GetASSGeneralInfo("-1");
+                GetASSWellnessInfo("-1");
+
+            }
+        };
+
+
+
         $(document).ready(function () {
             setDatePicker("[id*=txtDOB]");
             setDatePicker("[id*=txtMedRemDate]");
@@ -72,8 +2151,8 @@
                 //                GetAttachmentInfo("-1");
 
                 GetSportsInfo("0");
-                GetFineArtsInfo("0");
-                GetSkillInfo("0");
+                // GetFineArtsInfo("0");
+                // GetSkillInfo("0");
                 GetActivitiesInfo("0");
                 var StudentInfos = "";
 
@@ -427,7 +2506,11 @@
             //            $("[id*=txtFirstlang]").html("English");
             //$("[id*=txtDOA]").attr("disabled", true);
 
+<<<<<<< HEAD
+            GetSportsByClass();
+=======
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         });
 
         function GetSectionByClass() {
@@ -469,6 +2552,47 @@
             //            $("[id*=ddlSection]").attr("disabled", true);
             if (FlagSectionID != -1)
                 $("[id*=ddlSection] option[value='" + FlagSectionID + "']").attr("selected", "true");
+        };
+
+
+        function GetSportsByClass() {
+            var Class = $("[id*=ddlClass]").val();
+            var Status = $("[id*=ddlStatus]").val();
+            if (Class != "" && Status != "") {
+
+                $.ajax({
+                    type: "POST",
+                    url: "../Students/StudentInfo.aspx/BindSportFees",
+                    data: '{ClassID: ' + Class + ',"Status": "' + Status + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnGetBindSportFeesSuccess,
+                    failure: function (response) {
+                        AlertMessage('info', response.d);
+                    },
+                    error: function (response) {
+                        AlertMessage('info', response.d);
+                    }
+                });
+            }
+        }
+
+
+        function OnGetBindSportFeesSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var cls = xml.find("SportFees");
+            var select = $("[id*=ddlSportFees]");
+            select.children().remove();
+            select.append($("<option>").val('').text('Select'));
+            $.each(cls, function () {
+                var icls = $(this);
+                var FeesCatHeadID = $(this).find("FeesCatHeadID").text();
+                var FeesHeadName = $(this).find("FeesHeadName").text();
+                select.append($("<option>").val(FeesCatHeadID).text(FeesHeadName));
+                if (FlagFeesCatHeadID != -1)
+                    $("[id*=ddlSportFees] option[value='" + FlagFeesCatHeadID + "']").attr("selected", "true");
+            });
         };
 
         function GetAdSectionByAdClass() {
@@ -918,6 +3042,29 @@
                 }
                 $.each(StudentInfos, function () {
 
+<<<<<<< HEAD
+                    var SchoolType = $(this).find("SchoolType").text();
+
+                    if (SchoolType == "ala") {
+                        $("[id*=rbtnala]").attr("checked", true);
+                    }
+                    else if (SchoolType == "others") {
+                        $("[id*=rbtnoutside]").attr("checked", true);
+                    }
+                    else if (SchoolType == "ahss") {
+                        $("[id*=rbtnahss]").attr("checked", true);
+                    }
+
+                    var ClassID = $(this).find("ClassID").text();
+                    $("[id*=ddlClass] option[value='" + ClassID + "']").attr("selected", "true");
+                    FlagSectionID = $(this).find("SectionID").text();
+                    GetSectionByClass();
+
+                    $("[id*=hfStudentInfoID]").val($(this).find("StudentID").text());
+                    $("[id*=hfRegNo]").val($(this).find("RegNo").text());
+                    $("[id*=lblRegNo]").html($(this).find("RegNo").text());
+                    $("[id*=lblASSRegNo]").html($(this).find("ASSNo").text());
+=======
                     var ClassID = $(this).find("ClassID").text();
                     $("[id*=ddlClass] option[value='" + ClassID + "']").attr("selected", "true");
                     FlagSectionID = $(this).find("SectionID").text();
@@ -937,6 +3084,7 @@
 
                     }
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     $("[id*=lblStudentName]").html($(this).find("StudentName").text());
                     if ($(this).find("SectionID").text() == "") {
                         $("[id*=lblClass]").html($(this).find("Class").text() + " / " + "New")
@@ -951,6 +3099,257 @@
 
                     $("[id*=txtRegNo]").val($(this).find("RegNo").text());
                     $("[id*=txtConcessionReason]").val($(this).find("Reason").text());
+<<<<<<< HEAD
+                    var Gender = $(this).find("Gender").text();
+
+                    if (Gender == "Male" || Gender == "M") {
+                        $("[id*=rbtnMale]").attr("checked", true);
+                    }
+                    else if (Gender == "Female" || Gender == "F") {
+                        $("[id*=rbtnFemale]").attr("checked", true);
+                    }
+                    $("[id*=txtDOB]").val($(this).find("DOB").text());
+                    $("[id*=txtMotherTongue]").val($(this).find("MotherTongue").text());
+
+
+                    var Religion = $(this).find("ReligionID").text();
+                    $("[id*=ddlReligion] option[value='" + Religion + "']").attr("selected", "true");
+
+                    var Community = $(this).find("CommunityID").text();
+                    $("[id*=ddlCommunity] option[value='" + Community + "']").attr("selected", "true");
+
+                    var Caste = $(this).find("CasteID").text();
+                    $("[id*=ddlCaste] option[value='" + Caste + "']").attr("selected", "true");
+
+                    $("[id*=txtAadhaar]").val($(this).find("AadhaarNo").text());
+                    $("[id*=txtFatherAadhaar]").val($(this).find("FatherAadhaarNo").text());
+                    $("[id*=txtMotherAadhaar]").val($(this).find("MotherAadhaarNo").text());
+                    $("[id*=txtTempAddress]").val($(this).find("TempAddr").text());
+                    $("[id*=txtPerAddress]").val($(this).find("PerAddr").text());
+                    $("[id*=txtEmail]").val($(this).find("Email").text());
+                    $("[id*=txtPhoneNo]").val($(this).find("PhoneNo").text());
+                    $("[id*=txtRationCardNo]").val($(this).find("RationCardNo").text());
+                    $("[id*=txtSmartCardNo]").val($(this).find("SmartCardNo").text());
+                    $("[id*=txtSSLC]").val($(this).find("SSLCNo").text());
+                    $("[id*=ddlSSLC]").val($(this).find("SSLCYear").text());
+                    $("[id*=txtHSC]").val($(this).find("HSCNo").text());
+                    $("[id*=ddlHSC]").val($(this).find("HSCYear").text());
+                    $("[id*=txtSUID]").val($(this).find("SUID").text());
+                    $("[id*=txtTamilname]").val($(this).find("tamilname").text());
+
+                    var CareTaker = $(this).find("CareTaker").text();
+
+                    if (CareTaker == "Parent") {
+                        $("[id*=rbtnParent]").attr("checked", true);
+                    }
+                    else if (CareTaker == "Guardian") {
+                        $("[id*=rbtnGuardian]").attr("checked", true);
+                    }
+                    var Sports = $(this).find("Sports").text();
+                    if (Sports == "true") {
+                        $("[id*=rbtnSports]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnFine]").attr("checked", true);
+                    }
+
+                    var FineArts = $(this).find("FineArts").text();
+                    if (FineArts == "true") {
+                        $("[id*=rbtnFine]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnSports]").attr("checked", true);
+                    }
+
+                    $("[id*=txtCurricularRemarks]").val($(this).find("CurricularRemarks").text());
+
+                    var Skills = $(this).find("Skills").text();
+                    if (Skills == "true") {
+                        $("[id*=rbtnSkillYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnSkillNo]").attr("checked", true);
+                    }
+
+                    $("[id*=txtSkillRemarks]").val($(this).find("SkillRemarks").text());
+
+                    var PhotoFile = $(this).find("PhotoFile").text();
+                    if (PhotoFile) {
+                        $("[id*=img_prev]").attr('src', "../Students/Photos/" + PhotoFile.toString() + "?rand=" + Math.random()).width(114).height(114)
+                    }
+                    else {
+                        $("[id*=img_prev]").attr('src', "../img/Photo.jpg").width(114).height(114);
+                    }
+
+                    $("[id*=ddlBloodGroup]").val($(this).find("BloodGroupID").text());
+                    $("[id*=txtDisease]").val($(this).find("DisOrders").text());
+                    $("[id*=txtHeight]").val($(this).find("Height").text());
+                    $("[id*=txtWeight]").val($(this).find("Weight").text());
+                    $("[id*=txtEmergencyPhNo]").val($(this).find("EmerPhNo").text());
+                    $("[id*=txtFamilyDocName]").val($(this).find("Doctor").text());
+                    $("[id*=txtFamilyDocAdd]").val($(this).find("DocAddr").text());
+                    $("[id*=txtFamilyDocPhNo]").val($(this).find("DocPhNo").text());
+                    if ($(this).find("IdMarks").text() != "") {
+                        var IDnMarks = $(this).find("IdMarks").text().split(":");
+                        if (IDnMarks.length > 1) {
+                            $("[id*=txtIdentificationMarks1]").val(IDnMarks[0]);
+                            $("[id*=txtIdentificationMarks2]").val(IDnMarks[1]);
+                        }
+                        else {
+                            $("[id*=txtIdentificationMarks1]").val(IDnMarks[0]);
+                            $("[id*=txtIdentificationMarks2]").val("");
+                        }
+                    }
+                    if ($(this).find("Handicap").text() == "Y") {
+                        $("[id*=rbtnPHYes]").attr('checked', true);
+                    }
+                    else {
+                        $("[id*=rbtnNoPH]").attr('checked', true);
+                    }
+                    showphysical();
+                    $("[id*=txtPhysicalHandicapped]").val($(this).find("HandicaptDetails").text());
+                    $("[id*=txtAdmissionNo]").val($(this).find("AdmissionNo").text());
+
+                    var AdClassID = $(this).find("AdClassID").text();
+                    $("[id*=ddlAdClass] option[value='" + AdClassID + "']").attr("selected", "true");
+                    FlagAdSectionID = $(this).find("AdSectionID").text();
+                    GetAdSectionByAdClass();
+
+                    $("[id*=txtDOJ]").val($(this).find("DOJ").text());
+                    $("[id*=txtDOA]").val($(this).find("DOA").text());
+
+                    var Mode = $(this).find("TransportId").text();
+                    $("[id*=ddlModeofTrans] option[value='" + Mode + "']").attr("selected", "true");
+
+                    $("[id*=ddlSchoolMedium]").val($(this).find("mediumID").text());
+                    $("[id*=txtFirstlang]").val($(this).find("Firstlang").text());
+                    //$("[id*=txtFirstlang]").html($(this).find("Firstlang").text());
+                    $("[id*=ddlSeclang]").val($(this).find("Seclang").text());
+                    var Scholar = $(this).find("Scholar").text();
+                    if (Scholar == "Y") {
+                        $("[id*=rbtnScholarYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnNoScholar]").attr("checked", true);
+                    }
+                    ShowScholarship();
+
+                    var Concession = $(this).find("Concession").text();
+
+                    if (Concession == "Y") {
+                        $("[id*=rbtnConcessYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnNoConcess]").attr("checked", true);
+                    }
+                    ShowConcession();
+
+
+                    var ScholarshipId = $(this).find("ScholarshipId").text();
+                    // $("[id*=ddlScholarship] option[value='" + ScholarshipId + "']").attr("selected", "true");
+
+                    $("[id*=hfAcademicyear]").val($(this).find("AcademicYear").text());
+                    $("[id*=ddlStatus]").val($(this).find("Active").text());
+                    $("[id*=lblStatus]").html($(this).find("Status").text());
+                    GetSportsByClass();
+                    row.addClass("even");
+
+                    if ($(this).find("FRelation").text() == "Father") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("FRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("FName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("FQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("FOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("FIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("FOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("FEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("FatherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("MRelation").text() == "Mother") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("MRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("MName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("MQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("MOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("MIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word;'>" + $(this).find("MOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("MEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("MotherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian1").text() == "Guardian I") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian1").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName1").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual1").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc1").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc1").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr1").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail1").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno1").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian2").text() == "Guardian II") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian2").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName2").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual2").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc2").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc2").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr2").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail2").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno2").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+
+                    if ($("[id*=hfEditPrm]").val() == 'false') {
+                        $('.editacc').hide();
+                    }
+                    else {
+                        $('.editacc').show();
+                    }
+                    if ($("[id*=hfDeletePrm]").val() == 'false') {
+                        $('.deleteacc').hide();
+                    }
+                    else {
+                        $('.deleteacc').show();
+                    }
+                    var pager = xml.find("Pager");
+
+                    $(".Pager").ASPSnippets_Pager({
+                        ActiveCssClass: "current",
+                        PagerCssClass: "pager",
+                        PageIndex: parseInt(pager.find("PageIndex").text()),
+                        PageSize: parseInt(pager.find("PageSize").text()),
+                        RecordCount: parseInt(pager.find("RecordCount").text())
+                    });
+
+=======
 
 
                     var BusFacility = $(this).find("BusFacility").text();
@@ -1233,17 +3632,18 @@
                         RecordCount: parseInt(pager.find("RecordCount").text())
                     });
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 });
             }
             var RegNo = $("[id*=hfRegNo]").val();
             if (RegNo != "") {
                 GetBroSisInfo(RegNo);
-                //  GetFamilyInfo(RegNo);
+                GetFamilyInfo(RegNo);
                 ShowCurricular();
                 ShowSkill();
                 GetSportsInfo(RegNo);
-                GetFineArtsInfo(RegNo);
-                GetSkillInfo(RegNo);
+                // GetFineArtsInfo(RegNo);
+                //  GetSkillInfo(RegNo);
                 GetActivitiesInfo(RegNo);
                 GetMedicalRemarkInfo(RegNo);
                 GetAcademicRemarkInfo(RegNo);
@@ -1255,6 +3655,9 @@
                 GetNationalityInfo(RegNo);
                 GetAttachmentInfo(RegNo);
                 GetScholarshipInfo(RegNo);
+                GetASSSportsInfo(RegNo);
+                GetASSGeneralInfo(RegNo);
+                GetASSWellnessInfo(RegNo);
             }
             else {
                 GetBroSisInfo("-1");
@@ -1263,8 +3666,8 @@
                 ShowCurricular();
                 ShowSkill();
                 GetSportsInfo("-1");
-                GetFineArtsInfo("-1");
-                GetSkillInfo("-1");
+                //GetFineArtsInfo("-1");
+                // GetSkillInfo("-1");
                 GetActivitiesInfo("-1");
                 GetAcademicRemarkInfo("-1");
                 GetHostelInfo("-1");
@@ -1275,6 +3678,9 @@
                 GetNationalityInfo("-1");
                 GetAttachmentInfo("-1");
                 GetScholarshipInfo("-1");
+                GetASSSportsInfo("-1");
+                GetASSGeneralInfo("-1");
+                GetASSWellnessInfo("-1");
 
             }
         };
@@ -1285,10 +3691,22 @@
                 if (StudentID == "") {
                     StudentID = "-1";
                 }
+                var StudentType = "";
+                if ($("[id*=rbtnahss]").is(':checked')) {
+                    StudentType = "ahss";
+                }
+                if ($("[id*=rbtnala]").is(':checked')) {
+                    StudentType = "ala";
+                }
+                if ($("[id*=rbtnoutside]").is(':checked')) {
+                    StudentType = "others";
+
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "../Students/StudentInfo.aspx/GetFamilyInfo",
-                    data: '{StudentID: ' + StudentID + '}',
+                    data: '{RegNo: ' + RegNo + ',"StudentType" : "' + StudentType + '"}',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: OnGetFamilyInfoSuccess,
@@ -1311,9 +3729,9 @@
             var xmlDoc = $.parseXML(response.d);
             var xml = $(xmlDoc);
             var family = xml.find("Family");
-            // row = $("[id*=dgRelationship] tr:last-child").clone(true);
-
-            //   $("[id*=dgRelationship] tr").not($("[id*=dgRelationship] tr:first-child")).remove();
+            var relation = xml.find("FRelation");
+            row = $("[id*=dgRelationship] tr:last-child").clone(true);
+            $("[id*=dgRelationship] tr").not($("[id*=dgRelationship] tr:first-child")).remove();
             var eanchor = ''
             var eanchorEnd = '';
             var danchor = ''
@@ -1334,11 +3752,8 @@
                 danchor = "<a  href=\"javascript:DeleteRelationshipInfo('";
                 danchorEnd = "');\">Delete</a>";
             }
-            row.addClass("even");
-
-            if (family.length == 0 && isRelationExist == 0) {
-
-
+            if (family.length == 0) {
+                $("[id*=dgRelationship] tr").not($("[id*=dgRelationship] tr:first-child")).remove();
                 $("td", row).eq(0).html("");
                 $("td", row).eq(1).html("");
                 $("td", row).eq(2).html("");
@@ -1348,8 +3763,8 @@
                 $("td", row).eq(6).html("");
                 $("td", row).eq(7).html("");
                 $("td", row).eq(8).html("");
-                //  $("td", row).eq(9).html("");
-
+                $("td", row).eq(9).html("");
+                $("td", row).eq(10).html("");
                 $("[id*=dgRelationship]").append(row);
                 // row = $("[id*=dgRelationship] tr:last-child").clone(true);
 
@@ -1359,6 +3774,25 @@
 
                 $.each(family, function () {
 
+<<<<<<< HEAD
+                    if ($(this).find("FRelation").text() == "Father") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("FRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("FName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("FQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("FOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("FIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("FOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("FEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("FatherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+=======
                     var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Relation").text() + eanchorEnd;
                     var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Relation").text() + danchorEnd;
                     $("td", row).eq(0).html($(this).find("Relation").text()).attr("valign", "top");
@@ -1371,34 +3805,86 @@
                     $("td", row).eq(7).html($(this).find("Cell").text()).attr("valign", "top");
                     $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
                     $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
-                    $("[id*=dgRelationship]").append(row);
-                    row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    if ($(this).find("MRelation").text() == "Mother") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("MRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("MName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("MQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("MOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("MIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word;'>" + $(this).find("MOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("MEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("MotherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian1").text() == "Guardian I") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian1").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName1").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual1").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc1").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc1").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr1").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail1").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno1").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian2").text() == "Guardian II") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian2").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName2").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual2").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc2").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc2").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr2").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail2").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno2").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($("[id*=hfEditPrm]").val() == 'false') {
+                        $('.editacc').hide();
+                    }
+                    else {
+                        $('.editacc').show();
+                    }
+                    if ($("[id*=hfDeletePrm]").val() == 'false') {
+                        $('.deleteacc').hide();
+                    }
+                    else {
+                        $('.deleteacc').show();
+                    }
+                    var pager = xml.find("Pager");
+
+                    $(".Pager").ASPSnippets_Pager({
+                        ActiveCssClass: "current",
+                        PagerCssClass: "pager",
+                        PageIndex: parseInt(pager.find("PageIndex").text()),
+                        PageSize: parseInt(pager.find("PageSize").text()),
+                        RecordCount: parseInt(pager.find("RecordCount").text())
+                    });
 
                 });
             }
-            if ($("[id*=hfEditPrm]").val() == 'false') {
-                $('.editacc').hide();
-            }
-            else {
-                $('.editacc').show();
-            }
-            if ($("[id*=hfDeletePrm]").val() == 'false') {
-                $('.deleteacc').hide();
-            }
-            else {
-                $('.deleteacc').show();
-            }
-            var pager = xml.find("Pager");
-
-            $(".Pager").ASPSnippets_Pager({
-                ActiveCssClass: "current",
-                PagerCssClass: "pager",
-                PageIndex: parseInt(pager.find("PageIndex").text()),
-                PageSize: parseInt(pager.find("PageSize").text()),
-                RecordCount: parseInt(pager.find("RecordCount").text())
-            });
-
         };
 
 
@@ -2999,7 +5485,11 @@
                     }
 
                     var Academicyear = $("[id*=hfAcademicyear]").val();
+<<<<<<< HEAD
+                    var parameters = '{"id": "' + StudentInfoID + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","academicyear": "' + Academicyear + '"}';
+=======
                     var parameters = '{"id": "' + StudentInfoID + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","academicyear": "' + Academicyear + '","IcStudent": "' + IcStudent + '","IcType": "' + IcType + '"}';
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     $.ajax({
                         type: "POST",
                         url: "../Students/StudentInfo.aspx/SaveandPayAdvanceFees",
@@ -3045,9 +5535,20 @@
             if (($("[id*=hfAddPrm]").val() == 'true') || ($("[id*=hfEditPrm]").val() == 'true')
             ) {
                 if ($('#aspnetForm').valid()) {
-                    $("[id*=btnPersonalSubmit]").attr("disabled", "true");
                     var StudentInfoID = $("[id*=hfStudentInfoID]").val();
                     var StudentName = $("[id*=txtStudentName]").val();
+                    var Regno = $("[id*=txtSearchRegNo]").val();
+                    var StudentType = "";
+                    if ($("[id*=rbtnahss]").is(':checked')) {
+                        StudentType = "ahss";
+                    }
+                    if ($("[id*=rbtnala]").is(':checked')) {
+                        StudentType = "ala";
+                    }
+                    if ($("[id*=rbtnoutside]").is(':checked')) {
+                        StudentType = "others";
+
+                    }
                     var Gender;
                     if ($("[id*=rbtnMale]").is(':checked')) {
                         Gender = "M";
@@ -3087,6 +5588,8 @@
                     var HSCYear = $("[id*=ddlHSC]").val();
                     var SUID = $("[id*=txtSUID]").val();
                     var Tamilname = $("[id*=txtTamilname]").val();
+<<<<<<< HEAD
+=======
                      
                     var IcStudent;
                     if ($("[id*=chkICStudent]").is(':checked')) {
@@ -3104,6 +5607,7 @@
                     else if ($("[id*=rbtnICType2]").is(':checked')) {
                         IcType = "2";
                     }
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                     if (Section == "New") {
                         Section = "";
@@ -3113,7 +5617,11 @@
                     }
 
                     var Academicyear = $("[id*=hfAcademicyear]").val();
+<<<<<<< HEAD
+                    var parameters = '{"id": "' + StudentInfoID + '","SearchRegno": "' + Regno + '","studenttype": "' + StudentType + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","sstatus": "' + sstatus + '","userid": "' + $("[id*=hfuserid]").val() + '"}';
+=======
                     var parameters = '{"id": "' + StudentInfoID + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","sstatus": "' + sstatus + '","IcStudent": "' + IcStudent + '","IcType": "' + IcType + '","userid": "' + $("[id*=hfuserid]").val() + '"}';
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     $.ajax({
                         type: "POST",
                         url: "../Students/StudentInfo.aspx/SaveStudentInfo",
@@ -3168,6 +5676,7 @@
                 AlertMessage('success', 'Inserted');
                 $("[id*=hfRegNo]").val(strRegNo[0]);
                 $("[id*=hfStudentInfoID]").val(strRegNo[1]);
+                $("[id*=hfASSNo]").val(strRegNo[2]);
                 var RegNo = $("[id*=hfRegNo]").val();
 
                 if (formdata) {
@@ -3192,7 +5701,7 @@
                 AlertMessage('fail', 'Insert');
             }
 
-
+            GetStudentData($("[id*=hfRegNo]").val());
         };
 
         function SaveFamilyDetails() {
@@ -4219,7 +6728,118 @@
 
         };
 
+        function SportsDetailsClear() {
+            $('#aspnetForm').validate().resetForm();
 
+            $("[id*=fusports]").val("");
+            $("[id*=fuawards]").val("");
+            $("[id*=fuabled]").val("");
+            $("[id*=txtabled]").val("");
+            $("[id*=rbbadminton]").attr("checked", true);
+            $("[id*=rbchess]").attr("checked", false);
+            $("[id*=rbtennis]").attr("checked", false);
+            $("[id*=rbtnfivehours]").attr("checked", true);
+            $("[id*=rbtnforenoon]").attr("checked", false);
+            $("[id*=rbtnevening]").attr("checked", false);
+            $("[id*=rbtnweekend]").attr("checked", false);
+        }
+        function ASSWellnessClear() {
+            $('#aspnetForm').validate().resetForm();
+            $("[id*=rbtnAllergicYes").attr("checked", false);
+            $("[id*=rbtnAllergicNo").attr("checked", false);
+            $("[id*=fuAllergic").attr("checked", false);
+            $("[id*=rbtnSkinYes").attr("checked", false);
+            $("[id*=rbtnSkinNo").attr("checked", false);
+            $("[id*=txtPrescribed").val("");
+            $("[id*=txtallergies").val("");
+            $("[id*=txtMedication").val("");
+            $("[id*=txtMedicationPurpose").val("");
+            $("[id*=txtPeriod").val("");
+            $("[id*=rbtnTetanusYes").attr("checked", false);
+            $("[id*=rbtnTetanusNo").attr("checked", false);
+            $("[id*=rbtnPolioYes").attr("checked", false);
+            $("[id*=rbtnPolioNo").attr("checked", false);
+            $("[id*=rbtnTBYes").attr("checked", false);
+            $("[id*=rbtnTBNo").attr("checked", false);
+            $("[id*=rbtnHepatitisYes").attr("checked", false);
+            $("[id*=rbtnHepatitisNo").attr("checked", false);
+            $("[id*=rbtnCovidYes").attr("checked", false);
+            $("[id*=rbtnCovidNo").attr("checked", false);
+            $("[id*=rbtnHPVYes").attr("checked", false);
+            $("[id*=rbtnHPVNo").attr("checked", false);
+            $("[id*=txtOtherlist").val("");
+            $("[id*=rbtnGlassYes").attr("checked", false);
+            $("[id*=rbtnGlassNo").attr("checked", false);
+            $("[id*=rbtnLensYes").attr("checked", false);
+            $("[id*=rbtnLensNo").attr("checked", false);
+            $("[id*=rbtnhearYes").attr("checked", false);
+            $("[id*=rbtnhearNo").attr("checked", false);
+            $("[id*=rbtnChickenYes").attr("checked", false);
+            $("[id*=rbtnChickenNo").attr("checked", false);
+            $("[id*=rbtnRubellaYes").attr("checked", false);
+            $("[id*=rbtnRubellaNo").attr("checked", false);
+            $("[id*=rbtnJaundiceYes").attr("checked", false);
+            $("[id*=rbtnJaundiceNo").attr("checked", false);
+            $("[id*=rbtnMeaslesYes").attr("checked", false);
+            $("[id*=rbtnMeaslesNo").attr("checked", false);
+            $("[id*=rbtnMumpsYes").attr("checked", false);
+            $("[id*=rbtnMumpsNo").attr("checked", false);
+            $("[id*=rbtnScarletYes").attr("checked", false);
+            $("[id*=rbtnScarletNo").attr("checked", false);
+            $("[id*=txtOperation").val("");
+            $("[id*=rbtnCoughYes").attr("checked", false);
+            $("[id*=rbtnCoughNo").attr("checked", false);
+            $("[id*=txtAnyMedication").val("");
+            $("[id*=chkAnorexia").attr("checked", false);
+            $("[id*=chkArthritis").attr("checked", false);
+            $("[id*=chkAsthma").attr("checked", false);
+            $("[id*=chkBone").attr("checked", false);
+            $("[id*=chkCancer").attr("checked", false);
+            $("[id*=chkCardiovascular").attr("checked", false);
+            $("[id*=chkDiabetes").attr("checked", false);
+            $("[id*=chkEczema").attr("checked", false);
+            $("[id*=chkEnuresis").attr("checked", false);
+            $("[id*=chkEpilepsy").attr("checked", false);
+            $("[id*=chkGenetic").attr("checked", false);
+            $("[id*=chkHay").attr("checked", false);
+            $("[id*=chkHead").attr("checked", false);
+            $("[id*=chkHearing").attr("checked", false);
+            $("[id*=chkHeart").attr("checked", false);
+            $("[id*=chkHepatitis").attr("checked", false);
+            $("[id*=chkHIV").attr("checked", false);
+            $("[id*=chkLearning").attr("checked", false);
+            $("[id*=chkMenstrual").attr("checked", false);
+            $("[id*=chkMigraine").attr("checked", false);
+            $("[id*=chkPhobia").attr("checked", false);
+            $("[id*=chkDeformity").attr("checked", false);
+            $("[id*=chkPhysical").attr("checked", false);
+            $("[id*=chkPneumonia").attr("checked", false);
+            $("[id*=chkRheumatic").attr("checked", false);
+            $("[id*=chkSkin").attr("checked", false);
+            $("[id*=chkStomach").attr("checked", false);
+            $("[id*=chkSyndromes").attr("checked", false);
+            $("[id*=chkUrinary").attr("checked", false);
+            $("[id*=chkAnxiety").attr("checked", false);
+            $("[id*=chkAutism").attr("checked", false);
+            $("[id*=chkMood").attr("checked", false);
+            $("[id*=chkSpeech").attr("checked", false);
+        }
+        function GeneralDetailsClear() {
+            $('#aspnetForm').validate().resetForm();
+
+            $("[id*=txtidentify1]").val("");
+            $("[id*=txtidentify2]").val("");
+            $("[id*=rtbnBreakYes]").attr("checked", true);
+            $("[id*=rtbnBreakNo]").attr("checked", false);
+            $("[id*=rtbnLunchYes]").attr("checked", true);
+            $("[id*=rtbnLunchNo]").attr("checked", false);
+            $("[id*=rtbnTransYes]").attr("checked", true);
+            $("[id*=rtbnTransNo]").attr("checked", false);
+            $("[id*=rbtnbcYes]").attr("checked", true);
+            $("[id*=rbtnbcNo]").attr("checked", false);
+            $("[id*=rbtnHotelYes]").attr("checked", true);
+            $("[id*=rbtnHotelNo]").attr("checked", false);
+        }
 
 
         function PersonalDetailsClear() {
@@ -4248,7 +6868,6 @@
             $("[id*=txtTamilname]").val("");
 
             $("[id*=FuPhoto]").val("");
-            $("[id*=btnPersonalSubmit]").attr("disabled", "false");
             $("[id*=btnAdvanceFees]").attr("disabled", "false");
 
             $("[id*=spPersonalSubmit]").html("Save");
@@ -4271,12 +6890,48 @@
             $("[id*=txtOccAddress]").val("");
             $("[id*=ddlSMSPriority]").val("");
             $("[id*=btnRelationshipSubmit]").attr("disabled", "false");
-            $("#chkBroSis").attr("checked", "false");
-            if ($("[id*=hfAddPrm]").val() == 'false') {
-                $("table.form :input").prop('disabled', true);
+            var StudentInfos = "";
+
+            row = $("[id*=dgRelationship] tr:last-child").clone(true);
+            $("[id*=dgRelationship] tr").not($("[id*=dgRelationship] tr:first-child")).remove();
+            var eanchor = ''
+            var eanchorEnd = '';
+            var danchor = ''
+            var danchorEnd = '';
+            if ($("[id*=hfEditPrm]").val() == 'false') {
+                eanchor = "<a>";
+                eanchorEnd = "</a>";
             }
-            else
-                $("table.form :input").prop('disabled', false);
+            else {
+                eanchor = "<a  href=\"javascript:EditRelationshipInfo('";
+                eanchorEnd = "');\">Edit</a>";
+            }
+            if ($("[id*=hfDeletePrm]").val() == 'false') {
+                danchor = "<a>";
+                danchorEnd = "</a>";
+            }
+            else {
+                danchor = "<a  href=\"javascript:DeleteRelationshipInfo('";
+                danchorEnd = "');\">Delete</a>";
+            }
+
+            if (StudentInfos.length == 0) {
+                $("td", row).eq(0).html("");
+                $("td", row).eq(1).html("");
+                $("td", row).eq(2).html("");
+                $("td", row).eq(3).html("No Records Found").attr("align", "center");
+                $("td", row).eq(4).html("");
+                $("td", row).eq(5).html("");
+                $("td", row).eq(6).html("");
+                $("td", row).eq(7).html("");
+                $("td", row).eq(8).html("");
+                $("td", row).eq(9).html("");
+                // $("td", row).eq(10).html("");
+                $("[id*=dgRelationship]").append(row);
+                row = $("[id*=dgRelationship] tr:last-child").clone(true);
+
+            }
+
         }
 
         function BroSisDetailsClear() {
@@ -4323,6 +6978,8 @@
             $("[id*=ddlAdClass]").val("");
             $("[id*=ddlAdSection]").val("");
             $("[id*=txtDOJ]").val("");
+            $("[id*=txtDOA]").val("");
+            $("[id*=txtRegNo]").val("");
             $("[id*=ddlModeofTrans]").val("");
             $("[id*=ddlSchoolMedium]").val("");
             $("[id*=txtFirstlang]").val("");
@@ -4424,6 +7081,17 @@
             $("[id*=txtPurpose]").val("");
             $("[id*=txtRemark]").val("");
             $("[id*=btnNationalitySave]").attr("disabled", "false");
+            if ($("[id*=hfAddPrm]").val() == 'false') {
+                $("table.form :input").prop('disabled', true);
+            }
+            else
+                $("table.form :input").prop('disabled', false);
+        };
+
+        function SaveFeesClear() {
+            $('#aspnetForm').validate().resetForm();
+            $("[id*=ddlMonth]").val("");
+            $("[id*=ddlSportFees]").val("");
             if ($("[id*=hfAddPrm]").val() == 'false') {
                 $("table.form :input").prop('disabled', true);
             }
@@ -5218,6 +7886,64 @@
                 }
             }
         }
+
+        function readSportFileURL(input) {
+
+            if (window.FormData) {
+                formdata = new FormData();
+            }
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+                if (formdata) {
+                    formdata.append("SportAttachment", input.files[0]);
+                }
+            }
+        }
+
+        function readAwardsFileURL(input) {
+
+            if (window.FormData) {
+                formdata = new FormData();
+            }
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+                if (formdata) {
+                    formdata.append("AwardAttachment", input.files[0]);
+                }
+            }
+        }
+        function readAbledFileURL(input) {
+
+            if (window.FormData) {
+                formdata = new FormData();
+            }
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+                if (formdata) {
+                    formdata.append("AbledAttachment", input.files[0]);
+                }
+            }
+        }
+
+        function readAllergicFileURL(input) {
+
+            if (window.FormData) {
+                formdata = new FormData();
+            }
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+                if (formdata) {
+                    formdata.append("AllergicAttachment", input.files[0]);
+                }
+            }
+        }
+
+
+
         function changeAccordion(value) {
             $(".john-accord").accordion({
                 "header": "a.menuitem",
@@ -5273,7 +7999,13 @@
     <div class="grid_10">
         <div class="box round first fullpage">
             <h2>
-                Student Information
+                <span style="color: rgb(227, 227, 227); font-family: system-ui, sans-serif; font-size: 12px;
+                    font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal;
+                    font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px;
+                    text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+                    white-space: normal; background-color: rgb(40, 40, 40); text-decoration-thickness: initial;
+                    text-decoration-style: initial; text-decoration-color: initial; display: inline !important;
+                    float: none;"></span>Student Information
                 <div id="jSuccess-info">
                     <table>
                         <tr>
@@ -5281,6 +8013,12 @@
                                 <span id="spnAppno">Application No :<asp:Label ID="lblApplicationNo" runat="server"></asp:Label></span>
                             </td>
                             <td style="width: 250px; float: left">
+<<<<<<< HEAD
+                                <span id="Span1">ASOS Reg. No :<asp:Label ID="lblASSRegNo" runat="server"></asp:Label></span>
+                            </td>
+                            <td style="width: 250px; float: left">
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                 <span id="spnRegno">Registration No :<asp:Label ID="lblRegNo" runat="server"></asp:Label></span>
                             </td>
                             <td style="width: 250px; float: left">
@@ -5322,6 +8060,32 @@
                                             <td width="20%" class="col1">
                                                 <span style="color: Red">*</span>
                                                 <label>
+                                                    Student Enroll From</label>
+                                            </td>
+                                            <td width="26%" class="col2">
+                                                <label>
+                                                    <input type="radio" checked="checked" id="rbtnahss" onchange="showregno();" class="studenttype"
+                                                        name="studenttype" value="AHSS" />AHSS &nbsp;
+                                                    <input type="radio" id="rbtnala" class="studenttype" onchange="showregno();" name="studenttype"
+                                                        value="ALA" />ALA &nbsp;
+                                                    <input type="radio" id="rbtnoutside" class="studenttype" onchange="showregno();"
+                                                        name="studenttype" value="OTHERS" />OTHERS &nbsp;</label>
+                                            </td>
+                                            <td width="14%" class="col2">
+                                                <span class="col1">
+                                                    <label>
+                                                        Search By Student Regno</label>
+                                                </span>
+                                            </td>
+                                            <td class="col2">
+                                                <asp:TextBox ID="txtSearchRegNo" onkeydown="GetStudentData(this.value);" onblur="GetStudentData(this.value);"
+                                                    runat="server"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%" class="col1">
+                                                <span style="color: Red">*</span>
+                                                <label>
                                                     Student Name :</label>
                                             </td>
                                             <td width="26%" class="col2">
@@ -5348,7 +8112,7 @@
                                             </td>
                                             <td width="18%">
                                                 <asp:DropDownList ID="ddlClass" CssClass="jsrequired" runat="server" AppendDataBoundItems="True"
-                                                    onchange="GetSectionByClass();">
+                                                    onchange="GetSectionByClass(); GetSportsByClass();">
                                                     <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                                 </asp:DropDownList>
                                             </td>
@@ -5417,6 +8181,26 @@
                                                 <label for="textarea">
                                                 </label>
                                                 <asp:TextBox ID="txtAadhaar" runat="server"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                          <tr>
+                                            <td>
+                                                <label>
+                                                    Father Aadhaar card :</label>
+                                            </td>
+                                            <td>
+                                                <label for="textarea">
+                                                </label>
+                                                <asp:TextBox ID="txtFatherAadhaar" runat="server"></asp:TextBox>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    Mother Aadhaar card :</label>
+                                            </td>
+                                            <td>
+                                                <label for="textarea">
+                                                </label>
+                                                <asp:TextBox ID="txtMotherAadhaar" runat="server"></asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr>
@@ -5562,6 +8346,9 @@
                                                 <asp:TextBox ID="txtTamilname" CssClass="text_tam" runat="server"></asp:TextBox>
                                             </td>
                                         </tr>
+<<<<<<< HEAD
+                                        <tr id="trpersonal">
+=======
                                           <tr>
                                             <td>
                                                 <label>
@@ -5583,6 +8370,7 @@
                                             </td>
                                         </tr>
                                         <tr>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                             <td colspan="4" align="center">
                                                 <table border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
@@ -5590,6 +8378,7 @@
                                                             <asp:HiddenField ID="hfStudentInfoID" runat="server" />
                                                             <asp:HiddenField ID="hfAcademicyear" runat="server" />
                                                             <asp:HiddenField ID="hfRegNo" runat="server" />
+                                                            <asp:HiddenField ID="hfASSNo" runat="server" />
                                                             <asp:HiddenField ID="hfModuleID" runat="server" />
                                                             <asp:HiddenField ID="hfUserId" runat="server" />
                                                         </td>
@@ -5607,7 +8396,7 @@
                                                                 runat="server" onclick="return PersonalDetailsClear();">
                                                                 <span></span>Cancel</button>&nbsp;
                                                         </td>
-                                                        <td style="padding-top: 0px;">
+                                                        <td style="padding-top: 0px; display: none;">
                                                             &nbsp;
                                                             <button id="btnAdvanceFees" type="button" class="btn-icon btn-orange btn-saving"
                                                                 onclick="SaveandPayAdvanceFees();">
@@ -5731,7 +8520,7 @@
                                                     Gaurdian</span>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="trfamily">
                                             <td colspan="4" align="center">
                                                 <button id="btnRelationshipSubmit" type="button" class="btn-icon btn-navy btn-update"
                                                     onclick="SaveFamilyDetails();">
@@ -5885,7 +8674,7 @@
                                                                                 <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                                                             </asp:DropDownList>
                                                                         </td>
-                                                                        <td width="22%" align="left">
+                                                                        <td id="trbrosis" width="22%" align="left">
                                                                             <button id="btnBroSisAdd" type="button" class="btn-icon btn-navy btn-update" onclick="SaveBroSisDetails();">
                                                                                 <span></span>Update</button>&nbsp;
                                                                             <button id="btnBroSisCancel" type="button" class="btn-icon btn-navy btn-cancel1"
@@ -6094,7 +8883,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="trmedical">
                                             <td colspan="4" align="center">
                                                 <button id="btnMedicalSave" type="button" class="btn-icon btn-navy btn-update" onclick="SaveMedicalDetails();">
                                                     <span></span>Update</button>&nbsp;
@@ -6150,7 +8939,7 @@
                                                                         <td>
                                                                             <input type='file' id="fuMedRem" onchange="readMedRemURL(this);" />&nbsp;&nbsp;&nbsp;&nbsp;
                                                                         </td>
-                                                                        <td>
+                                                                        <td id="trmedrem">
                                                                             <button id="btnMedRemSave" type="button" class="btn-icon btn-navy btn-update" onclick="SaveMedRemDetails();">
                                                                                 <span></span>Update</button>&nbsp;
                                                                             <button id="btnMedRemCancel" type="button" class="btn-icon btn-navy btn-cancel1"
@@ -6471,7 +9260,7 @@
                                             <td height="40">
                                                 &nbsp;
                                             </td>
-                                            <td colspan="3">
+                                            <td id="tracademic" colspan="3">
                                                 <button id="btnAcademicDetailsSubmit" type="button" class="btn-icon btn-navy btn-update"
                                                     onclick="SaveAcademicDetails();">
                                                     <span></span>
@@ -6488,8 +9277,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Co-curricular activities during school hours</a>
+=======
                     <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
                         Co-curricular activities during school hours</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvCurricular" style="border-bottom-style: none; border-bottom-width: 0px;"
@@ -6579,8 +9373,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Skill based education</a>
+=======
                     <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
                         Skill based education</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvSkill" style="border-bottom-style: none; border-bottom-width: 0px;" class="frm-block">
@@ -6642,8 +9441,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Evening Special sports and Fine Arts classes</a>
+=======
                     <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
                         Evening Special sports and Fine Arts classes</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvActivites" style="border-bottom-style: none; border-bottom-width: 0px;"
@@ -6688,8 +9492,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Scholarship Details</a>
+=======
                     <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
                         Scholarship Details</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvscholarshipDetails" style="border-bottom-style: none; border-bottom-width: 0px;"
@@ -6813,8 +9622,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
-                        Academic Remarks Details</a>
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Academic Remarks Details</a>
                         <ul class="johnmenu">
                             <li>
                                 <div id="Div4" style="border-bottom-style: none; border-bottom-width: 0px;" class="frm-block">
@@ -6928,8 +9737,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
-                        Hostel Details</a>
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Hostel Details</a>
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvHostelDetails" style="border-bottom-style: none; border-bottom-width: 0px;"
@@ -7050,8 +9859,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
-                        Bus Details</a>
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Bus Details</a>
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvBusDetails" style="border-bottom-style: none; border-bottom-width: 0px;"
@@ -7188,8 +9997,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
-                        Concession Details</a>
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Concession Details</a>
                         <ul class="johnmenu">
                             <li>
                                 <asp:UpdatePanel ID="ups" runat="server">
@@ -7303,8 +10112,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
-                        Old School Details</a>
+                    <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
+                        class="menuitem">Old School Details</a>
                         <ul class="johnmenu">
                             <li>
                                 <div class="frm-block">
@@ -7764,6 +10573,881 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                        Sports Information</a>
+                        <ul class="johnmenu">
+                            <li>
+                                <div class="frm-block">
+                                    <table class="form" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td width="20%" class="col1">
+                                                    <span style="color: Red">*</span>
+                                                    <label>
+                                                        Sports Requested</label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <label>
+                                                        <input type="radio" id="rbbadminton" checked="checked" class="sportstype" name="sportstype"
+                                                            value="1" />Badminton &nbsp;
+                                                        <input type="radio" id="rbchess" class="studenttype" name="sportstype" value="2" />Chess
+                                                        &nbsp;
+                                                        <input type="radio" id="rbtennis" class="studenttype" name="sportstype" value="3" />Table
+                                                        Tennis&nbsp;</label>
+                                                </td>
+                                                <td width="20%" class="col1">
+                                                    <label>
+                                                        Participation in Interschool / District / State / National Level Competition<br>
+                                                        <small style="font-weight: 100">(Please Attach Document)</small> :</label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <input type="file" id="fusports" onchange="readSportFileURL(this);" />
+                                                    <a target='_blank' id="SportAttachment">Download</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <span style="color: Red">*</span>
+                                                    <label>
+                                                        Sports Requested Timing</label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <label>
+                                                        <input type="radio" id="rbtnfivehours" class="sportsrequested" name="sportsrequested"
+                                                            value="fivehours" />5 Hours per day (Monday to Saturday)<br>
+                                                        <small style="font-weight: 100;">(Applicable only for Students preferring to Study in
+                                                            Amalorpavam Lourds Academy)</small> &nbsp;<br />
+                                                        <br />
+                                                        <input type="radio" id="rbtnforenoon" class="sportsrequested" name="sportsrequested"
+                                                            value="Forenoon" />Forenoon Class (6.00 am to 7.30 am) (Monday to Friday) &nbsp;<br />
+                                                        <br />
+                                                        <input type="radio" id="rbtnevening" class="sportsrequested" name="sportsrequested"
+                                                            value="Evening" />Evening Class (6.30 pm to 8.00 pm) (Monday to Friday) &nbsp;<br />
+                                                        <br />
+                                                        <input type="radio" id="rbtnweekend" class="sportsrequested" name="sportsrequested"
+                                                            value="Weekend" />Weekend Class (Saturday: 6.30 pm to 8.30 pm & Sunday: 7.30
+                                                        am to 10.30 am)<br />
+                                                        <br />
+                                                    </label>
+                                                </td>
+                                                <td width="20%" class="col1">
+                                                    <label>
+                                                        Awards Received<br>
+                                                        <small style="font-weight: 100">(Please Attach Document)</small> :</label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <input type="file" id="fuawards" onchange="readAwardsFileURL(this);" />
+                                                    <a target='_blank' id="AwardAttachment">Download</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Is your child Specially abled?</label>
+                                                </td>
+                                                <td class="col2">
+                                                    <input type="radio" name="Nb1" id="brntabledYes" value="Yes" />Yes
+                                                    <input type="radio" name="Nb1" id="brntabledNo" value="No" checked="checked" />No<br>
+                                                    <br>
+                                                    <label>
+                                                        kindly describe and provide relevant supporting documents:<br>
+                                                        <small style="font-weight: 100">(Please Attach Document)</small> :</label><br>
+                                                    <textarea name="txtabled" rows="5" cols="30" id="txtabled"></textarea><br>
+                                                    <input type="file" id="fuabled" onchange="readAbledFileURL(this);" />
+                                                    <a target='_blank' id="AbledAttachment">Download</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1">
+                                                    &nbsp;
+                                                </td>
+                                                <td class="col2">
+                                                    &nbsp;
+                                                </td>
+                                                <td width="20%" class="col1">
+                                                    <button id="btnSportSaveDetails" type="button" class="btn-icon btn-orange btn-saving"
+                                                        onclick="SaveASSSportsDetails();">
+                                                        <span></span>
+                                                        <div id="dvASSSports">
+                                                            Save</div>
+                                                    </button>
+                                                    &nbsp;
+                                                    <button id="btnSportClearDetails" type="button" class="btn-icon btn-navy btn-cancel1"
+                                                        runat="server" onclick="return SportsDetailsClear();">
+                                                        <span></span>Cancel</button>&nbsp;
+                                                </td>
+                                                <td class="col2">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col1 formsubheading" width="20%" valign="top">
+                                                    <label>
+                                                        Select to Map the Sports Fees
+                                                    </label>
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    &nbsp;
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div id="dvsportsfees" style="position: relative; width: 100%">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tr>
+                                                                <td width="21%">
+                                                                    <label>
+                                                                        Fees Month</label>
+                                                                </td>
+                                                                <td width="21%">
+                                                                    <label>
+                                                                        Sports Fees</label>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <asp:DropDownList ID="ddlMonth" Width="350px" runat="server" AppendDataBoundItems="True">
+                                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                                <td>
+                                                                    <asp:DropDownList ID="ddlSportFees" Width="350px" runat="server" AppendDataBoundItems="True">
+                                                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                                <td>
+                                                                    <button id="brnSportFeesSave" type="button" class="btn-icon btn-navy btn-update"
+                                                                        onclick="SaveSportFees();">
+                                                                        <span></span>Add</button>&nbsp;
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="4">
+                                                                    <div class="block">
+                                                                        <table width="100%">
+                                                                            <tr valign="top">
+                                                                                <td valign="top">
+                                                                                    <div>
+                                                                                        <asp:GridView ID="dgsportsfees" runat="server" Width="100%" AutoGenerateColumns="False"
+                                                                                            AllowPaging="True" ShowFooter="True" HorizontalAlign="Center" RowStyle-CssClass="even"
+                                                                                            AlternatingRowStyle-CssClass="odd" EnableModelValidation="True" CssClass="display">
+                                                                                            <Columns>
+                                                                                                <asp:BoundField DataField="ForMonth" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                                                    HeaderText="ForMonth" SortExpression="ForMonth">
+                                                                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                                                                </asp:BoundField>
+                                                                                                <asp:BoundField DataField="FeesHeadName" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                                                    HeaderText="FeesHeadName" SortExpression="FeesHeadName">
+                                                                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                                                                </asp:BoundField>
+                                                                                                <asp:BoundField DataField="Amount" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                                                                                    HeaderText="Amount" SortExpression="Amount">
+                                                                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                                                                </asp:BoundField>
+                                                                                                <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
+                                                                                                    HeaderStyle-CssClass="sorting_mod deleteacc">
+                                                                                                    <HeaderTemplate>
+                                                                                                        Delete</HeaderTemplate>
+                                                                                                    <ItemTemplate>
+                                                                                                        <asp:LinkButton ID="lnkDelete" runat="server" Text="Delete" CommandArgument='<%# Eval("FeesID") %>'
+                                                                                                            CommandName="Delete" CausesValidation="false" CssClass="links"></asp:LinkButton>
+                                                                                                    </ItemTemplate>
+                                                                                                </asp:TemplateField>
+                                                                                            </Columns>
+                                                                                        </asp:GridView>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <div class="sportfeesPager">
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                        General Information </a>
+                        <ul class="johnmenu">
+                            <li>
+                                <div class="frm-block">
+                                    <table class="form" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td width="20%" class="col1">
+                                                    <span style="color: Red">*</span>
+                                                    <label>
+                                                        Does your Child require:
+                                                        <br />
+                                                        School Breakfast
+                                                    </label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <label>
+                                                        <input type="radio" id="rtbnBreakYes" class="breakfast" name="breakfast" value="Yes" />Yes
+                                                        &nbsp;
+                                                        <input type="radio" id="rtbnBreakNo" class="breakfast" name="breakfast" value="No" />No
+                                                        &nbsp;
+                                                    </label>
+                                                </td>
+                                                <td width="20%" class="col1">
+                                                    <span style="color: Red">*</span>
+                                                    <label>
+                                                        Does your Child require:<br />
+                                                        School Lunch
+                                                    </label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <label>
+                                                        <input type="radio" id="rtbnLunchYes" class="lunch" name="lunch" value="Yes" />Yes
+                                                        &nbsp;
+                                                        <input type="radio" id="rtbnLunchNo" class="lunch" name="lunch" value="No" />No
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1">
+                                                    <span style="color: Red">*</span>
+                                                    <label>
+                                                        Does your Child require:<br />
+                                                        Transportation
+                                                    </label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <label>
+                                                        <input type="radio" id="rtbnTransYes" class="transport" name="transport" value="Yes" />Yes
+                                                        &nbsp;
+                                                        <input type="radio" id="rtbnTransNo" class="transport" name="transport" value="No" />No
+                                                        &nbsp;
+                                                    </label>
+                                                </td>
+                                                <td width="20%" class="col1">
+                                                    <span style="color: Red">*</span>
+                                                    <label>
+                                                        Whether original Birth Certificate<br />
+                                                        is attached
+                                                    </label>
+                                                </td>
+                                                <td width="26%" class="col2">
+                                                    <label>
+                                                        <input type="radio" id="rbtnbcYes" class="birthcert" name="birthcert" value="Yes" />Yes
+                                                        &nbsp;
+                                                        <input type="radio" id="rbtnbcNo" class="birthcert" name="birthcert" value="No" />No
+                                                        &nbsp;
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>
+                                                        Identification Marks:</label>
+                                                </td>
+                                                <td>
+                                                    1.
+                                                    <input name="txtidentify1" type="text" id="txtidentify1" class="idn-marks" />
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        Do you need hostel facility
+                                                        <br />
+                                                        <small style="font-weight: 100;">(Applicable only for Students preferring to Study in
+                                                            Amalorpavam Lourds Academy) </small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <span class="col2">
+                                                        <label>
+                                                            <input type="radio" id="rbtnHotelYes" name="rbtnHotel" /></label>
+                                                        No
+                                                        <label>
+                                                            <input type="radio" id="rbtnHotelNo" name="rbtnHotel" />
+                                                        </label>
+                                                        Yes</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                                <td>
+                                                    2.
+                                                    <input name="txtidentify2" type="text" id="txtidentify2" class="idn-marks" />
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1">
+                                                    &nbsp;
+                                                </td>
+                                                <td class="col2">
+                                                    &nbsp;
+                                                </td>
+                                                <td width="20%" class="col1">
+                                                    <button id="btnGeneralSaveDetails" type="button" class="btn-icon btn-orange btn-saving"
+                                                        onclick="SaveASSGeneralDetails();">
+                                                        <span></span>
+                                                        <div id="dvGeneral">
+                                                            Save</div>
+                                                    </button>
+                                                    <button id="btnGeneralClear" type="button" class="btn-icon btn-navy btn-cancel1"
+                                                        runat="server" onclick="return GeneralDetailsClear();">
+                                                        <span></span>Cancel</button>&nbsp;
+                                                </td>
+                                                <td class="col2">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                        Wellness Information</a>
+                        <ul class="johnmenu">
+                            <li>
+                                <div class="frm-block">
+                                    <table class="form" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="4" class="formsubheading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Allergies / Infections - Please mention the detail below</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Allergic to Particular Medicine</label>
+                                                </td>
+                                                <td class="col2" valign="top">
+                                                    <input type="radio" name="Allergic" id="rbtnAllergicYes" value="Indian" />Yes
+                                                    <input type="radio" name="Allergic" id="rbtnAllergicNo" checked="checked" value="Overseas" />No<br />
+                                                    <br>
+                                                    <label>
+                                                        kindly attach the details:</small> :</label><br>
+                                                    <input type="file" id="fuAllergic" onchange="readAllergicFileURL(this);" />
+                                                    <a target='_blank' id="AllergicAttachment">Download</a>
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Skin Infections, if any:</label>
+                                                </td>
+                                                <td class="col2">
+                                                    <input type="radio" name="skin" id="rbtnSkinYes" value="skin" />Yes
+                                                    <input type="radio" name="skin" id="rbtnSkinNo" value="skin" />No<br />
+                                                    <br>
+                                                    <label>
+                                                        Prescribed Medication, if any:<br>
+                                                        <small style="font-weight: 100">Please indicate the details/cause of such infection
+                                                            as below:</small>
+                                                    </label>
+                                                    <br>
+                                                    <textarea name="txtPrescribed" rows="5" cols="30" id="txtPrescribed"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Any other allergies/infections - list below:</label><br />
+                                                    <textarea name="txtallergies" rows="5" cols="30" id="txtallergies"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="10">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="formsubheading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Medication-please indicate below if your child is at present taking any regular
+                                                        medication</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Medication being Taken</label><br>
+                                                    <textarea name="txtMedication" rows="5" cols="30" id="txtMedication"></textarea>
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Purpose</label><br />
+                                                    <textarea name="txtMedicationPurpose" rows="5" cols="30" id="txtMedicationPurpose"></textarea>
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Period of Prescription</label><br>
+                                                    <textarea name="txtPeriod" rows="5" cols="30" id="txtPeriod"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="10">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="formsubheading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Please complete vaccination record of the student as follows:</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="heading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Vaccinations:</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Tetanus</label>
+                                                </td>
+                                                <td class="col2" valign="top">
+                                                    <input type="radio" name="Tetanus" id="rbtnTetanusYes" value="Yes" />Completed
+                                                    <input type="radio" name="Tetanus" id="rbtnTetanusNo" checked="checked" value="No" />Not
+                                                    Completed Completed<br />
+                                                    <br />
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Polio</label>
+                                                </td>
+                                                <td class="col2" valign="top">
+                                                    <input type="radio" name="Polio" id="rbtnPolioYes" value="Yes" checked="checked" />Completed
+                                                    <input type="radio" name="Polio" id="rbtnPolioNo" value="No" />Not Completed<br />
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        TB</label>
+                                                </td>
+                                                <td class="col2" valign="top">
+                                                    <input type="radio" name="TB" id="rbtnTBYes" value="Yes" checked="checked" />Completed
+                                                    <input type="radio" name="TB" id="rbtnTBNo" value="No" />Not Completed<br />
+                                                    <br />
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Hepatitis B
+                                                    </label>
+                                                </td>
+                                                <td class="col2" valign="top">
+                                                    <input type="radio" name="Hepatitis" id="rbtnHepatitisYes" value="Yes" checked="checked" />Completed
+                                                    <input type="radio" name="Hepatitis" id="rbtnHepatitisNo" value="No" />Not Completed<br />
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Covid-19</label>
+                                                </td>
+                                                <td class="col2" valign="top">
+                                                    <input type="radio" name="Covid" id="rbtnCovidYes" value="Yes" checked="checked" />Completed
+                                                    <input type="radio" name="Covid" id="rbtnCovidNo" value="No" />Not Completed<br />
+                                                    <br />
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        HPV 11-14 Year old Girls
+                                                    </label>
+                                                </td>
+                                                <td class="col2" valign="top">
+                                                    <input type="radio" name="HPV" id="rbtnHPVYes" value="Yes" checked="checked" />Completed
+                                                    <input type="radio" name="HPV" id="rbtnHPVNo" value="Yes" />Not Completed<br />
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Any other, please list below</label><br />
+                                                    <textarea name="txtOtherlist" rows="5" cols="30" id="txtOtherlist"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="10">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="formsubheading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Sight and Hearing Details</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="heading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Particulars</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Does your Child wear Glasses?</label>
+                                                    <input type="radio" name="Glass" id="rbtnGlassYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Glass" id="rbtnGlassNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <label>
+                                                        Does your Child wear Contact Lenses?</label>
+                                                    <input type="radio" name="Lenses" id="rbtnLensYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Lenses" id="rbtnLensNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Does your Child use any hearing aid?</label>
+                                                    <input type="radio" name="hearing" id="rbtnhearYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="hearing" id="rbtnhearNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="heading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Illness</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Chicken Pox</label>
+                                                    <input type="radio" name="Chicken" id="rbtnChickenYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Chicken" id="rbtnChickenNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <label>
+                                                        German Measles (Rubella) Glandular fever</label>
+                                                    <input type="radio" name="Rubella" id="rbtnRubellaYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Rubella" id="rbtnRubellaNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Jaundice</label>
+                                                    <input type="radio" name="Jaundice" id="rbtnJaundiceYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Jaundice" id="rbtnJaundiceNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Measles</label>
+                                                    <input type="radio" name="Measles" id="rbtnMeaslesYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Measles" id="rbtnMeaslesNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <label>
+                                                        Mumps</label>
+                                                    <input type="radio" name="Mumps" id="rbtnMumpsYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Mumps" id="rbtnMumpsNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Scarlet Fever</label>
+                                                    <input type="radio" name="Scarlet" id="rbtnScarletYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Scarlet" id="rbtnScarletNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1" valign="top">
+                                                    <label>
+                                                        Whooping Cough</label>
+                                                    <input type="radio" name="Cough" id="rbtnCoughYes" value="Yes" checked="checked" />Yes
+                                                    <input type="radio" name="Cough" id="rbtnCoughNo" value="No" />No<br />
+                                                    <br />
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <label>
+                                                        Any other-list below</label>
+                                                    <br />
+                                                    <textarea name="txtAnyMedication" rows="5" cols="30" id="txtAnyMedication"></textarea>
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <label>
+                                                        Operation/Surgeries Undergone till date</label>
+                                                    <br />
+                                                    <textarea name="txtOperation" rows="5" cols="30" id="txtOperation"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="heading">
+                                                    <label style="font-size: 14px; letter-spacing: 1px;">
+                                                        Other Illness if any (Please Tick)</label>
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkAnorexia" />
+                                                    <label>
+                                                        Anorexia/ Bulimia/ any other eating disorder</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkArthritis" />
+                                                    <label>
+                                                        Arthritis</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkAsthma" />
+                                                    <label>
+                                                        Asthma</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkBone" />
+                                                    <label>
+                                                        Bone or Joint Diseases</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkCancer" />
+                                                    <label>
+                                                        Cancer</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkCardiovascular" />
+                                                    <label>
+                                                        Cardiovascular</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkDiabetes" />
+                                                    <label>
+                                                        Diabetes</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkEczema" />
+                                                    <label>
+                                                        Eczema</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkEnuresis" />
+                                                    <label>
+                                                        Enuresis (Bed Wetting)</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkEpilepsy" />
+                                                    <label>
+                                                        Epilepsy / Seizures</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkGenetic" />
+                                                    <label>
+                                                        Genetic Disorder</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkHay" />
+                                                    <label>
+                                                        Hay Fever</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkHead" />
+                                                    <label>
+                                                        Head Injury</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkHearing" />
+                                                    <label>
+                                                        Hearing Difficulties</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkHeart" />
+                                                    <label>
+                                                        Heart Disease (Congenital)</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkHepatitis" />
+                                                    <label>
+                                                        Hepatitis</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkHIV" />
+                                                    <label>
+                                                        HIV/AIDS
+                                                    </label>
+                                                    &nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkLearning" />
+                                                    <label>
+                                                        Learning Difficulties</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkMenstrual" />
+                                                    <label>
+                                                        Menstrual Disorder</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkMigraine" />
+                                                    <label>
+                                                        Migraine</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkPhobia" />
+                                                    <label>
+                                                        Phobia</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkDeformity" />
+                                                    <label>
+                                                        Physical Deformity</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkPhysical" />
+                                                    <label>
+                                                        Physical Disability</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkPneumonia" />
+                                                    <label>
+                                                        Pneumonia</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkRheumatic" />
+                                                    <label>
+                                                        Rheumatic Fever</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkSkin" />
+                                                    <label>
+                                                        Skin Diseases</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkStomach">
+                                                    <label>
+                                                        Stomach Ulcer</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkSyndromes" />
+                                                    <label>
+                                                        Syndromes</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkUrinary" />
+                                                    <label>
+                                                        Urinary tract Infection
+                                                    </label>
+                                                    &nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkAnxiety" />
+                                                    <label>
+                                                        Anxiety</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkAutism" />
+                                                    <label>
+                                                        Autism Disorder</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkMood" />
+                                                    <label>
+                                                        Mood Swings</label>&nbsp;&nbsp;
+                                                </td>
+                                                <td width="22%" class="" valign="top">
+                                                    <input type="checkbox" id="chkSpeech" />
+                                                    <label>
+                                                        Speech Difficulties</label>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" class="col1">
+                                                    &nbsp;
+                                                </td>
+                                                <td class="col2">
+                                                    &nbsp;
+                                                </td>
+                                                <td width="20%" class="col1">
+                                                    <button id="btnWellnessSave" type="button" class="btn-icon btn-orange btn-saving"
+                                                        onclick="SaveASSWellnessDetails();">
+                                                        <span></span>
+                                                        <div id="Div10">
+                                                            Save</div>
+                                                    </button>
+                                                    <button id="btnWellnessClear" type="button" class="btn-icon btn-navy btn-cancel1"
+                                                        runat="server" onclick="return ASSWellnessClear();">
+                                                        <span></span>Cancel</button>&nbsp;
+                                                </td>
+                                                <td class="col2">
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </li>

@@ -119,7 +119,7 @@ public partial class Performance_MarkEntry : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
     }
 
     [WebMethod]
@@ -180,7 +180,7 @@ public partial class Performance_MarkEntry : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_getexamtypes " + "" + ExamTypeID + "";
-        return utl.GetDatasetTable(query, "ClassByExamType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ClassByExamType").GetXml();
     }
 
 
@@ -213,7 +213,7 @@ public partial class Performance_MarkEntry : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMessageTemplate " + "" + MessTempID + "";
-        return utl.GetDatasetTable(query, "GetMessageTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetMessageTemplate").GetXml();
     }
 
     //protected string BindSMScopy()
@@ -290,7 +290,7 @@ public partial class Performance_MarkEntry : System.Web.UI.Page
             query = "[sp_SMSMarkList] " + classId + "," + sectionId + ",'" + ExamName + "' ,'" + type + "','" + subject + "' ," + ExamTypeID + "," + AcadmID + ",'" + Marks[0].ToString() + "','" + Marks[1].ToString() + "'";
         }
 
-        return utl.GetDatasetTable(query, "StudentByResult").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentByResult").GetXml();
     }
 
 

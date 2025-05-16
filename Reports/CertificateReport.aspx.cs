@@ -253,6 +253,10 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
 
         if (Session["strCompfor"].ToString() != "")
         {
+<<<<<<< HEAD
+
+            sqlstr = "[sp_GetStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','" + ddlType.Text + "','" + txtSearch.Text + "'";
+=======
             if (Isactive == "True")
             {
                 sqlstr = "[sp_GetStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','" + ddlType.Text + "','" + txtSearch.Text + "'";
@@ -261,6 +265,7 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
             {
                 sqlstr = "[sp_GetOldStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','" + ddlType.Text + "','" + txtSearch.Text + "'";
             }
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
             dsGet = utl.GetDataset(sqlstr);
         }
         if (dsGet != null && dsGet.Tables.Count > 0 && dsGet.Tables[0].Rows.Count > 0)

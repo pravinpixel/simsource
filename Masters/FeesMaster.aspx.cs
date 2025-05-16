@@ -173,7 +173,7 @@ public partial class FeesMaster : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -202,14 +202,14 @@ public partial class FeesMaster : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "sp_GetClassBySchoolType " + SchoolTypeID + "";
-        return utl.GetDatasetTable(query, "ClassBySchoolType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ClassBySchoolType").GetXml();
     }
     [WebMethod]
     public static string GetFeesTypeByClass(int ClassID)
     {
         Utilities utl = new Utilities();
         string query = "sp_GetFeesTypeByClass " + ClassID + "";
-        return utl.GetDatasetTable(query, "FeesTypeByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "FeesTypeByClass").GetXml();
     }
     [WebMethod]
     public static string GetFeesCatHead(int pageIndex, string ClassID, int AcademicId)
@@ -232,7 +232,7 @@ public partial class FeesMaster : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetFeesCatHead " + FeesCatHeadID + "";
-        return utl.GetDatasetTable(query, "EditFeesCatHead").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditFeesCatHead").GetXml();
     }
 
 

@@ -89,7 +89,7 @@ public partial class Staffs_LeaveEntry : System.Web.UI.Page
         if (string.IsNullOrEmpty(code)) code = "null"; else code = "'" + code + "'";
         if (string.IsNullOrEmpty(name)) name = "null"; else name = "'" + name.Replace("'", "''") + "'";
         string query = "[GetStaffInfo] " + code + ",'',''," + name + "";
-        DataSet ds = utl.GetDatasetTable(query, "StaffInfo");
+        DataSet ds = utl.GetDatasetTable(query,  "others", "StaffInfo");
         return ds.GetXml();
 
     }
@@ -125,14 +125,14 @@ public partial class Staffs_LeaveEntry : System.Web.UI.Page
         else
             query = "[sp_GetStaffLeaveId] '',''," + staffLeaveId + "";
 
-        return utl.GetDatasetTable(query, "Leave").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Leave").GetXml();
     }
     [WebMethod]
     public static string GetEmployee(string staffName, string empCode)
     {
         Utilities utl = new Utilities();
         string query = "[sp_GetEmployee] '','" + staffName.Replace("'", "''") + "','" + empCode + "'";
-        DataSet ds = utl.GetDatasetTable(query, "Employee");
+        DataSet ds = utl.GetDatasetTable(query,  "others", "Employee");
         
         return ds.GetXml();
     }

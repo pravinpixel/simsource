@@ -751,6 +751,16 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                     }
 
                     //Signature List Row - start
+<<<<<<< HEAD
+                    if (dsGet.Tables[0].Rows[i]["Signature"].ToString() != "" && (Server.MapPath("~\\Signature\\") + dsGet.Tables[0].Rows[i]["Signature"].ToString())!="")
+                    {
+                        stroption += @"<tr><td> </td></tr></table></div></td></tr><tr><td height='300' align='center' valign='top'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tbody><tr><td width='33%'></td><td width='33%'></td><tdwidth='33%'></td></tr><tr><td>&nbsp;</td><td align='center' ><img class='signature' src='Signature/" + dsGet.Tables[0].Rows[i]["Signature"].ToString() + "' style='width: 100px;height: 50px;' /></td><td>&nbsp;</td></tr></tbody></table></td></tr></table> <p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
+                    }
+                    else
+                    {
+                        stroption += @"<tr><td>&nbsp;</td></tr></table></div></td></tr></table> <p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
+                    }                  
+=======
                     //if (dsGet.Tables[0].Rows[i]["Signature"].ToString() != "" && (Server.MapPath("~\\Signature\\") + dsGet.Tables[0].Rows[i]["Signature"].ToString())!="")
                     //{
                     //    stroption += @"<tr><td> </td></tr></table></div></td></tr><tr><td height='300' align='center' valign='top'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tbody><tr><td width='33%'></td><td width='33%'></td><tdwidth='33%'></td></tr><tr><td>&nbsp;</td><td align='center' ><img class='signature' src='Signature/" + dsGet.Tables[0].Rows[i]["Signature"].ToString() + "' style='width: 100px;height: 50px;' /></td><td>&nbsp;</td></tr></tbody></table></td></tr></table> <p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
@@ -762,6 +772,7 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                     stroption += @"<tr><td> </td></tr></table></div></td></tr><tr><td align='center' valign='top'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tbody><tr><td width='33%'></td><td width='33%'></td><tdwidth='33%'></td></tr><tr><td>&nbsp;</td><td align='center' >&nbsp;</td><td>&nbsp;</td></tr></tbody></table></td></tr></table> <p class='pagebreakhere' style='page-break-after:always; color: Red;'></p>";
                      //<p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>
                  //    }                  
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
 
                     #region Subject Header Tab starts

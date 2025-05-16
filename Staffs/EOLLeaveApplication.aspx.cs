@@ -38,7 +38,7 @@ public partial class Staffs_EOLLeaveApplication : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "SP_GetStaffEOLleaveDetails " + StaffLeaveId + "," + LeaveId;
-        return utl.GetDatasetTable(query, "Staffleave").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Staffleave").GetXml();
 
     }
     [WebMethod]

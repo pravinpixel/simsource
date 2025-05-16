@@ -98,7 +98,7 @@ public partial class Students_ConcessionApproval : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStudentInfo " + "''" + ",'" + RegNo + "','" + StudentName + "'";
-        return utl.GetDatasetTable(query, "Student").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Student").GetXml();
     }
     [WebMethod]
     public static string GetSectionByClassID(int ClassID)
@@ -106,7 +106,7 @@ public partial class Students_ConcessionApproval : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
     [WebMethod]

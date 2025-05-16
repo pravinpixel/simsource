@@ -107,7 +107,7 @@ public partial class StudentInfoView : System.Web.UI.Page
             query = "sp_getfeesAmount '" + dt.Rows[0]["ClassID"] + "," + "''" + "," + "''" + "," + HttpContext.Current.Session["AcademicID"] + "";
 
         }
-        return utl.GetDatasetTable(query, "FeesAmt").GetXml();
+        return utl.GetDatasetTable(query,  "others", "FeesAmt").GetXml();
 
     }
 
@@ -118,7 +118,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStudentBySection '" + Class + "','" + Section + "'";
-        return utl.GetDatasetTable(query, "StudentBySection").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentBySection").GetXml();
 
     }
 
@@ -351,7 +351,7 @@ public partial class StudentInfoView : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -383,7 +383,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetBusRoute '" + routecode + "','" + regno + "'";
-        return utl.GetDatasetTable(query, "BusRoutes").GetXml();
+        return utl.GetDatasetTable(query,  "others", "BusRoutes").GetXml();
     }
     [WebMethod]
     public static string GetHostelInfo(int regno)
@@ -391,7 +391,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetHostelInfo " + regno + "";
-        return utl.GetDatasetTable(query, "HostelInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "HostelInfo").GetXml();
     }
 
     [WebMethod]
@@ -400,7 +400,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStudentInfo " + studentid + "";
-        return utl.GetDatasetTable(query, "StudentInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentInfo").GetXml();
     }
 
     [WebMethod]
@@ -409,7 +409,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMedicalRemarkInfo " + "" + regno + "";
-        return utl.GetDatasetTable(query, "MedicalRemark").GetXml();
+        return utl.GetDatasetTable(query,  "others", "MedicalRemark").GetXml();
     }
 
     [WebMethod]
@@ -418,7 +418,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetAcademicRemarkInfo " + "" + regno + "";
-        return utl.GetDatasetTable(query, "AcademicRemark").GetXml();
+        return utl.GetDatasetTable(query,  "others", "AcademicRemark").GetXml();
     }
 
     [WebMethod]
@@ -427,7 +427,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetBroSisInfo " + regno + "";
-        return utl.GetDatasetTable(query, "BroSis").GetXml();
+        return utl.GetDatasetTable(query,  "others", "BroSis").GetXml();
     }
 
     [WebMethod]
@@ -436,7 +436,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStaffChildrenInfo " + "''" + "," + "''" + "," + "" + regno + "";
-        return utl.GetDatasetTable(query, "StaffChildren").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StaffChildren").GetXml();
     }
     [WebMethod]
     public static string GetNationalityInfo(int regno)
@@ -444,7 +444,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "GetNationalityInfo " + regno + "";
-        return utl.GetDatasetTable(query, "National").GetXml();
+        return utl.GetDatasetTable(query,  "others", "National").GetXml();
     }
 
     [WebMethod]
@@ -453,7 +453,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetAttachmentInfo " + regno + "";
-        return utl.GetDatasetTable(query, "Attachment").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Attachment").GetXml();
     }
     [WebMethod]
     public static string GetOldSchoolInfo(int regno)
@@ -461,7 +461,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetOldSchoolInfo " + regno + "";
-        return utl.GetDatasetTable(query, "OldSchool").GetXml();
+        return utl.GetDatasetTable(query,  "others", "OldSchool").GetXml();
     }
 
     [WebMethod]
@@ -470,7 +470,7 @@ public partial class StudentInfoView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetConcessionInfo " + StudentID + "," + HttpContext.Current.Session["AcademicID"] + "";
-        return utl.GetDatasetTable(query, "ConcessionInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ConcessionInfo").GetXml();
 
     }
 }

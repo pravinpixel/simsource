@@ -100,7 +100,7 @@ public partial class Users_AddRole : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetRole " + "" + roleId + "";
-        return utl.GetDatasetTable(query, "EditRoles").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditRoles").GetXml();
     }
     [WebMethod]
     public static string DeleteRole(string roleId)

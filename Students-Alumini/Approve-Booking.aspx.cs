@@ -107,7 +107,7 @@ public partial class ApproveBooking : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMessageTemplate " + "" + MessTempID + "";
-        return utl.GetDatasetTable(query, "GetMessageTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetMessageTemplate").GetXml();
     }
 
 
@@ -160,7 +160,7 @@ public partial class ApproveBooking : System.Web.UI.Page
 
         query = "[sp_GetPendingBookingInfo] " + EventID;
 
-        return utl.GetDatasetTable(query, "Students").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Students").GetXml();
     }
 
     [WebMethod]

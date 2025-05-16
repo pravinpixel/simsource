@@ -96,7 +96,7 @@ public partial class Students_Alumini_Alumini_Registration : System.Web.UI.Page
 
         query = "sp_GetGraduationInfo " + alumniID + "";
 
-        return utl.GetDatasetTable(query, "GraduationInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GraduationInfo").GetXml();
     }
 
 
@@ -109,7 +109,7 @@ public partial class Students_Alumini_Alumini_Registration : System.Web.UI.Page
 
         query = "sp_GetAluminiInfo " + alumniID + "";
 
-        return utl.GetDatasetTable(query, "AluminiInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "AluminiInfo").GetXml();
     }
 
     [WebMethod]

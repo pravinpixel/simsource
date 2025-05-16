@@ -120,7 +120,7 @@ public partial class SMSCopy : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

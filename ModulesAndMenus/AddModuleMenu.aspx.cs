@@ -181,7 +181,7 @@ public partial class ModulesAndMenus_AddModuleMenu : System.Web.UI.Page
 
         string query = "[GetModuleMenu_Pager1] " + pageIndex + "," + PageSize + ",10," + pMenuId + "," + menuId + "";
 
-        DataSet ds = utl.GetDatasetTable(query, "ModuleMenus");
+        DataSet ds = utl.GetDatasetTable(query,  "others", "ModuleMenus");
         DataTable dt = new DataTable("Pager");
         dt.Columns.Add("PageIndex");
         dt.Columns.Add("PageSize");
@@ -198,7 +198,7 @@ public partial class ModulesAndMenus_AddModuleMenu : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "[GetModuleMenuByMenuId] "+menuId+"";
-        return utl.GetDatasetTable(query, "ModuleMenuById").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ModuleMenuById").GetXml();
     }
     [WebMethod]
     public static string SaveModuleMenu(string query)

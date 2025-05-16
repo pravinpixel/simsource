@@ -139,7 +139,7 @@ public partial class Students_ViewAdmissionWithdrawal : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "Select isnull(Max(AdmissionId)+ 1,1)as  SerialNo from s_AdmissionWithDrawal";
-        return utl.GetDatasetTable(query, "SCIDs").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SCIDs").GetXml();
 
     }
 

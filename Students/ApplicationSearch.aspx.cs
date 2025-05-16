@@ -35,10 +35,19 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
                 BindAcademicYear();
                 BindClass();
                 BindDummyRow();
+<<<<<<< HEAD
+
+              
+            }
+            if (Request.QueryString["AcademicYear"] != null && Session["AcademicID"] != null)
+            {
+                ddlAcademicYear.SelectedValue = Session["AcademicID"].ToString();
+=======
                 if (Request.QueryString["AcademicYear"] != null && Session["AcademicID"] != null)
                 {
                     ddlAcademicYear.SelectedValue = Session["AcademicID"].ToString();
                 }
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
             }
 
         }
@@ -189,9 +198,15 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
                                 utl.ExecuteQuery("update a set a.feescatheadid=f.feescatheadid from f_studentbills as a inner join f_studentbillmaster  as b on a.billid=b.billid  inner join s_studentinfo e on e.regno=b.regno and e.AcademicYear=b.AcademicId inner join m_feescategory g on e.Active=g.FeesCatCode  inner join m_feescategoryhead c on c.feescatheadid=a.feescatheadid  inner join m_feeshead d  on d.feesheadid=c.feesheadid left join m_feescategoryhead f on (e.class=f.classid and f.feesheadid=c.feesheadid   and f.FeesCategoryId=g.FeesCategoryId  and e.AcademicYear=f.AcademicId) where e.regno='" + regno.ToString() + "' and b.BillId=" + dts.Rows[0]["billid"].ToString().Trim() + "  and  e.AcademicYear='" + dtss.Rows[0]["academicyear"].ToString() + "' ");
                             }
                         }
+<<<<<<< HEAD
+                       // return;
+                    }
+                   
+=======
                         // return;
                     }
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 }
             }
 
@@ -281,7 +296,10 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
             DataTable dummy = new DataTable();
             dummy.Columns.Add("SlNo");
             dummy.Columns.Add("ApplicationNo");
+<<<<<<< HEAD
+=======
             dummy.Columns.Add("RegNo");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
             dummy.Columns.Add("TempNo");
             dummy.Columns.Add("StudentName");
             dummy.Columns.Add("Class");
@@ -295,7 +313,11 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
+<<<<<<< HEAD
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
+=======
         string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -327,6 +349,16 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
 
         string isActive = Convert.ToString(utl.ExecuteScalar("select isnull(isactive,0) isactive from m_academicyear where academicid='" + HttpContext.Current.Session["AcademicID"] + "'"));
         string query = "";
+<<<<<<< HEAD
+        if (isActive == "True" || isActive == "1")
+        {
+            query = "[GetApplicationInfo_Pager]";
+        }
+        else if (isActive == "False" || isActive == "0")
+        {
+            query = "[GetPromoStudentInfo_Pager]";
+        }
+=======
         //if (isActive == "True" || isActive == "1")
         //{
         //    query = "[GetApplicationInfo_Pager]";
@@ -336,6 +368,7 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
         //    query = "[GetPromoStudentInfo_Pager]";
         //}
         query = "[GetApplicationInfo_Pager]";
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         string stracademicyear = "";
         string icnt = "";
         //if (regno != "")
@@ -350,11 +383,19 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
         //            utl.ExecuteQuery("insert into  s_studentpromotion(regno,ClassID,SectionID,BusFacility,Concession,Hostel,Scholar,AcademicId,Active,UserId)(select regno,Class,case when Section=0 then NULL else section end,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo where regno= '" + regno + "')");
         //        }
         //    }
+<<<<<<< HEAD
+          
+        //}
+        
+       
+        
+=======
 
         //}
 
 
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         SqlCommand cmd = new SqlCommand(query);
         cmd.CommandType = CommandType.StoredProcedure;
         cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
@@ -411,7 +452,11 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
         string query = "";
         if (isActive == "True" || isActive == "1")
         {
+<<<<<<< HEAD
+           query = "sp_GetStudentBySection '" + Class + "','" + Section + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
+=======
             query = "sp_GetStudentBySection '" + Class + "','" + Section + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         }
         else if (isActive == "False" || isActive == "0")
         {
@@ -455,17 +500,29 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
         else
             return "Delete Failed";
     }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
     protected void btnSync_Click(object sender, EventArgs e)
     {
         utl = new Utilities();
         DataSet dsapp = new DataSet();
+<<<<<<< HEAD
+        dsapp = utl.GetAPPDataset("select * from studentapplications a inner join institutions b on b.ID=a.SchoolID inner join student_classes c on c.ClassId=a.ClassRequested and a.SchoolID=c.InstitutionId where a.isactive=1 and AcademicID=(select AcademicID from academicyears where IsActive=1) and c.IsActive=1 and SchoolID=6 and ReturnDate is not null order by ApplicationID asc");
+=======
         dsapp = utl.GetAPPDataset("select * from studentapplications a inner join institutions b on b.ID=a.SchoolID inner join student_classes c on c.ClassId=a.ClassRequested and a.SchoolID=c.InstitutionId where a.isactive=1 and AcademicID=(select AcademicID from academicyears where IsActive=1) and (tempno is null or tempno='') and c.IsActive=1 and SchoolID=1 and ReturnDate is not null order by ApplicationID asc");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         if (dsapp != null && dsapp.Tables.Count > 0 && dsapp.Tables[0].Rows.Count > 0)
         {
             for (int i = 0; i < dsapp.Tables[0].Rows.Count; i++)
             {
                 string classID = utl.ExecuteScalar("select classId from m_class where ClassInWords='" + dsapp.Tables[0].Rows[i]["ClassInWords"].ToString().Trim() + "'");
+<<<<<<< HEAD
+                string StudId = utl.ExecuteScalar("select isnull(max(studentid)+1,1) from  s_studentinfo where Active='F'");
+=======
                 string StudId = utl.ExecuteScalar("select isnull(max(studentid)+1,1) from s_studentinfo where Active='F'");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 string gender = dsapp.Tables[0].Rows[i]["Gender"].ToString().Trim();
                 if (gender == "Male")
                 {
@@ -476,7 +533,13 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
                     gender = "F";
                 }
 
+<<<<<<< HEAD
+
+
+                string icnt = utl.ExecuteScalar("select count(*) from s_studentinfo where applicationno='" + dsapp.Tables[0].Rows[i]["ApplicationNo"].ToString().Trim() + "' and schoolname='" + dsapp.Tables[0].Rows[i]["code"].ToString().Trim() + "' and active='F' and academicyear='" + HttpContext.Current.Session["AcademicID"] + "' ");
+=======
                 string icnt = utl.ExecuteScalar("select count(*) from s_studentinfo where applicationno='" + dsapp.Tables[0].Rows[i]["ApplicationNo"].ToString().Trim() + "' and schoolname='" + dsapp.Tables[0].Rows[i]["code"].ToString().Trim() + "' and active='F' and academicyear='" + HttpContext.Current.Session["AcademicID"] + "' and (tempno is null or tempno='') ");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 if (icnt == "" || icnt == "0")
                 {
                     utl.ExecuteQuery("Insert into s_studentinfo(Regno,applicationno,Schoolname,StName,Class,AdClass,DOB,Sex,Phno,FName,FatherCell,MName,MotherCell,Active,academicyear,userid)values('" + StudId + "','" + dsapp.Tables[0].Rows[i]["ApplicationNo"].ToString().Trim() + "','" + dsapp.Tables[0].Rows[i]["code"].ToString().Trim() + "','" + dsapp.Tables[0].Rows[i]["StudentName"].ToString().Trim() + "','" + classID.ToString() + "','" + classID.ToString() + "','" + dsapp.Tables[0].Rows[i]["DOB"].ToString().Trim() + "','" + gender.ToString().Trim() + "','" + dsapp.Tables[0].Rows[i]["FatherMobile"].ToString().Trim() + "','" + dsapp.Tables[0].Rows[i]["Fathername"].ToString().Trim() + "','" + dsapp.Tables[0].Rows[i]["FatherMobile"].ToString().Trim() + "','" + dsapp.Tables[0].Rows[i]["MotherName"].ToString().Trim() + "','" + dsapp.Tables[0].Rows[i]["MotherMobile"].ToString().Trim() + "','F','" + HttpContext.Current.Session["AcademicID"] + "',1)");
@@ -490,12 +553,19 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
                                             inner join student_classes c on c.ClassId=b.ClassRequested and b.SchoolID=c.InstitutionId
 											inner join institutions d on d.id=a.SchoolId
                                             and a.AcademicID=(select AcademicID from academicyears where IsActive=1) 
+<<<<<<< HEAD
+                                            and c.IsActive=1 and a.SchoolID=6 and ReturnDate is not null and (tempno is null or tempno='') order by ApplicationID asc");
+=======
                                             and c.IsActive=1 and a.SchoolID=1 and ReturnDate is not null  and (tempno is null or tempno='') order by ApplicationID asc");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     if (dsentrance != null && dsentrance.Tables.Count > 0 && dsentrance.Tables[0].Rows.Count > 0)
                     {
                         for (int k = 0; k < dsentrance.Tables[0].Rows.Count; k++)
                         {
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                             string itempcnt = utl.ExecuteScalar("select count(*) from s_studentinfo where applicationNo='" + dsentrance.Tables[0].Rows[k]["applicationNo"].ToString().Trim() + "' and schoolname='" + dsentrance.Tables[0].Rows[k]["code"].ToString().Trim() + "' and (tempno is null or tempno='') and active='F' and academicyear='" + HttpContext.Current.Session["AcademicID"] + "' ");
                             if (itempcnt != "" && itempcnt != "0")
                             {
@@ -515,7 +585,10 @@ public partial class Students_ApplicationSearch : System.Web.UI.Page
                     }
                 }
             }
+<<<<<<< HEAD
+=======
             utl.ShowMessage("Synced Successfully", this.Page);
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         }
     }
 }

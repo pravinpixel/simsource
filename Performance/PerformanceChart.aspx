@@ -21,11 +21,20 @@
             }
         }
         
+<<<<<<< HEAD
+     .signature img
+        {
+             max-width: inherit;
+        }
+    </style>
+
+=======
         .signature img
         {
             max-width: inherit;
         }
     </style>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
     <script type="text/javascript">
 
     </script>
@@ -95,16 +104,24 @@
                             <asp:DropDownList ID="ddlExamName" CssClass="jsrequired" runat="server">
                                 <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                             </asp:DropDownList>
+<<<<<<< HEAD
+                            <label>
+=======
                            
                         </td>
                        <td>
                         <label>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                 Display Type :</label>
                             <asp:DropDownList ID="ddlType" runat="server" AutoPostBack="True">
                                 <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                 <asp:ListItem Value="Grade">Grade</asp:ListItem>
                             </asp:DropDownList>
+<<<<<<< HEAD
+                        </td>
+=======
                        </td>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     </tr>
                     <tr>
                         <td>
@@ -117,12 +134,15 @@
                                 Upload Image :</label>
                             <input type='file' id="FuPhoto" runat="server" />
                         </td>
+<<<<<<< HEAD
+=======
                           <td align="left">
                             &nbsp;
                             <label>
                                 Search by Regno(enter with comma separated):</label>
                             <asp:TextBox ID="txtSearch" runat="server" TextMode="MultiLine" Width="244px"></asp:TextBox>
                         </td>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     </tr>
                 </table>
                 <table class="form">

@@ -63,7 +63,7 @@ public partial class ExpenseType : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetExpenseType " + "" + ExpenseTypeID + "";
-        return utl.GetDatasetTable(query, "EditExpenseType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditExpenseType").GetXml();
     }
 
     [WebMethod]
@@ -128,7 +128,7 @@ public partial class ExpenseType : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

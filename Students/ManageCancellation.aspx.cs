@@ -48,6 +48,9 @@ public partial class Students_ManageCancellation : System.Web.UI.Page
             dummy.Columns.Add("StudentName");
             dummy.Columns.Add("Class");
             dummy.Columns.Add("Section");
+            dummy.Columns.Add("SchoolType");
+            dummy.Columns.Add("SportsRequested");
+            dummy.Columns.Add("SportTiming");
             dummy.Columns.Add("StudentID");
             dummy.Columns.Add("View");
             dummy.Rows.Add();
@@ -58,7 +61,7 @@ public partial class Students_ManageCancellation : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -115,7 +118,7 @@ public partial class Students_ManageCancellation : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 
@@ -126,7 +129,7 @@ public partial class Students_ManageCancellation : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStudentBySection '" + Class + "','" + Section + "'";
-        return utl.GetDatasetTable(query, "StudentBySection").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentBySection").GetXml();
 
     }
 
@@ -136,7 +139,7 @@ public partial class Students_ManageCancellation : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStudentInfo " + "" + StudentInfoID + "";
-        return utl.GetDatasetTable(query, "EditStudentInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditStudentInfo").GetXml();
     }
 
     [WebMethod]
@@ -147,40 +150,26 @@ public partial class Students_ManageCancellation : System.Web.UI.Page
         string strQueryStatus = string.Empty;
         string message = string.Empty;
         Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
-        if (type == "Bus")
-        {
-            sqlstr = "update s_studentinfo set busfacility='N' where regno='" + regno + "' and AcademicYear='"+ HttpContext.Current.Session["AcademicID"].ToString() +"'";
-            utl.ExecuteQuery(sqlstr);
 
-            sqlstr = "update s_studentbus set isactive='0' where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-            utl.ExecuteQuery(sqlstr);
-
-
-            sqlstr = "update s_studentpromotion set busfacility='N' where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-            utl.ExecuteQuery(sqlstr);
-
-            
-        }
-        else if (type == "Hostel")
-        {
-            sqlstr = "update s_studentinfo set hostel='N' where regno='" + regno + "' and AcademicYear='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-            utl.ExecuteQuery(sqlstr);
-
-            sqlstr = "update s_studenthostel set isactive='0' where regno='" + regno + "' and AcademicYear='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-            utl.ExecuteQuery(sqlstr);
-
-            sqlstr = "update s_studentpromotion set hostel='N' where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-            utl.ExecuteQuery(sqlstr);
-        }
         if (canceldate != "")
         {
             string[] myDateTimeString = canceldate.Split('/');
             canceldate = "'" + myDateTimeString[2] + "/" + myDateTimeString[1] + "/" + myDateTimeString[0] + "'";
         }
-        strQueryStatus = utl.ExecuteQuery("sp_UpdateCancellation " + regno + ",'" + type + "','" + reason + "'," + canceldate + ",'" + Userid + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
-        if (strQueryStatus == "")
-            return "Deleted";
+
+        string schooltype = utl.ExecuteScalar("select schooltype from s_studentinfo where regno='" + regno + "' and AcademicYear='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        if (schooltype.ToUpper() == "ALA")
+        {
+            strQueryStatus = utl.ExecuteQuery("sp_UpdateCancellation " + regno + ",'" + type + "','" + reason + "'," + canceldate + ",'" + Userid + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+            utl.ExecuteCBSEQuery("update s_studentinfo set SportStudent=0, Active='C' where regno='" + regno + "' and AcademicYear='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        }
         else
-            return "Delete Failed";
+            strQueryStatus = utl.ExecuteQuery("sp_UpdateCancellation " + regno + ",'" + type + "','" + reason + "'," + canceldate + ",'" + Userid + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+
+
+        if (strQueryStatus == "")
+            return "Cancelled";
+        else
+            return "Cancel Failed";
     }
 }

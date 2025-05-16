@@ -214,7 +214,7 @@ public partial class Staffs_StaffAttendance : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
     [WebMethod]

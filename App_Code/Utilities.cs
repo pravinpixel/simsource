@@ -16,9 +16,15 @@ using System.Net.Mail;
 public class Utilities
 {
     string strConnection = null;
+<<<<<<< HEAD
+    string strSIMConnection = null;
+    string strCBSEConnection = null;
+=======
     string strASSConnection = null;
     string strSIMAppConnection = null;
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
     string strConnectionSMS = null;
+    string strSIMAppConnection = null;
     public SqlConnection sqlCon = null;
     public SqlConnection sqlConSMS = null;
     SqlDataAdapter da = null;
@@ -30,15 +36,30 @@ public class Utilities
 
     public Utilities()
     {
+<<<<<<< HEAD
+=======
         strASSConnection = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         sqlCon = new SqlConnection(strASSConnection);
         sqlCon.Open();
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         strSIMAppConnection = ConfigurationManager.AppSettings["SIMAPPConnection"].ToString();
         sqlCon = new SqlConnection(strSIMAppConnection);
         sqlCon.Open();
 
+<<<<<<< HEAD
+        strConnection = ConfigurationManager.AppSettings["ASSConnection"].ToString();
+        sqlCon = new SqlConnection(strConnection);
+        sqlCon.Open();
+
+        strSIMConnection = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        sqlCon = new SqlConnection(strConnection);
+        sqlCon.Open();
+
+        strCBSEConnection = ConfigurationManager.AppSettings["SIMCBSEConnection"].ToString();
+=======
         strConnection = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         sqlCon = new SqlConnection(strConnection);
         sqlCon.Open();
 
@@ -131,8 +152,288 @@ public class Utilities
         return ds;
     }
 
+<<<<<<< HEAD
+
+    public DataSet GetSIMDataset(string strQry)
+    {
+        DataSet ds = new DataSet();
+        using (SqlConnection sqlCon = new SqlConnection(strSIMConnection))
+        {
+            sqlCon.Open();
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                {
+                    try
+                    {
+                        da.Fill(ds);
+                    }
+                    catch
+                    { }
+                }
+            }
+        }
+        return ds;
+    }
+
+    public DataSet GetSIMCBSEDataset(string strQry)
+    {
+        DataSet ds = new DataSet();
+        using (SqlConnection sqlCon = new SqlConnection(strCBSEConnection))
+        {
+            sqlCon.Open();
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                {
+                    try
+                    {
+                        da.Fill(ds);
+                    }
+                    catch
+                    { }
+                }
+            }
+        }
+        return ds;
+    }
+
+    public DataSet GetDatasetTable(string strQry, string Type, string tablename)
+    {
+        DataSet ds = new DataSet();
+        if (Type=="ahss")
+        {
+            using (SqlConnection sqlCon = new SqlConnection(strSIMConnection))
+            {
+                sqlCon.Open();
+                using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+                {
+                    sqlCmd.CommandTimeout = 6000;
+                    using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                    {
+                        try
+                        {
+                            da.Fill(ds, tablename);
+                        }
+                        catch
+                        { }
+                    }
+                }
+            }
+            
+        }
+        else if (Type == "ala")
+        {
+            using (SqlConnection sqlCon = new SqlConnection(strCBSEConnection))
+            {
+                sqlCon.Open();
+                using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+                {
+                    sqlCmd.CommandTimeout = 6000;
+                    using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                    {
+                        try
+                        {
+                            da.Fill(ds, tablename);
+                        }
+                        catch
+                        { }
+                    }
+                }
+            }
+        }
+        else
+        {
+            using (SqlConnection sqlCon = new SqlConnection(strConnection))
+            {
+                sqlCon.Open();
+                using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+                {
+                    sqlCmd.CommandTimeout = 6000;
+                    using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                    {
+                        try
+                        {
+                            da.Fill(ds, tablename);
+                        }
+                        catch
+                        { }
+                    }
+                }
+            }
+        }
+       
+        return ds;
+    }
+
+    public DataTable GetAHSSDataTable(string strQry)
+    {
+        DataTable dt = new DataTable();
+        using (SqlConnection sqlCon = new SqlConnection(strCBSEConnection))
+        {
+            sqlCon.Open();
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                {
+                    try
+                    {
+                        da.Fill(dt);
+                    }
+                    catch
+                    { }
+                }
+            }
+
+        }
+
+        return dt;
+    }
+
+    public DataTable GetCBSEDataTable(string strQry)
+    {
+        DataTable dt = new DataTable();
+        using (SqlConnection sqlCon = new SqlConnection(strCBSEConnection))
+        {
+            sqlCon.Open();
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                {
+                    try
+                    {
+                        da.Fill(dt);
+                    }
+                    catch
+                    { }
+                }
+            }
+
+        }
+
+        return dt;
+    }
+
+    public DataSet GetAPPDataset(string strQry)
+    {
+        DataSet ds = new DataSet();
+        using (SqlConnection sqlCon = new SqlConnection(strSIMAppConnection))
+        {
+            sqlCon.Open();
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                {
+                    try
+                    {
+                        da.Fill(ds);
+                    }
+                    catch
+                    { }
+                }
+            }
+        }
+        return ds;
+    }
+    public DataTable GetAPPDataTable(string strQry)
+    {
+        DataTable dt = new DataTable();
+        using (SqlConnection sqlCon = new SqlConnection(strSIMAppConnection))
+        {
+            sqlCon.Open();
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
+                {
+                    try
+                    {
+                        da.Fill(dt);
+                    }
+                    catch
+                    { }
+                }
+            }
+
+        }
+
+        return dt;
+    }
+
+    public string ExecuteAPPQuery(string strQry)
+    {
+        string strError = string.Empty;
+        DataSet ds = new DataSet();
+        using (SqlConnection sqlCon = new SqlConnection(strSIMAppConnection))
+        {
+            sqlCon.Open();
+
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                try
+                {
+                    sqlCmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    strError = ex.Message.ToString();
+                    try
+                    {
+
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+        }
+        return strError;
+    }
+
+    public string ExecuteAPPScalar(string strQry)
+    {
+        string strError = string.Empty;
+
+        string strVal = string.Empty;
+
+        DataSet ds = new DataSet();
+
+        using (SqlConnection sqlCon = new SqlConnection(strSIMAppConnection))
+        {
+            sqlCon.Open();
+
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+
+                sqlCmd.CommandTimeout = 6000;
+
+                try
+                {
+                    strVal = Convert.ToString(sqlCmd.ExecuteScalar());
+                }
+
+                catch
+                {
+
+                }
+            }
+        }
+
+        return strVal;
+
+    }
+=======
    
 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
     public DataSet GetDatasetTable(string strQry, string tablename)
     {
@@ -142,7 +443,7 @@ public class Utilities
             sqlCon.Open();
             using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
             {
-                sqlCmd.CommandTimeout = 6000;
+                sqlCmd.CommandTimeout = 3000;
                 using (SqlDataAdapter da = new SqlDataAdapter(sqlCmd))
                 {
                     try
@@ -353,12 +654,21 @@ public class Utilities
         return strError;
     }
 
+<<<<<<< HEAD
+
+    public string ExecuteAHSSQuery(string strQry)
+    {
+        string strError = string.Empty;
+        DataSet ds = new DataSet();
+        using (SqlConnection sqlCon = new SqlConnection(strSIMConnection))
+=======
    
     public string ExecuteASSQuery(string strQry)
     {
         string strError = string.Empty;
         DataSet ds = new DataSet();
         using (SqlConnection sqlCon = new SqlConnection(strASSConnection))
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         {
             sqlCon.Open();
 
@@ -386,6 +696,43 @@ public class Utilities
         }
         return strError;
     }
+<<<<<<< HEAD
+
+    public string ExecuteCBSEQuery(string strQry)
+    {
+        string strError = string.Empty;
+        DataSet ds = new DataSet();
+        using (SqlConnection sqlCon = new SqlConnection(strCBSEConnection))
+        {
+            sqlCon.Open();
+
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+                sqlCmd.CommandTimeout = 6000;
+                try
+                {
+                    sqlCmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    strError = ex.Message.ToString();
+                    try
+                    {
+
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+        }
+        return strError;
+    }
+
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
     public string ExecuteSMSQuery(string strQry)
     {
         string strError = string.Empty;
@@ -585,6 +932,73 @@ public class Utilities
     }
 
 
+    public string ExecuteCBSEScalar(string strQry)
+    {
+        string strError = string.Empty;
+
+        string strVal = string.Empty;
+
+        DataSet ds = new DataSet();
+
+        using (SqlConnection sqlCon = new SqlConnection(strCBSEConnection))
+        {
+            sqlCon.Open();
+
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+
+                sqlCmd.CommandTimeout = 6000;
+
+                try
+                {
+                    strVal = Convert.ToString(sqlCmd.ExecuteScalar());
+                }
+
+                catch
+                {
+
+                }
+            }
+        }
+
+        return strVal;
+
+    }
+
+    public string ExecuteCBSEScalarValue(string strQry)
+    {
+        string strError = string.Empty;
+
+        string strVal = string.Empty;
+
+        DataSet ds = new DataSet();
+
+        using (SqlConnection sqlCon = new SqlConnection(strCBSEConnection))
+        {
+
+            sqlCon.Open();
+
+            using (SqlCommand sqlCmd = new SqlCommand(strQry, sqlCon))
+            {
+
+                sqlCmd.CommandTimeout = 6000;
+
+                try
+                {
+                    strVal = Convert.ToString(sqlCmd.ExecuteScalar());
+                }
+
+                catch
+                {
+
+                }
+            }
+
+        }
+        return strVal;
+
+    }
+
     public int GetCounts(string strQ)
     {
 
@@ -721,7 +1135,7 @@ public class Utilities
 
     public DataSet GetData(SqlCommand cmd, int pageIndex, string tableName, int PageSize)
     {
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -760,7 +1174,7 @@ public class Utilities
 
     public DataSet GetDataWithOutPager(SqlCommand cmd, string tableName)
     {
-        string strConnString = System.Configuration.ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = System.Configuration.ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

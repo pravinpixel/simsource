@@ -93,7 +93,7 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
     [WebMethod]
     public static string BindAcademicYearMonth(string regNo, string academicId, string editPrm, string delPrm, string btype)
     {
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
 
         StringBuilder str = new StringBuilder();
         DataSet dsManageFees = new DataSet();
@@ -498,8 +498,11 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                 string PaidMonthName = "";
                 string cashmode = "";
                 string cardmode = "";
+<<<<<<< HEAD
+=======
                 string remarks = "";
                 string paymodeHTML = "";
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 if (PaidMonthRow.Length > 1)
                     PaidMonthName = PaidMonthRow[0]["monthname"].ToString() + "," + PaidMonthRow[1]["monthname"].ToString();
                 else
@@ -613,8 +616,8 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
                     }
                     feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
-                    feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
-                                                    <td class='tdbrd'>Rs. " + cmd.Parameters["@FeesTotalAmt"].Value.ToString() + "</td></tr></table>");
+                    feePOPUPHeadDetails.Append(@"<tr style='Font-size:16px'><td height='30' class='tdbrd'>Total </td>
+                                                    <td class='tdbrd'>Rs. " + feesHeadAmt.ToString() + "</td></tr></table>");
 
                 }
 
@@ -1223,14 +1226,23 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                         schoolConcessionTotal += concession;
                     }
                     feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
+<<<<<<< HEAD
+                    feePOPUPHeadDetails.Append(@"<tr style='font-size:16px'><td height='30' class='tdbrd'>Total </td>
+                                                    <td class='tdbrd'>Rs. " + Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString())) + "</td></tr></table>");
+=======
                     feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
                                                     <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString())) + "</td></tr></table>");
 
                     schooltotal = Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString()));
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                 }
 
                 Utilities utl = new Utilities();
+<<<<<<< HEAD
+
+               string old_academicID= utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+=======
                 decimal ICTypetotal = 0;
                 //ICTYPE starts
 
@@ -1402,6 +1414,7 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                 DataTable dtadv = new DataTable();
 
                 string old_academicID = utl.ExecuteScalar("select top 1 academicID from m_academicyear where isactive=0 order by academicID desc ");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                 dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill,case when Billrefno is null then BillNo else Billrefno end as ReceiptNo from f_studentbillmaster a 
 	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
@@ -2059,16 +2072,33 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                     }
 
                     str.Append("<tr class='billcont'><td height='45' style='border-top: 1px solid #000;border-right: 1px solid #000;'>TOTAL</td><td style='border-top:1px solid #000;'><div align='center'>" + dsPrint.Tables[0].Rows[0]["TotalAmount"].ToString() + "</div></td></tr></table></td></tr><br/><br/>");
+<<<<<<< HEAD
+                    
+                     DataTable dtadv=new DataTable();
+                     string old_academicID = utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+                     dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
+=======
 
                     DataTable dtadv = new DataTable();
                     string old_academicID = utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
                     dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
 	  inner join s_studentinfo info on info.RegNo=b.RegNo
 	  inner join f_studentbills d on d.BillId=a.BillId and d.isactive=1
 	  inner join m_feescategoryhead e on e.FeesCatHeadID=d.FeesCatHeadId and e.AcademicId=b.AcademicId
 	  inner join m_feeshead f on f.FeesHeadId=e.FeesHeadId and f.FeesHeadCode='A'
       WHERE  info.regno = '" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + "  and b.AcademicId= '" + old_academicID + "' order by a.billID desc");
+<<<<<<< HEAD
+              if (dtadv != null && dtadv.Rows.Count > 0)
+              {
+                  str.Append("<tr><td colspan='2' class='billcont'>Remarks:</td></tr>");
+                  str.Append("<tr><td colspan='2' class='billcont'>Advance Received: " + dtadv.Rows[0]["TotalAmount"].ToString() + "</td></tr>");
+                  str.Append("<tr><td colspan='2' class='billcont'>Bill No: " + dtadv.Rows[0]["BillNo"].ToString() + "</td></tr>");
+                  str.Append("<tr><td colspan='2' class='billcont'>Bill Date: " + dtadv.Rows[0]["datebill"].ToString() + "</td></tr>");
+                  str.Append("<tr><td></td></tr>");
+              }
+=======
                     if (dtadv != null && dtadv.Rows.Count > 0)
                     {
                         str.Append("<tr><td colspan='2' class='billcont'>Remarks:</td></tr>");
@@ -2077,6 +2107,7 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                         str.Append("<tr><td colspan='2' class='billcont'>Bill Date: " + dtadv.Rows[0]["datebill"].ToString() + "</td></tr>");
                         str.Append("<tr><td></td></tr>");
                     }
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                     str.Append("<tr ><td colspan='2' class='billcont'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "<br/><br/></td></tr><tr><td colspan='2' class='billcont'>Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:5px;border-left: 1px dashed #000000;border-right: 1px dashed #000000;'><table width='300' border='0' align='center' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;'>" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='billcont'><U>DELIVERY SLIP - BOOKS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%' style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td><td height='50' style='padding-right:10px;' align='right'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td></tr><tr class='billcont'><td height='50'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td colspan='2' align='center' valign='top' class='barcodeimage'><img style='max-width:inherit;' width='201' src= '../Students/Barcodes/" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + ".JPG' /></td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> &nbsp;Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:0px;'><table width='300' border='0' align='right' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;' >" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' class='billcont' align='center' colspan='2'><U>DELIVERY SLIP - UNIFORMS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%'style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td><td height='50' style='padding-right:10px;' align='right'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td></tr><tr class='billcont'><td height='50'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td colspan='2' align='center' valign='top' class='barcodeimage'><img style='max-width:inherit;' width='201' src= '../Students/Barcodes/" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + ".JPG' /></td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td></tr></table>");
 

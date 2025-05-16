@@ -62,7 +62,7 @@ public partial class Students_AdmissionWithdrawal : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "[sp_GetStudentInfo] null, " + Regno + "," + AdminNo + ",'" + name + "','" + className + "','" + section + "'";
-        return utl.GetDatasetTable(query, "StudInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudInfo").GetXml();
     }
     public void GetModuleId(string path, string userId)
     {
@@ -84,7 +84,7 @@ public partial class Students_AdmissionWithdrawal : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 

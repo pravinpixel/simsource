@@ -367,7 +367,7 @@ public partial class Masters_GenerateFees : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetFeesCatHead " + feescatheadid + "," + feesheadid + "," + schooltypeid + "," + classid + "," + feescategoryid + "," + academicid + "";
-        return utl.GetDatasetTable(query, "FeesCatHead").GetXml();
+        return utl.GetDatasetTable(query,  "others", "FeesCatHead").GetXml();
     }
     [WebMethod]
     public static string GetUnBindFees(int schooltypeid, int classid, int feescategoryid, int academicid)
@@ -375,7 +375,7 @@ public partial class Masters_GenerateFees : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetUnBindFeesHead " + schooltypeid + "," + classid + "," + feescategoryid + "," + academicid + "";
-        return utl.GetDatasetTable(query, "UnBindFeesHead").GetXml();
+        return utl.GetDatasetTable(query,  "others", "UnBindFeesHead").GetXml();
     }
 
 
@@ -385,6 +385,6 @@ public partial class Masters_GenerateFees : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "select * from dbo.[fn_getMonth]( '" + startdate + "','" + enddate + "')";
-        return utl.GetDatasetTable(query, "Months").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Months").GetXml();
     }
 }

@@ -758,18 +758,18 @@
                         </td>
                     </tr>
                                                          
-                    <tr>
+                    <tr style="display:none;">
                         <td height="30" class="formsubheading">
                             <span>Billing Type</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="display:none;">
                         <td height="30" class="formsubheading">
                             <span>Academic Year Fee Structure</span>
                         </td>
                     </tr>
                     
-                    <tr>
+                    <tr style="display:none;" >
                         <td>
                             <label>
                                 <input type="radio" checked="checked" onkeydown="GetAcademicDetails();"  name="btype" id="rbtnMonth" value="Single" />Single
@@ -783,7 +783,7 @@
                         <td>&nbsp;</td>
                     </tr>                    
 
-<tr>
+<tr style="display:none;">
     <td id="co_curricular_payment_details"> 
          Co-Curricular Details - <a class="creat-link" href="javascript:View_dv_cocurricular_details();"> View </a>
                             

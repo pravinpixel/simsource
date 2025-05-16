@@ -53,7 +53,7 @@ public partial class GatePass_GenerateGatePass : System.Web.UI.Page
         Utilities utl = new Utilities();
         string sqlstr = "exec SP_GETLISTFORGATEPASS '" + type + "','" + id + "'";
         DataSet ds = new DataSet();
-        ds = utl.GetDatasetTable(sqlstr, "Pass");
+        ds = utl.GetDatasetTable(sqlstr, "Others", "Pass");
         return ds.GetXml();
     }
 
@@ -76,12 +76,12 @@ public partial class GatePass_GenerateGatePass : System.Web.UI.Page
         if (sqlstr != "")
         {
             DataSet ds = new DataSet();
-            ds = utl.GetDatasetTable(sqlstr, "Pass");
+            ds = utl.GetDatasetTable(sqlstr, "Others", "Pass");
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 sqlstr = "exec SP_ViewGATEPASSList '" + ds.Tables[0].Rows[0]["Type"].ToString() + "','','" + GatePassID + "','" + HttpContext.Current.Session["AcademicID"] + "'";
                 DataSet dsnew = new DataSet();
-                dsnew = utl.GetDatasetTable(sqlstr, "Pass");
+                dsnew = utl.GetDatasetTable(sqlstr, "Others", "Pass");
                 if (dsnew != null && ds.Tables.Count > 0 && dsnew.Tables[0].Rows.Count > 0)
                 {
                     printGatePass(dsnew.Tables[0].Rows[0]["Type"].ToString(), dsnew.Tables[0].Rows[0]["Name"].ToString(), Regex.Replace(dsnew.Tables[0].Rows[0]["BelongsTo"].ToString(), "&amp;", "&"), dsnew.Tables[0].Rows[0]["ID"].ToString(), dsnew.Tables[0].Rows[0]["FormatedDate"].ToString(), dsnew.Tables[0].Rows[0]["InTime"].ToString() + " - " + dsnew.Tables[0].Rows[0]["OutTime"].ToString(), dsnew.Tables[0].Rows[0]["Reason"].ToString());
@@ -102,13 +102,13 @@ public partial class GatePass_GenerateGatePass : System.Web.UI.Page
         if (type=="student")
         {
             sqlstr = "select * from m_gatepass a inner join vw_getstudent b on a.regno=b.regno where GatePassId='" + GatePassID + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"] + "'";
-          
-            ds = utl.GetDatasetTable(sqlstr, "Pass");
+
+            ds = utl.GetDatasetTable(sqlstr, "Others", "Pass");
           
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 sqlstr = "exec SP_ViewGATEPASSList '" + ds.Tables[0].Rows[0]["Type"].ToString() + "','','" + GatePassID + "','" + HttpContext.Current.Session["AcademicID"] + "'";
-                dsnew = utl.GetDatasetTable(sqlstr, "ViewPass");
+                dsnew = utl.GetDatasetTable(sqlstr, "Others", "ViewPass");
 
             }
         }
@@ -116,12 +116,12 @@ public partial class GatePass_GenerateGatePass : System.Web.UI.Page
         {
             sqlstr = "select * from m_gatepass a inner join vw_getstaff b on a.staffid=b.staffid where GatePassId='" + GatePassID + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"] + "'";
 
-            ds = utl.GetDatasetTable(sqlstr, "Pass");
+            ds = utl.GetDatasetTable(sqlstr, "Others", "Pass");
 
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 sqlstr = "exec SP_ViewGATEPASSList '" + ds.Tables[0].Rows[0]["Type"].ToString() + "','','" + GatePassID + "','" + HttpContext.Current.Session["AcademicID"] + "'";
-                dsnew = utl.GetDatasetTable(sqlstr, "ViewPass");
+                dsnew = utl.GetDatasetTable(sqlstr, "Others", "ViewPass");
 
             }
         }
@@ -134,7 +134,7 @@ public partial class GatePass_GenerateGatePass : System.Web.UI.Page
         Utilities utl = new Utilities();
         string sqlstr = "exec SP_ViewGATEPASSList '" + type + "','" + id + "','','" + HttpContext.Current.Session["AcademicID"] + "'"; ;
         DataSet ds = new DataSet();
-        ds = utl.GetDatasetTable(sqlstr, "Pass");
+        ds = utl.GetDatasetTable(sqlstr, "Others", "Pass");
         return ds.GetXml();
     }
     [WebMethod]
@@ -184,7 +184,7 @@ public partial class GatePass_GenerateGatePass : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "Select isnull(count(GatePassId)+ 1,1)as  GatePassId from m_gatepass where AcademicID='" + HttpContext.Current.Session["AcademicID"] + "' and isactive=1";
-        return utl.GetDatasetTable(query,"GatePassIDs").GetXml();
+        return utl.GetDatasetTable(query,"others",  "GatePassIDs").GetXml();
 
     }
 

@@ -63,7 +63,7 @@ public partial class Students_StudentCertificateEntry : System.Web.UI.Page
         string query = "";
         query = "sp_GetStudentInfo ''," + regno + "";
 
-        return utl.GetDatasetTable(query, "StudentInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentInfo").GetXml();
     }
 
     [WebMethod]
@@ -74,7 +74,7 @@ public partial class Students_StudentCertificateEntry : System.Web.UI.Page
         string query = "";
         query = "sp_GetStudentInfo " + studentid + "";
 
-        return utl.GetDatasetTable(query, "StudentInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentInfo").GetXml();
     }
 
     private string GetInfo(string id, string compfor, string acdid)
@@ -213,7 +213,7 @@ public partial class Students_StudentCertificateEntry : System.Web.UI.Page
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Convert.ToInt32(HttpContext.Current.Session["UserId"]) + "";
 
 
-        ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,  "others", "ModuleMenusByPath");
         return ds.GetXml();
     }
 
@@ -280,7 +280,7 @@ public partial class Students_StudentCertificateEntry : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "Select isnull(Max(SCId)+ 1,1)as  SerialNo from s_Certificate";
-        return utl.GetDatasetTable(query, "SCIDs").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SCIDs").GetXml();
 
     }
 

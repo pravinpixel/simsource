@@ -12,7 +12,11 @@ size:11.69in8.5in;
         }
         
 img{display:block !important;}
+<<<<<<< HEAD
+.pagebreakhere {display: block; page-break-before: always;}
+=======
 /*.pagebreakhere {display: block; page-break-before: always;}*/
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
 
 .terms-bg {

@@ -55,35 +55,6 @@ public partial class StudentInfo : System.Web.UI.Page
                 PostedFile.SaveAs(Server.MapPath("~/Students/Attachments/" + id + "_" + MaxId + extension));
             }
 
-            if (Request.Files["SportAttachment"] != null && Request.Files["SportAttachment"].ContentLength > 0 && Request.Form["StudenInfoId"] != null && Request.Form["StudenInfoId"].Length > 0)
-            {
-                HttpPostedFile PostedFile = Request.Files["SportAttachment"];
-                string id = Request.Form["StudenInfoId"].ToString();
-                string extension = PostedFile.FileName.Substring(PostedFile.FileName.LastIndexOf('.'));
-                PostedFile.SaveAs(Server.MapPath("~/Students/SportAttachment/" + id + extension));
-            }
-            if (Request.Files["AwardAttachment"] != null && Request.Files["AwardAttachment"].ContentLength > 0 && Request.Form["StudenInfoId"] != null && Request.Form["StudenInfoId"].Length > 0)
-            {
-                HttpPostedFile PostedFile = Request.Files["AwardAttachment"];
-                string id = Request.Form["StudenInfoId"].ToString();
-                string extension = PostedFile.FileName.Substring(PostedFile.FileName.LastIndexOf('.'));
-                PostedFile.SaveAs(Server.MapPath("~/Students/AwardAttachment/" + id + extension));
-            }
-            if (Request.Files["AbledAttachment"] != null && Request.Files["AbledAttachment"].ContentLength > 0 && Request.Form["StudenInfoId"] != null && Request.Form["StudenInfoId"].Length > 0)
-            {
-                HttpPostedFile PostedFile = Request.Files["AbledAttachment"];
-                string id = Request.Form["StudenInfoId"].ToString();
-                string extension = PostedFile.FileName.Substring(PostedFile.FileName.LastIndexOf('.'));
-                PostedFile.SaveAs(Server.MapPath("~/Students/AbledAttachment/" + id + extension));
-            }
-            if (Request.Files["AllergicAttachment"] != null && Request.Files["AllergicAttachment"].ContentLength > 0 && Request.Form["StudenInfoId"] != null && Request.Form["StudenInfoId"].Length > 0)
-            {
-                HttpPostedFile PostedFile = Request.Files["AllergicAttachment"];
-                string id = Request.Form["StudenInfoId"].ToString();
-                string extension = PostedFile.FileName.Substring(PostedFile.FileName.LastIndexOf('.'));
-                PostedFile.SaveAs(Server.MapPath("~/Students/AllergicAttachment/" + id + extension));
-            }
-
             return;
         }
 
@@ -109,21 +80,8 @@ public partial class StudentInfo : System.Web.UI.Page
             Userid = Convert.ToInt32(Session["UserId"]);
             hfUserId.Value = Userid.ToString();
             if (Request.Params["StudentID"] != null)
-            {
                 hfStudentInfoID.Value = Request.Params["StudentID"].ToString();
 
-                DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where StudentID='" + hfStudentInfoID.Value + "' and ASSNO is not null");
-                if (dtreg != null && dtreg.Rows.Count > 0)
-                {
-                    utl.ExecuteCBSEQuery("update s_studentinfo set ASSNO='" + dtreg.Rows[0]["ASSNO"].ToString() + "' where (ASSNO is null or ASSNO='') and RegNo='" + dtreg.Rows[0]["Regno"].ToString() + "'");
-
-                    Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-                }
-                else
-                {
-                    Session["SchoolType"] = "";
-                }
-            }
             else
                 hfStudentInfoID.Value = "";
 
@@ -321,7 +279,7 @@ public partial class StudentInfo : System.Web.UI.Page
             query = "sp_getfeesAmount '" + dt.Rows[0]["ClassID"] + "," + "''" + "," + "''" + "," + HttpContext.Current.Session["AcademicID"] + "";
 
         }
-        return utl.GetDatasetTable(query, "others", "FeesAmt").GetXml();
+        return utl.GetDatasetTable(query,"others",  "FeesAmt").GetXml();
 
     }
 
@@ -342,7 +300,7 @@ public partial class StudentInfo : System.Web.UI.Page
         {
             query = "sp_GetPromoStudentBySection '" + Class + "','" + Section + "','" + HttpContext.Current.Session["AcademicID"] + "'";
         }
-        return utl.GetDatasetTable(query, "others", "StudentBySection").GetXml();
+        return utl.GetDatasetTable(query,"others",  "StudentBySection").GetXml();
 
     }
 
@@ -556,7 +514,7 @@ public partial class StudentInfo : System.Web.UI.Page
         DataTable dt = new DataTable();
         dt = utl.GetDataTable(sqlstr);
 
-
+    
 
         for (int i = Convert.ToInt32(System.DateTime.Now.AddYears(5).ToString("yyyy")); i >= 1950; i--)
         {
@@ -768,15 +726,6 @@ public partial class StudentInfo : System.Web.UI.Page
             dummy.Rows.Add();
             dgActivities.DataSource = dummy;
             dgActivities.DataBind();
-
-            dummy = new DataTable();
-            dummy.Columns.Add("ForMonth");
-            dummy.Columns.Add("FeesHeadName");
-            dummy.Columns.Add("Amount");
-            dummy.Columns.Add("FeesID");
-            dummy.Rows.Add();
-            dgsportsfees.DataSource = dummy;
-            dgsportsfees.DataBind();
         }
     }
     private void BindFamilyRelationship()
@@ -1122,23 +1071,13 @@ public partial class StudentInfo : System.Web.UI.Page
             }
         }
     }
-
-    [WebMethod]
-    public static string BindSportFees(int ClassID, string Status)
-    {
-        Utilities utl = new Utilities();
-        DataSet ds = new DataSet();
-        string query = "sp_getSportfeesAmount '" + ClassID + "','" + Status + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-        return utl.GetDatasetTable(query, "others", "SportFees").GetXml();
-    }
-
     [WebMethod]
     public static string GetRoomByBlock(string blockid, string hostelid)
     {
 
         Utilities utl = new Utilities();
         string query = "[sp_GetRoom] ''," + hostelid + "," + blockid + "";
-        return utl.GetDatasetTable(query, "others", "RoomByBlock").GetXml();
+        return utl.GetDatasetTable(query,"others",  "RoomByBlock").GetXml();
 
 
     }
@@ -1148,7 +1087,7 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "sp_GetBlockByHostel " + HostelID + "";
-        return utl.GetDatasetTable(query, "others", "BlockByHostel").GetXml();
+        return utl.GetDatasetTable(query,"others",  "BlockByHostel").GetXml();
     }
 
     [WebMethod]
@@ -1157,7 +1096,7 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "others", "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,"others",  "SectionByClass").GetXml();
 
     }
 
@@ -1167,7 +1106,7 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "others", "AdSectionByAdClass").GetXml();
+        return utl.GetDatasetTable(query,"others",  "AdSectionByAdClass").GetXml();
 
     }
     [WebMethod]
@@ -1176,7 +1115,7 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "others", "PresentSectionByPresentClass").GetXml();
+        return utl.GetDatasetTable(query,"others",  "PresentSectionByPresentClass").GetXml();
 
     }
 
@@ -1187,7 +1126,7 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetBusRoute '" + routecode + "','" + regno + "'";
-        return utl.GetDatasetTable(query, "others", "BusRoutes").GetXml();
+        return utl.GetDatasetTable(query,"others",  "BusRoutes").GetXml();
     }
     [WebMethod]
     public static string GetHostelInfo(int regno)
@@ -1212,30 +1151,7 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-<<<<<<< HEAD
-        string query = "sp_GetStudentInfo " + studentid + "";
-=======
-        string sqlstr = "select isactive from m_academicyear where AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-        string Isactive = utl.ExecuteScalar(sqlstr);
-        string query = "";
-        if (Isactive == "True")
-        {
-            query = "sp_GetStudentInfo " + studentid + "";
-        }
-        else
-        {
-            string active = utl.ExecuteScalar("select active from s_studentinfo where StudentID='" + studentid + "'");
-            if (active=="F")
-            {
-                query = "sp_GetStudentInfo " + studentid + "";
-            }
-            else
-            {
-                query = "sp_GetPromoStudentInfo " + HttpContext.Current.Session["AcademicID"] + ",'" + studentid + "'";
-            }
-           
-        }
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
+        string query = "sp_GetStudentInfo "+ studentid  + "";
 
         return utl.GetDatasetTable(query, "", "StudentInfo").GetXml();
     }
@@ -1257,15 +1173,11 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Userid + "";
-        ds = utl.GetDatasetTable(query, "others", "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,"others",  "ModuleMenusByPath");
         return ds.GetXml();
     }
     [WebMethod]
-<<<<<<< HEAD
-    public static string SaveStudentInfo(string id, string SearchRegno, string studenttype, string studentname, string classname, string classid, string sectionname, string gender, string dob, string doj, string religion, string mtongue, string community, string caste, string aadhaar, string fatheraadhaar, string motheraadhaar, string tempaddress, string peraddress, string email, string phoneno, string smartcard, string rationcard, string photopath, string photofile, string sslcno, string sslcyear, string hscno, string hscyear, string suid, string tamilname, string academicyear, string sstatus, string userid)
-=======
-    public static string SaveStudentInfo(string id, string studentname, string classname, string classid, string sectionname, string gender, string dob, string doj, string religion, string mtongue, string community, string caste, string aadhaar, string fatheraadhaar, string motheraadhaar, string tempaddress, string peraddress, string email, string phoneno, string smartcard, string rationcard, string photopath, string photofile, string sslcno, string sslcyear, string hscno, string hscyear, string suid, string tamilname, string academicyear, string sstatus, string IcStudent, string IcType, string userid)
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
+    public static string SaveStudentInfo(string id, string SearchRegno, string studenttype, string studentname, string classname, string classid, string sectionname, string gender, string dob, string doj, string religion, string mtongue, string community, string caste, string aadhaar, string tempaddress, string peraddress, string email, string phoneno, string smartcard, string rationcard, string photopath, string photofile, string sslcno, string sslcyear, string hscno, string hscyear, string suid, string tamilname, string academicyear, string sstatus, string userid)
     {
 
         Utilities utl = new Utilities();
@@ -1289,36 +1201,21 @@ public partial class StudentInfo : System.Web.UI.Page
         if (!string.IsNullOrEmpty(id) && id != "0")
         {
 
-<<<<<<< HEAD
-            sqlstr = "sp_UpdateStudentInfo " + "'" + id + "','" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + fatheraadhaar + "','" + motheraadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + userid + "'";
-=======
-            sqlstr = "sp_UpdateStudentInfo " + "'" + id + "','" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + fatheraadhaar + "','" + motheraadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + academicyear + "','" + userid + "'";
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
+            sqlstr = "sp_UpdateStudentInfo " + "'" + id + "','" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + userid + "'";
             strQueryStatus = utl.ExecuteQuery(sqlstr);
-
             if (photofile != "")
             {
                 string extension = photofile.Substring(photofile.LastIndexOf('.'));
                 sqlstr = "select regno from  s_studentinfo where studentid='" + id + "'";
-<<<<<<< HEAD
                 regno = utl.ExecuteScalar(sqlstr);
-                sqlstr = "update s_studentinfo set photofile= convert(varchar,'" + regno + extension + "'),Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
-=======
-                string regno = utl.ExecuteScalar(sqlstr);
-                sqlstr = "update s_studentinfo set photofile= convert(varchar,'" + regno + extension + "'),Active='" + sstatus + "',student_uid='" + suid + "',tamilname=N'" + tamilname + "',IsICStudent= '" + IcStudent + "',IcType= '" + IcType + "' where regno='" + regno + "'";
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
+                sqlstr = "update s_studentinfo set photofile= convert(varchar,'" + regno + extension + "'),Active='" + sstatus + "',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
                 strQueryStatus = utl.ExecuteScalar(sqlstr);
             }
             else
             {
                 sqlstr = "select regno from  s_studentinfo where studentid='" + id + "'";
-<<<<<<< HEAD
                 regno = utl.ExecuteScalar(sqlstr);
-                sqlstr = "update s_studentinfo set Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
-=======
-                string regno = utl.ExecuteScalar(sqlstr);
-                sqlstr = "update s_studentinfo set student_uid='" + suid + "',tamilname=N'" + tamilname + "',IsICStudent= '" + IcStudent + "',IcType= '" + IcType + "' where regno='" + regno + "'";
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
+                sqlstr = "update s_studentinfo set Active='" + sstatus + "',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
                 strQueryStatus = utl.ExecuteScalar(sqlstr);
             }
 
@@ -1332,24 +1229,12 @@ public partial class StudentInfo : System.Web.UI.Page
         }
         else
         {
-<<<<<<< HEAD
             sqlstr = "select studentid from s_studentinfo where regno='" + SearchRegno + "'";
             string studentid = utl.ExecuteScalar(sqlstr);
             if (studentid != "")
             {
-=======
-            sqlstr = "sp_InsertStudentInfo " + "'" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + fatheraadhaar + "','" + motheraadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + academicyear + "','" + userid + "'";
-            strQueryStatus = utl.ExecuteScalar(sqlstr);
-            string regno = strQueryStatus;
-            // sqlstr = "select studentid from s_studentinfo where regno='" + regno + "'";
-            //string studentid = utl.ExecuteScalar(sqlstr);
-            //string returnVal = "";
-            //if (sectionname == "")
-            //{
-            //    returnVal = utl.ExecuteScalar("exec sp_StudAdmissionApprovalNew " + regno + ",NULL," + classid + ",'" + academicyear + "'," + userid);
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
-                sqlstr = "sp_UpdateStudentInfo " + "'" + studentid + "','" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + fatheraadhaar + "','" + motheraadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + userid + "'";
+                sqlstr = "sp_UpdateStudentInfo " + "'" + studentid + "','" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + userid + "'";
                 strQueryStatus = utl.ExecuteQuery(sqlstr);
                 if (photofile != "")
                 {
@@ -1363,7 +1248,7 @@ public partial class StudentInfo : System.Web.UI.Page
                 {
                     sqlstr = "select regno from  s_studentinfo where studentid='" + id + "'";
                     regno = utl.ExecuteScalar(sqlstr);
-                    sqlstr = "update s_studentinfo set Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
+                    sqlstr = "update s_studentinfo set Active='" + sstatus + "',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
                     strQueryStatus = utl.ExecuteScalar(sqlstr);
                 }
 
@@ -1376,11 +1261,11 @@ public partial class StudentInfo : System.Web.UI.Page
             }
             else
             {
-                sqlstr = "sp_InsertStudentInfo " + "'" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + fatheraadhaar + "','" + motheraadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + userid + "'";
+                sqlstr = "sp_InsertStudentInfo " + "'" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + userid + "'";
                 strQueryStatus = utl.ExecuteScalar(sqlstr);
             }
             regno = strQueryStatus;
-
+           
             if (regno != "")
             {
                 sqlstr = "select studentid from s_studentinfo where regno='" + regno + "'";
@@ -1388,84 +1273,17 @@ public partial class StudentInfo : System.Web.UI.Page
                 if (photofile != "")
                 {
                     string extension = photofile.Substring(photofile.LastIndexOf('.'));
-                    sqlstr = "update s_studentinfo set photofile= convert(varchar,'" + regno + extension + "'),Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "',IsICStudent= '" + IcStudent + "',IcType= '" + IcType + "' where regno='" + regno + "'";
+                    sqlstr = "update s_studentinfo set photofile= convert(varchar,'" + regno + extension + "'),Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
                     utl.ExecuteQuery(sqlstr);
 
                 }
                 else
                 {
-                    sqlstr = "update s_studentinfo set Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "',IsICStudent= '" + IcStudent + "',IcType= '" + IcType + "' where regno='" + regno + "'";
+                    sqlstr = "update s_studentinfo set Active='N',student_uid='" + suid + "',tamilname=N'" + tamilname + "' where regno='" + regno + "'";
                     strQueryStatus = utl.ExecuteScalar(sqlstr);
                 }
 
-<<<<<<< HEAD
                 string act_academic = utl.ExecuteScalar("select convert(varchar,year(startdate)) as AcademicYear   from m_academicyear  where academicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-=======
-                sqlstr = "select studentid from  s_studentinfo where regno='" + regno + "'";
-                strQueryStatus = utl.ExecuteScalar(sqlstr);
-                regno = regno + "," + strQueryStatus;
-                return regno;
-            }
-            else
-            {
-                return "Insert Failed";
-
-            }
-        }
-
-    }
-
-    [WebMethod]
-    public static string SaveandPayAdvanceFees(string id, string studentname, string classname, string classid, string sectionname, string gender, string dob, string doj, string religion, string mtongue, string community, string caste, string aadhaar, string fatheraadhaar, string motheraadhaar, string tempaddress, string peraddress, string email, string phoneno, string smartcard, string rationcard, string photopath, string photofile, string sslcno, string sslcyear, string hscno, string hscyear, string suid, string tamilname, string academicyear, string IcStudent, string IcType)
-    {
-        Utilities utl = new Utilities();
-        string sqlstr = string.Empty;
-        string strQueryStatus = string.Empty;
-        string message = string.Empty;
-        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
-        if (dob != "")
-        {
-            string[] myDateTimeString = dob.Split('/');
-            dob = "'" + myDateTimeString[2] + "/" + myDateTimeString[1] + "/" + myDateTimeString[0] + "'";
-        }
-        else
-        {
-            dob = "''";
-        }
-        if (doj != "")
-        {
-            string[] myDateTimeString = doj.Split('/');
-            doj = "'" + myDateTimeString[2] + "/" + myDateTimeString[1] + "/" + myDateTimeString[0] + "'";
-        }
-        else
-        {
-            doj = "''";
-        }
-        if (!string.IsNullOrEmpty(id) && id != "0")
-        {
-
-            sqlstr = "sp_UpdateStudentInfo " + "'" + id + "','" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + fatheraadhaar + "','" + motheraadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + academicyear + "','" + Userid + "'";
-            strQueryStatus = utl.ExecuteQuery(sqlstr);
-            if (photofile != "")
-            {
-                string extension = photofile.Substring(photofile.LastIndexOf('.'));
-                sqlstr = "update s_studentinfo set photofile= convert(varchar,'" + id + extension + "'),student_uid='" + suid + "',tamilname=N'" + tamilname + "',IsICStudent= '" + IcStudent + "',IcType= '" + IcType + "' where studentid='" + id + "'";
-                strQueryStatus = utl.ExecuteScalar(sqlstr);
-            }
-            if (strQueryStatus == "")
-            {
-                return "Updated";
-            }
-            else
-                return "Update Failed";
-
-        }
-        else
-        {
-            sqlstr = "sp_InsertStudentInfo " + "'" + studentname.Replace("'", "''") + "','" + classname + "','" + classid + "','" + sectionname + "','" + gender + "'," + dob + "," + doj + ",'" + religion + "','" + mtongue + "','" + community + "','" + caste + "','" + aadhaar + "','" + fatheraadhaar + "','" + motheraadhaar + "','" + tempaddress.Replace("'", "''") + "','" + peraddress.Replace("'", "''") + "','" + email.Replace("'", "''") + "','" + phoneno.Replace("'", "''") + "','" + smartcard.Replace("'", "''") + "','" + rationcard.Replace("'", "''") + "','" + photofile.Replace("'", "''") + "','" + sslcno.Replace("'", "''") + "','" + sslcyear.Replace("'", "''") + "','" + hscno.Replace("'", "''") + "','" + hscyear.Replace("'", "''") + "','" + academicyear + "','" + Userid + "'";
-            strQueryStatus = utl.ExecuteScalar(sqlstr);
-            string regno = strQueryStatus;
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
 
                 string runno = utl.ExecuteScalar("select convert(varchar, isnull(count(ASSNo)+1,1))  from s_studentinfo where academicyear=" + HttpContext.Current.Session["AcademicID"].ToString() + "");
@@ -1475,43 +1293,15 @@ public partial class StudentInfo : System.Web.UI.Page
                 ASSN = ASSN.Trim();
                 if (studenttype == "ahss" || studenttype == "ala")
                 {
-<<<<<<< HEAD
                     utl.ExecuteQuery("update s_studentinfo set ASSNo='" + ASSN + "',regno='" + SearchRegno + "', SchoolType='" + studenttype + "',Active='N'  where regno='" + regno + "'");
-=======
-                    string extension = photofile.Substring(photofile.LastIndexOf('.'));
-                    sqlstr = "update s_studentinfo set regno='" + studentid + "',Active='F',photofile= convert(varchar,'" + id + extension + "'),student_uid='" + suid + "',tamilname=N'" + tamilname + "',IsICStudent= '" + IcStudent + "',IcType= '" + IcType + "' where studentid='" + studentid + "'";
-                    utl.ExecuteQuery(sqlstr);
-                    regno = studentid;
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
-                    if (studenttype == "ahss")
-                    {
-                        utl.ExecuteAHSSQuery("update s_studentinfo set ASSNo='" + ASSN + "' where regno='" + regno + "'");
-                    }
-                    else if (studenttype == "ala")
-                    {
-                        utl.ExecuteAHSSQuery("update s_studentinfo set ASSNo='" + ASSN + "' where regno='" + regno + "'");
-                    }
+                    utl.ExecuteQuery("select ");
 
                     regno = SearchRegno;
                 }
                 else
                 {
-<<<<<<< HEAD
                     utl.ExecuteQuery("update s_studentinfo set ASSNo='" + ASSN + "', SchoolType='" + studenttype + "',Active='N'  where regno='" + regno + "'");
-                    if (studenttype == "ahss")
-                    {
-                        utl.ExecuteAHSSQuery("update s_studentinfo set ASSNo='" + ASSN + "' where regno='" + regno + "'");
-                    }
-                    else if (studenttype == "ala")
-                    {
-                        utl.ExecuteAHSSQuery("update s_studentinfo set ASSNo='" + ASSN + "' where regno='" + regno + "'");
-                    }
-=======
-                    sqlstr = "update s_studentinfo set regno='" + studentid + "',Active='F',student_uid='" + suid + "',tamilname=N'" + tamilname + "',IsICStudent= '" + IcStudent + "',IcType= '" + IcType + "' where studentid='" + studentid + "'";
-                    utl.ExecuteQuery(sqlstr);
-                    regno = studentid;
->>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 }
 
                 regno = SearchRegno;
@@ -1519,7 +1309,7 @@ public partial class StudentInfo : System.Web.UI.Page
 
                 sqlstr = "select studentid from  s_studentinfo where regno='" + regno + "'";
                 strQueryStatus = utl.ExecuteScalar(sqlstr);
-                regno = regno + "," + strQueryStatus + "," + ASSN;
+                regno = regno + "," + strQueryStatus;
                 return regno;
             }
             else
@@ -1587,18 +1377,9 @@ public partial class StudentInfo : System.Web.UI.Page
     public static string GetMedicalRemarkInfo(int regno)
     {
         Utilities utl = new Utilities();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         DataSet ds = new DataSet();
         string query = "sp_GetMedicalRemarkInfo " + "" + regno + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "MedicalRemark").GetXml();
+        return utl.GetDatasetTable(query,"others",  "MedicalRemark").GetXml();
     }
     [WebMethod]
     public static string DeleteMedicalRemarkInfo(int MedRemarkId)
@@ -1619,17 +1400,8 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         string query = "sp_GetAcademicRemarkInfo " + "" + regno + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "AcademicRemark").GetXml();
+        return utl.GetDatasetTable(query,"others",  "AcademicRemark").GetXml();
     }
     [WebMethod]
     public static string DeleteAcademicRemarkInfo(int RemarkId)
@@ -1685,15 +1457,6 @@ public partial class StudentInfo : System.Web.UI.Page
         string sqlstr = "select isactive from m_academicyear where AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
         string Isactive = utl.ExecuteScalar(sqlstr);
         string query = "";
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         if (Isactive == "True")
         {
             query = "sp_GetBroSisInfo " + regno + "";
@@ -1705,37 +1468,23 @@ public partial class StudentInfo : System.Web.UI.Page
 
 
 
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "BroSis").GetXml();
+        return utl.GetDatasetTable(query,"others",  "BroSis").GetXml();
     }
     [WebMethod]
-    public static string GetFamilyInfo(int RegNo, string StudentType)
+    public static string GetFamilyInfo(int StudentID, string StudentType)
     {
         Utilities utl = new Utilities();
-        DataTable dtreg = null;
-
-        HttpContext.Current.Session["SchoolType"] = StudentType;
-
         DataSet ds = new DataSet();
-        string query = "sp_GetFamilyInfo " + RegNo + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "Family").GetXml();
+        string query = "sp_GetFamilyInfo " + StudentID + "";
+        return utl.GetDatasetTable(query, StudentType, "Family").GetXml();
     }
-
     [WebMethod]
     public static string GetStaffChildrenInfo(int regno)
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         string query = "sp_GetStaffChildrenInfo " + "''" + "," + "''" + "," + "" + regno + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "StaffChildren").GetXml();
+        return utl.GetDatasetTable(query,"others",  "StaffChildren").GetXml();
     }
 
     [WebMethod]
@@ -1743,17 +1492,8 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         string query = "GetNationalityInfo " + regno + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "National").GetXml();
+        return utl.GetDatasetTable(query,"others",  "National").GetXml();
     }
 
     [WebMethod]
@@ -1762,26 +1502,7 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSportsInfo " + regno + "," + HttpContext.Current.Session["AcademicID"].ToString();
-        return utl.GetDatasetTable(query, "others", "Sports").GetXml();
-    }
-
-    [WebMethod]
-    public static string GetSportsFeesInfo(int regno)
-    {
-        Utilities utl = new Utilities();
-        DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
-        string query = "select a.FeesID,e.FeesHeadName,ltrim(rtrim(d.ForMonth)) as ForMonth,d.Amount from s_student_ass_sports_fees a left join s_student_ass_sports b on a.Regno=b.Regno and a.AcademicID=b.AcademicId left join s_studentinfo c on c.RegNo=b.Regno and c.AcademicYear=a.AcademicID left join m_feescategoryhead d on d.AcademicId=a.AcademicID and d.FeesCatHeadID=a.FeesCatHeadID left join m_feeshead e on e.FeesHeadId=d.FeesHeadId where a.IsActive=1 and b.IsActive=1 and d.IsActive=1 and e.IsActive=1 and a.regno='" + regno + "' and a.AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-
-        return utl.GetDatasetTable(query, "others", "SportsFees").GetXml();
+        return utl.GetDatasetTable(query,"others",  "Sports").GetXml();
     }
 
     [WebMethod]
@@ -1984,7 +1705,7 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "[sp_GetActsInfo] " + regno + "," + HttpContext.Current.Session["AcademicID"].ToString();
-        return utl.GetDatasetTable(query, "others", "Activities").GetXml();
+        return utl.GetDatasetTable(query,"others",  "Activities").GetXml();
     }
 
     [WebMethod]
@@ -1992,17 +1713,8 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         string query = "sp_GetSkillsInfo " + regno + "," + HttpContext.Current.Session["AcademicID"].ToString();
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "Skills").GetXml();
+        return utl.GetDatasetTable(query,"others",  "Skills").GetXml();
     }
 
     [WebMethod]
@@ -2010,51 +1722,24 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         string query = "sp_GetFineArtsInfo " + regno + "," + HttpContext.Current.Session["AcademicID"].ToString();
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "FineArts").GetXml();
+        return utl.GetDatasetTable(query,"others",  "FineArts").GetXml();
     }
     [WebMethod]
     public static string GetAttachmentInfo(int regno)
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         string query = "sp_GetAttachmentInfo " + regno + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "Attachment").GetXml();
+        return utl.GetDatasetTable(query,"others",  "Attachment").GetXml();
     }
     [WebMethod]
     public static string GetOldSchoolInfo(int regno)
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
         string query = "sp_GetOldSchoolInfo " + regno + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "OldSchool").GetXml();
+        return utl.GetDatasetTable(query,"others",  "OldSchool").GetXml();
     }
 
     [WebMethod]
@@ -2062,7 +1747,6 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-
         return utl.GetDatasetTable(str, "others", "priority").GetXml();
 
     }
@@ -2072,23 +1756,8 @@ public partial class StudentInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        string sqlstr = "select regno from s_studentinfo where studentID='" + StudentID.ToString() + "'";
-        string regno = utl.ExecuteScalar(sqlstr);
-
-        sqlstr = "select StudentID from s_studentinfo where regno='" + regno.ToString() + "'";
-        string strStudentID = utl.ExecuteCBSEQuery(sqlstr);
-
-        DataTable dtreg = utl.GetDataTable("select ASSNO,Regno,SchoolType from s_studentinfo where regno='" + regno + "'");
-        if (dtreg != null && dtreg.Rows.Count > 0)
-        {
-            HttpContext.Current.Session["SchoolType"] = dtreg.Rows[0]["SchoolType"].ToString();
-        }
-        else
-        {
-            HttpContext.Current.Session["SchoolType"] = "others";
-        }
-        string query = "sp_GetConcessionInfo " + strStudentID + "," + HttpContext.Current.Session["AcademicID"] + "";
-        return utl.GetDatasetTable(query, HttpContext.Current.Session["SchoolType"].ToString(), "ConcessionInfo").GetXml();
+        string query = "sp_GetConcessionInfo " + StudentID + "," + HttpContext.Current.Session["AcademicID"] + "";
+        return utl.GetDatasetTable(query,"others",  "ConcessionInfo").GetXml();
 
     }
 
@@ -2162,7 +1831,7 @@ public partial class StudentInfo : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         string query = "sp_GetStaffChildrenInfo " + StudStaffID + ",'" + Relationship + "'" + "," + "''";
-        return utl.GetDatasetTable(query, "others", "StaffChildren").GetXml();
+        return utl.GetDatasetTable(query,"others",  "StaffChildren").GetXml();
     }
     [WebMethod]
     public static string EditOldSchoolInfo(int StudOldSchID, string RegNo)
@@ -2171,7 +1840,7 @@ public partial class StudentInfo : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         string query = "sp_GetOldSchoolInfo " + RegNo + ",'" + StudOldSchID + "'";
-        return utl.GetDatasetTable(query, "others", "OldSchool").GetXml();
+        return utl.GetDatasetTable(query,"others",  "OldSchool").GetXml();
     }
 
     [WebMethod]
@@ -2181,7 +1850,7 @@ public partial class StudentInfo : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         string query = "sp_GetBroSisInfo " + "''" + "," + relationId + "";
-        return utl.GetDatasetTable(query, "others", "EditBroSis").GetXml();
+        return utl.GetDatasetTable(query,"others",  "EditBroSis").GetXml();
     }
     [WebMethod]
 
@@ -2222,30 +1891,6 @@ public partial class StudentInfo : System.Web.UI.Page
                 nextYear = new ListItem(dtAcademicYear.Rows[1]["Year"].ToString(), dtAcademicYear.Rows[1]["academicid"].ToString());
                 rdlAdvanceFees.Items.Add(nextYear);
             }
-
-            ddlMonth.Items.Clear();
-            DateTime dtStart = DateTime.Now, dtEnd = DateTime.Now;
-            DataSet dsAc = new DataSet();
-            dsAc = utl.GetDataset("  select top 1 startdate,enddate from m_academicyear where academicid='" + Session["AcademicID"].ToString() + "' order by academicid desc");
-            if (dsAc.Tables[0].Rows.Count > 0)
-            {
-                dtStart = Convert.ToDateTime(dsAc.Tables[0].Rows[0]["startdate"]);
-                dtEnd = Convert.ToDateTime(dsAc.Tables[0].Rows[0]["enddate"]);
-            }
-            string month = "";
-            for (int i = 0; i < 12; i++)
-            {
-                if (i == 0)
-                {
-                    month = dtStart.ToString("MMM");
-                }
-                else
-                {
-                    month = dtStart.AddMonths(i).ToString("MMM");
-                }
-                ddlMonth.Items.Add(month);
-            }
-            ddlMonth.Items.Insert(0, "Select");
         }
     }
     [WebMethod]
@@ -2653,11 +2298,11 @@ public partial class StudentInfo : System.Web.UI.Page
 
             }
         }
-        sqlstr = "select count(*) from s_staffchildren where RegNo='" + RegNo + "' and IsActive=1";
+        sqlstr = "select count(*) from s_staffchildren where RegNo='" + RegNo + "'";
         string Icnt = Convert.ToString(utl.ExecuteScalar(sqlstr));
         if (Icnt != "" && Icnt != "0")
         {
-            sqlstr = @"Update s set s.reason='Staff - ' +  e.staffname  from s_studentinfo s inner join s_studentconcession t on (T.regno=S.regno) inner join  s_staffchildren c on t.regno=c.regno and c.isactive=1 inner join e_staffinfo e on e.empcode=c.empcode where s.regno='" + RegNo + "' and academicyear=" + AcademicID + "";
+            sqlstr = @"Update s set s.reason='Staff - ' +  e.staffname  from s_studentinfo s inner join s_studentconcession t on (T.regno=S.regno) inner join  s_staffchildren c on t.regno=c.regno  inner join e_staffinfo e on e.empcode=c.empcode where s.regno='" + RegNo + "'";
             strQueryStatus = utl.ExecuteQuery(sqlstr);
         }
         return "Updated";
@@ -2771,7 +2416,7 @@ public partial class StudentInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuId '" + path + "'," + UserId;
-        return utl.GetDatasetTable(query,"others", "ModuleMenu").GetXml();
+        return utl.GetDatasetTable(query,"others",  "ModuleMenu").GetXml();
     }
 
     protected void txtTempAddress_TextChanged(object sender, EventArgs e)
@@ -2889,234 +2534,5 @@ public partial class StudentInfo : System.Web.UI.Page
         }
 
         return dt;
-    }
-
-    [WebMethod]
-    public static string GetASSWellnessInfo(string RegNo)
-    {
-        Utilities utl = new Utilities();
-        DataSet ds = new DataSet();
-        string query = "sp_GetASSWellnessInfo '" + RegNo + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-        return utl.GetDatasetTable(query, "others", "WellnessInfo").GetXml();
-    }
-
-    [WebMethod]
-    public static string GetASSGeneralInfo(string RegNo)
-    {
-        Utilities utl = new Utilities();
-        DataSet ds = new DataSet();
-        string query = "sp_GetASSGeneralInfo '" + RegNo + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-        return utl.GetDatasetTable(query, "others", "GeneralInfo").GetXml();
-    }
-
-    [WebMethod]
-    public static string GetASSSportsInfo(string RegNo)
-    {
-        Utilities utl = new Utilities();
-        DataSet ds = new DataSet();
-        string query = "sp_GetASSSportsInfo '" + RegNo + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
-        return utl.GetDatasetTable(query, "others", "SportsInfo").GetXml();
-    }
-
-    [WebMethod]
-    public static string SaveASSSports(string regno, string sporttype, string sporttime, string sportsFile, string awardsFile, string abledFile, string abled, string abledtype, string sportfees)
-    {
-        Utilities utl = new Utilities();
-        string sqlstr = string.Empty;
-        string strQueryStatus = string.Empty;
-        string message = string.Empty;
-        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
-
-        string extension_awardsFile = "";
-        string extension_abledFile = "";
-        string extension_sportsFile = "";
-        if (awardsFile != "")
-            extension_awardsFile = awardsFile.Substring(awardsFile.LastIndexOf('.'));
-
-        if (abledFile != "")
-            extension_abledFile = abledFile.Substring(abledFile.LastIndexOf('.'));
-
-        if (sportsFile != "")
-            extension_sportsFile = sportsFile.Substring(sportsFile.LastIndexOf('.'));
-
-        string icnt = utl.ExecuteScalar("select count(*) from s_student_ass_sports where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' and isactive=1");
-        if (icnt == "0" || icnt == null)
-        {
-            strQueryStatus = utl.ExecuteQuery("sp_AddASSSports " + regno + ",'" + sporttype + "','" + sporttime + "','" + regno + extension_sportsFile + "','" + regno + extension_awardsFile + "','" + regno + extension_abledFile + "','" + abled + "','" + abledtype + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + Userid + "'");
-
-            if (awardsFile != "")
-                utl.ExecuteQuery("update s_student_ass_sports set AwdAttachment='" + regno + extension_awardsFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-            if (abledFile != "")
-                utl.ExecuteQuery("update s_student_ass_sports set SplAttachment='" + regno + extension_abledFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-            if (sportsFile != "")
-                utl.ExecuteQuery("update s_student_ass_sports set Attachment='" + regno + extension_sportsFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-            //string exportexists = utl.ExecuteScalar("select count(*) from s_student_ass_sports_fees where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'and type='" + sporttype + "' and isactive=1");
-            //if (exportexists == "0" || exportexists == null)
-            //{
-            //    utl.ExecuteQuery("insert into s_student_ass_sports_fees(regno,type,academicID,FeesCatHeadID,userID)values('" + regno + "','" + sporttype + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + sportfees + "','" + Userid + "')");
-            //}
-            //else
-            //{
-            //    utl.ExecuteQuery("update s_student_ass_sports_fees set FeesCatHeadID= '" + sportfees + "' where regno='" + regno + "' and type='" + sporttype + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
-            //}
-
-
-            if (strQueryStatus == "")
-            {
-                strQueryStatus = "Inserted";
-            }
-            else
-                strQueryStatus = "Insert Failed";
-        }
-        else if (icnt != "0")
-        {
-            strQueryStatus = utl.ExecuteQuery("sp_UpdateASSSports " + regno + ",'" + sporttype + "','" + sporttime + "','" + regno + extension_sportsFile + "','" + regno + extension_awardsFile + "','" + regno + extension_abledFile + "','" + abled + "','" + abledtype + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + Userid + "'");
-
-            if (awardsFile != "")
-                utl.ExecuteQuery("update s_student_ass_sports set AwdAttachment='" + regno + extension_awardsFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-            if (abledFile != "")
-                utl.ExecuteQuery("update s_student_ass_sports set SplAttachment='" + regno + extension_abledFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-            if (sportsFile != "")
-                utl.ExecuteQuery("update s_student_ass_sports set Attachment='" + regno + extension_sportsFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-            //string exportexists = utl.ExecuteScalar("select count(*) from s_student_ass_sports_fees where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' and type='" + sporttype + "' and isactive=1");
-            //if (exportexists == "0" || exportexists == null)
-            //{
-            //    utl.ExecuteQuery("insert into s_student_ass_sports_fees(regno,type,academicID,FeesCatHeadID,userID)values('" + regno + "','" + sporttype + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + sportfees + "','" + Userid + "')");
-            //}
-            //else
-            //{
-            //    utl.ExecuteQuery("update s_student_ass_sports_fees set FeesCatHeadID= '" + sportfees + "' where regno='" + regno + "' and type='" + sporttype + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
-            //}
-            if (strQueryStatus == "")
-            {
-                strQueryStatus = "Updated";
-            }
-            else
-                strQueryStatus = "Update Failed";
-        }
-        return strQueryStatus;
-    }
-
-    [WebMethod]
-    public static string SaveASSGeneral(string regno, string hasbreak, string hastrans, string haslunch, string hasbirth, string hashostel, string iden1, string iden2)
-    {
-        Utilities utl = new Utilities();
-        string sqlstr = string.Empty;
-        string strQueryStatus = string.Empty;
-        string message = string.Empty;
-        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
-
-        string icnt = utl.ExecuteScalar("select count(*) from s_student_ass_general where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' and isactive=1");
-        if (icnt == "0" || icnt == null)
-        {
-            strQueryStatus = utl.ExecuteQuery("sp_AddASSGeneral " + regno + ",'" + hasbreak + "','" + hastrans + "','" + haslunch + "','" + hasbirth + "','" + hashostel + "','" + iden1 + "','" + iden2 + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + Userid + "'");
-            if (strQueryStatus == "")
-            {
-                strQueryStatus = "Inserted";
-            }
-            else
-                strQueryStatus = "Insert Failed";
-        }
-        else if (icnt != "0")
-        {
-            strQueryStatus = utl.ExecuteQuery("sp_UpdateASSGeneral " + regno + ",'" + hasbreak + "','" + hastrans + "','" + haslunch + "','" + hasbirth + "','" + hashostel + "','" + iden1 + "','" + iden2 + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + Userid + "'");
-            if (strQueryStatus == "")
-            {
-                strQueryStatus = "Updated";
-            }
-            else
-                strQueryStatus = "Update Failed";
-        }
-        return strQueryStatus;
-    }
-
-    [WebMethod]
-    public static string SaveASSWellness(string regno, string hasallergic, string hasinfection, string attachment, string prescribed, string desc, string otheraller, string medication, string purpose, string period, string hastetanus, string haspolio, string hastb, string hashepatitis, string hascovid, string hashpv, string otherdesc, string hasspecs, string haslens, string hashearing, string haschicken, string hasrubella, string hasjaundice, string hasmeasles, string hasmumps, string hasscarlet, string hascough, string otherlist, string operation, string anorexia, string arthitis, string asthma, string hasbone, string hascancer, string hascardio, string hasdia, string eczema, string enuresis, string epilepsy, string genetic, string hashay, string hashead, string hashearinjury, string heart, string hepatitis, string hashiv, string learning, string hasmensural, string hasmigraine, string hasphobia, string hasdeformity, string hasdisability, string pneumonia, string hasrheumatic, string hasskin, string hasstomach, string hassyndrome, string hasurinary, string hasanxiety, string hasautism, string hasmood, string haspseech)
-    {
-        Utilities utl = new Utilities();
-        string sqlstr = string.Empty;
-        string strQueryStatus = string.Empty;
-        string message = string.Empty;
-        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
-
-        string icnt = utl.ExecuteScalar("select count(*) from s_student_ass_allergic where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' and isactive=1");
-
-        string extension_attachmentFile = "";
-        if (attachment != "")
-            extension_attachmentFile = attachment.Substring(attachment.LastIndexOf('.'));
-
-
-        if (icnt == "0" || icnt == null)
-        {
-            strQueryStatus = utl.ExecuteQuery("sp_AddASSAllergies " + regno + ",'" + hasallergic + "','" + hasinfection + "','" + attachment + "','" + prescribed + "','" + desc + "','" + otheraller + "','" + medication + "','" + purpose + "','" + period + "','" + hastetanus + "','" + haspolio + "','" + hastb + "','" + hashepatitis + "','" + hascovid + "','" + hashpv + "','" + otherdesc + "','" + hasspecs + "','" + haslens + "','" + hashearing + "','" + haschicken + "','" + hasrubella + "','" + hasjaundice + "','" + hasmeasles + "','" + hasmumps + "','" + hasscarlet + "','" + hascough + "','" + otherlist + "','" + operation + "','" + anorexia + "','" + arthitis + "','" + asthma + "','" + hasbone + "','" + hascancer + "','" + hascardio + "','" + hasdia + "','" + eczema + "','" + enuresis + "','" + epilepsy + "','" + genetic + "','" + hashay + "','" + hashead + "','" + hashearinjury + "','" + heart + "','" + hepatitis + "','" + hashiv + "','" + learning + "','" + hasmensural + "','" + hasmigraine + "','" + hasphobia + "','" + hasdeformity + "','" + hasdisability + "','" + pneumonia + "','" + hasrheumatic + "','" + hasskin + "','" + hasstomach + "','" + hassyndrome + "','" + hasurinary + "','" + hasanxiety + "','" + hasautism + "','" + hasmood + "','" + haspseech + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + Userid + "'");
-            if (strQueryStatus == "")
-            {
-                if (attachment != "")
-                    utl.ExecuteQuery("update s_student_ass_allergic set Attachment='" + regno + extension_attachmentFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-                strQueryStatus = "Inserted";
-            }
-            else
-                strQueryStatus = "Insert Failed";
-        }
-        else if (icnt != "0")
-        {
-            strQueryStatus = utl.ExecuteQuery("sp_UpdateASSAllergies " + regno + ",'" + hasallergic + "','" + hasinfection + "','" + attachment + "','" + prescribed + "','" + desc + "','" + otheraller + "','" + medication + "','" + purpose + "','" + period + "','" + hastetanus + "','" + haspolio + "','" + hastb + "','" + hashepatitis + "','" + hascovid + "','" + hashpv + "','" + otherdesc + "','" + hasspecs + "','" + haslens + "','" + hashearing + "','" + haschicken + "','" + hasrubella + "','" + hasjaundice + "','" + hasmeasles + "','" + hasmumps + "','" + hasscarlet + "','" + hascough + "','" + otherlist + "','" + operation + "','" + anorexia + "','" + arthitis + "','" + asthma + "','" + hasbone + "','" + hascancer + "','" + hascardio + "','" + hasdia + "','" + eczema + "','" + enuresis + "','" + epilepsy + "','" + genetic + "','" + hashay + "','" + hashead + "','" + hashearinjury + "','" + heart + "','" + hepatitis + "','" + hashiv + "','" + learning + "','" + hasmensural + "','" + hasmigraine + "','" + hasphobia + "','" + hasdeformity + "','" + hasdisability + "','" + pneumonia + "','" + hasrheumatic + "','" + hasskin + "','" + hasstomach + "','" + hassyndrome + "','" + hasurinary + "','" + hasanxiety + "','" + hasautism + "','" + hasmood + "','" + haspseech + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "','" + Userid + "'");
-            if (strQueryStatus == "")
-            {
-                if (attachment != "")
-                    utl.ExecuteQuery("update s_student_ass_allergic set Attachment='" + regno + extension_attachmentFile + "'  where regno='" + regno + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' ");
-
-                strQueryStatus = "Updated";
-            }
-            else
-                strQueryStatus = "Update Failed";
-        }
-        return strQueryStatus;
-    }
-
-    [WebMethod]
-    public static string SaveSportFees(string ForMonth, string FeesCatHeadID, string Regno)
-    {
-        Utilities utl = new Utilities();
-        string sqlstr = string.Empty;
-        string strQueryStatus = string.Empty;
-        string message = string.Empty;
-        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
-
-        string icnt = utl.ExecuteScalar("select count(*) from s_student_ass_sports_fees where regno='" + Regno + "' and isactive=1 and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "' and FeesCatHeadID='" + FeesCatHeadID + "' and ForMonth=char(39)+'" + ForMonth + "'+char(39)");
-
-      if (icnt=="" || icnt=="0")
-      {
-          strQueryStatus = utl.ExecuteQuery("insert into s_student_ass_sports_fees(regno,ForMonth,FeesCatHeadID,AcademicID,isactive,Type,userId)values('" + Regno + "',char(39)+'" + ForMonth + "'+char(39),'" + FeesCatHeadID + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "',1,1,1)");
-         if (strQueryStatus=="")
-         {
-             strQueryStatus = "Updated";
-         }
-         else
-             strQueryStatus = "Update Failed";
-      }
-        return strQueryStatus;
-    }
-
-    [WebMethod]
-    public static string DeleteSportFeesInfo(int FeesID)
-    {
-        Utilities utl = new Utilities();
-        string sqlstr = string.Empty;
-        string strQueryStatus = string.Empty;
-        string message = string.Empty;
-        Userid = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
-        strQueryStatus = utl.ExecuteQuery("update s_student_ass_sports_fees set isactive=0 where FeesID='" + FeesID + "'");
-        if (strQueryStatus == "")
-            return "Deleted";
-        else
-            return "Delete Failed";
     }
 }

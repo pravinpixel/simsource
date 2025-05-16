@@ -869,12 +869,17 @@
                             </table>
                         </td>
                     </tr>
+<<<<<<< HEAD
+                    
+                    <tr style="display:none;">
+=======
                     <tr>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <td height="30" class="formsubheading">
                             <span>Academic Year Fee Structure</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="display:none;">
                         <td>
                             <label>
                                 <input type="radio" onkeydown="GetAcademicDetails();" checked="checked" name="btype"
@@ -884,7 +889,7 @@
                                     name="btype" value="Double" />Bi-month Billing</label>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="display:none;">
                         <td height="30" class="formsubheading">
                             <span>Do you want to enroll for Bus?</span>&nbsp;
                             <label>

@@ -55,7 +55,7 @@ public partial class WellWisherSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMessageTemplate " + "" + MessTempID + "";
-        return utl.GetDatasetTable(query, "GetMessageTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetMessageTemplate").GetXml();
     }
     private void BindDummyRow()
     {
@@ -82,7 +82,7 @@ public partial class WellWisherSMS : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         string query = "[GetWellWisherinfo] '" + AddressType + "'";
-        return utl.GetDatasetTable(query, "WellWisher").GetXml();
+        return utl.GetDatasetTable(query,  "others", "WellWisher").GetXml();
     }
 
 

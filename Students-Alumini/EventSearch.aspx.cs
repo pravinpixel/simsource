@@ -70,7 +70,7 @@ public partial class EventSearch : System.Web.UI.Page
         DataSet ds = new DataSet();
         string query = "";
         query = "sp_GetEventInfo " + eventID + "";
-        return utl.GetDatasetTable(query, "Event").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Event").GetXml();
     }
     
 
@@ -96,7 +96,7 @@ public partial class EventSearch : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -149,7 +149,7 @@ public partial class EventSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Userid + "";
-        ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,  "others", "ModuleMenusByPath");
         return ds.GetXml();
     }
   
@@ -163,7 +163,7 @@ public partial class EventSearch : System.Web.UI.Page
        
             query = "sp_GetEventInfo " + EventInfoID + "'";
        
-        return utl.GetDatasetTable(query, "EditEventInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditEventInfo").GetXml();
     }
 
     [WebMethod]

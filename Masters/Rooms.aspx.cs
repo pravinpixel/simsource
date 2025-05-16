@@ -123,7 +123,7 @@ public partial class Rooms : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -152,7 +152,7 @@ public partial class Rooms : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "sp_GetBlockByHostel " + "" + HostelID + "";
-        return utl.GetDatasetTable(query, "BlockByHostel").GetXml();
+        return utl.GetDatasetTable(query,  "others", "BlockByHostel").GetXml();
     }
 
     [WebMethod]
@@ -174,7 +174,7 @@ public partial class Rooms : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetRoom " + "" + RoomsID + "";
-        return utl.GetDatasetTable(query, "EditRooms").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditRooms").GetXml();
     }
 
     [WebMethod]

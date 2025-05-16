@@ -52,7 +52,7 @@ public partial class Staffs_ManageProfile : System.Web.UI.Page
         if(staffId!=string.Empty)
 
         query = "[sp_GetStaffPersonalInfo] " + staffId + "";
-        return utl.GetDatasetTable(query, "Personal").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Personal").GetXml();
     }
     private void BindCommunity()
     {

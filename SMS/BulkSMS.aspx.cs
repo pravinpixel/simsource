@@ -95,7 +95,7 @@ public partial class SMS_BulkSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMessageTemplate " + "" + MessTempID + "";
-        return utl.GetDatasetTable(query, "GetMessageTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetMessageTemplate").GetXml();
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)

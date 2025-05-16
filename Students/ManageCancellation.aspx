@@ -34,18 +34,10 @@
         function GetStudentInfo(pageIndex) {
             if ($("[id*=hfViewPrm]").val() == 'true') {
                 var SearchTag;
-                if ($("[id*=rbtnBus]").is(':checked')) {
-                    SearchTag = "Bus";
-                }
-
-                else if ($("[id*=rbtnHostel]").is(':checked')) {
-                    SearchTag = "Hostel";
-                }
+                SearchTag = "Sports";
                 var StudentID = "", regno = "";
                 StudentID = $("[id*=hfStudentID]").val();
-
                 regno = $("[id*=txtRegNo]").val();
-
 
                 var parameters = '{pageIndex: ' + pageIndex + ',"regno": "' + regno + '","searchtag": "' + SearchTag + '"}';
 
@@ -134,6 +126,8 @@
                 $("td", row).eq(5).html("");
                 $("td", row).eq(6).html("");
                 $("td", row).eq(7).html("");
+                $("td", row).eq(8).html("");
+                $("td", row).eq(9).html("");
                 $("[id*=dgStudentInfo]").append(row);
                 row = $("[id*=dgStudentInfo] tr:last-child").clone(true);
 
@@ -152,8 +146,11 @@
                     $("td", row).eq(2).html($(this).find("StudentName").text());
                     $("td", row).eq(3).html($(this).find("Class").text());
                     $("td", row).eq(4).html($(this).find("Section").text());
-                    $("td", row).eq(5).html(ehref).addClass("deleteacc delete-links");
-                    $("td", row).eq(6).html(dhref).addClass("editacc view-links");
+                    $("td", row).eq(5).html($(this).find("SchoolType").text());
+                    $("td", row).eq(6).html($(this).find("SportRequested").text());
+                    $("td", row).eq(7).html($(this).find("SportTiming").text());
+                    $("td", row).eq(8).html(ehref).addClass("deleteacc delete-links");
+                    $("td", row).eq(9).html(dhref).addClass("editacc view-links");
                     $("[id*=dgStudentInfo]").append(row);
                     row = $("[id*=dgStudentInfo] tr:last-child").clone(true);
                 });
@@ -187,12 +184,7 @@
         // Delete StudentInfo
         function UpdateCancellation() {
             var regno = $("[id*=hfregno]").val();
-            if ($("[id*=rbtnBus]").is(':checked')) {
-                type = "Bus";
-            }
-            else if ($("[id*=rbtnHostel]").is(':checked')) {
-                type = "Hostel";
-            }
+            type = "Sports";
             var canceldate = $("[id*=txtCancellationDate]").val();
             var reason = $("[id*=txtReason]").val();
             var parameters = '{"regno": "' + regno + '","type": "' + type + '","canceldate": "' + canceldate + '","reason": "' + reason + '"}';
@@ -222,9 +214,9 @@
         }
         function OnUpdateCancellationSuccess(response) {
             var currentPage = $("[id*=currentPage]").text();
-            if (response.d == "Deleted") {
+            if (response.d == "Cancelled") {
                 closeiframe();
-                AlertMessage('success', 'Deleted');
+                AlertMessage('success', 'Sports Cancelled');
                 var RegNo = $("[id*=hfRegNo]").val();
                 if (RegNo != "") {
                     GetStudentInfo(1);
@@ -328,18 +320,6 @@
                     <tr>
                         <td width="12%">
                             <label>
-                                Cancellation For :</label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="radio" name="cb1" id="rbtnBus" value="Bus" checked="checked" />Bus</label>
-                            <label>
-                                <input type="radio" name="cb1" id="rbtnHostel" value="Hostel" />Hostel</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="12%">
-                            <label>
                                 Register No :</label>
                         </td>
                         <td>
@@ -396,6 +376,18 @@
                                         HeaderText="Section" SortExpression="Section">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     </asp:BoundField>
+                                       <asp:BoundField DataField="SchoolType" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                        HeaderText="School Type" SortExpression="SchoolType">
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="SportsRequested" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                        HeaderText="Sports Requested" SortExpression="SportsRequested">
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="SportTiming" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+                                        HeaderText="Sports Timing" SortExpression="SportTiming">
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    </asp:BoundField>
                                     <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                                         HeaderStyle-CssClass="sorting_mod deleteacc">
                                         <HeaderTemplate>
@@ -405,7 +397,7 @@
                                                 CommandName="Cancel" CausesValidation="false" CssClass="links"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
+                                    <asp:TemplateField Visible="false" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                                         HeaderStyle-CssClass="sorting_mod editacc">
                                         <HeaderTemplate>
                                             View</HeaderTemplate>

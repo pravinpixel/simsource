@@ -59,7 +59,7 @@ public partial class SMS_ExportSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "GetApprovedSMSList '" + MessageDate + "'";
-        return utl.GetDatasetTable(query, "SMS").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SMS").GetXml();
     }
 
     protected void btnExport_Click(object sender, EventArgs e)

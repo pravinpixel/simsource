@@ -179,7 +179,7 @@ public partial class Staffs_StaffSearch : System.Web.UI.Page
 
             Utilities utl = new Utilities();
             DataSet ds = new DataSet();
-            ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+            ds = utl.GetDatasetTable(query,  "others", "ModuleMenusByPath");
 
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {
@@ -229,7 +229,7 @@ public partial class Staffs_StaffSearch : System.Web.UI.Page
         if (string.IsNullOrEmpty(subjecthandling)) subjecthandling = "null"; else subjecthandling = "'" + subjecthandling + "'";
 
         string query = "[GetStaffInfo_Pager] " + index + "," + PageSize + "," + 10 + "," + code + "," + name + "," + designation + "," + sex + "," + pNo + "," + emailId + "," + department + "," + presentstatus + "," + placeofwork + "," + bloodgroup + "," + religion + "," + subjecthandling + ",'" + HttpContext.Current.Session["AcademicID"] + "'";
-        DataSet ds= utl.GetDatasetTable(query, "StaffInfo");
+        DataSet ds= utl.GetDatasetTable(query,  "others", "StaffInfo");
         DataTable dt = new DataTable("Pager");
         dt.Columns.Add("PageIndex");
         dt.Columns.Add("PageSize");
@@ -247,7 +247,7 @@ public partial class Staffs_StaffSearch : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "[sp_GetEmployee] '','" + staffName.Replace("'","''") + "','" + empCode + "'";
-        DataSet ds = utl.GetDatasetTable(query, "Employee");
+        DataSet ds = utl.GetDatasetTable(query,  "others", "Employee");
         return ds.GetXml();
     }
 
@@ -265,7 +265,7 @@ public partial class Staffs_StaffSearch : System.Web.UI.Page
             string dyntpl_schl = string.Empty;
             string query = string.Empty;
 
-            string strConnString_school = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+            string strConnString_school = ConfigurationManager.AppSettings["ASSConnection"].ToString();
             string strConnString_cbse = ConfigurationManager.AppSettings["SIMCBSEConnection"].ToString();
 
             SqlConnectionStringBuilder schl_builder = new SqlConnectionStringBuilder(strConnString_school);

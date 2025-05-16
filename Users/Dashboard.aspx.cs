@@ -63,7 +63,7 @@ public partial class Users_Dashboard : System.Web.UI.Page
             }
         }
 
-        plReminder.Controls.Add(ulReminder);
+       // plReminder.Controls.Add(ulReminder);
     }
     private void BindAnnouncements(int userId)
     {

@@ -167,7 +167,7 @@ public partial class StudentTransfer : System.Web.UI.Page
 
         }
 
-        return utl.GetDatasetTable(query, "StudentList").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentList").GetXml();
     }
     [WebMethod]
     public static string GetSectionByClassID(int ClassID)
@@ -176,7 +176,7 @@ public partial class StudentTransfer : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 

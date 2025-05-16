@@ -88,7 +88,7 @@ public partial class Management_Announcements : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -118,7 +118,7 @@ public partial class Management_Announcements : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetAnnouncementsLog '" + AnnouncementsID + "'";
-        ds = utl.GetDatasetTable(query, "AnnouncementsLog");
+        ds = utl.GetDatasetTable(query,"others",  "AnnouncementsLog");
         return ds.GetXml();
 
     }
@@ -141,7 +141,7 @@ public partial class Management_Announcements : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Userid + "";
-        ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,"others",  "ModuleMenusByPath");
         return ds.GetXml();
     }
 
@@ -151,7 +151,7 @@ public partial class Management_Announcements : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetAnnouncements " + "" + AnnouncementsID + "";
-        return utl.GetDatasetTable(query, "EditAnnouncementsInfo").GetXml();
+        return utl.GetDatasetTable(query,"others",  "EditAnnouncementsInfo").GetXml();
     }
     
 

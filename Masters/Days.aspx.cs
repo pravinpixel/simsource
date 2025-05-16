@@ -193,7 +193,7 @@ public partial class Days : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -238,7 +238,7 @@ public partial class Days : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetDays " + DaysID ;
-        return utl.GetDatasetTable(query, "EditDays").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditDays").GetXml();
     }
     [WebMethod]
     public static string GetDaysList(string ClassID,string MonthID)
@@ -246,7 +246,7 @@ public partial class Days : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetDaysList "  + ClassID + ","  + MonthID + "," + AcademicID;
-        return utl.GetDatasetTable(query, "DaysList").GetXml();
+        return utl.GetDatasetTable(query,  "others", "DaysList").GetXml();
     }
     [WebMethod]
     public static string SaveDays(string id, string ClassID, string Days, string MonthID, string DayValue)

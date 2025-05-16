@@ -242,7 +242,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
             query = "sp_getPromoStudentByDup " + dupYear + ",'" + dupClass + "','" + dupSection + "'";
         }
 
-        return utl.GetDatasetTable(query, "Students").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Students").GetXml();
 
     }
 
@@ -253,7 +253,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 
@@ -273,7 +273,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
         {
             query = "sp_GetPromoStudentBySection '" + Class + "','" + Section + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
         }
-        return utl.GetDatasetTable(query, "Students").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Students").GetXml();
     }
 
 
@@ -283,7 +283,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuId '" + path + "'," + UserId;
-        return utl.GetDatasetTable(query, "ModuleMenu").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ModuleMenu").GetXml();
     }
     [WebMethod]
     public static string GetFeePendingList(string RegNo, string Active, string AcademicId)

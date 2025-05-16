@@ -63,7 +63,7 @@ public partial class Building : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetBuilding " + "" + BuildingID + "";
-        return utl.GetDatasetTable(query, "EditBuilding").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditBuilding").GetXml();
     }
 
     [WebMethod]
@@ -128,7 +128,7 @@ public partial class Building : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

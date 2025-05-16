@@ -173,9 +173,14 @@
                 $("td", row).eq(3).html("No Record Found").attr("align", "left");
                 $("td", row).eq(4).html("");
                 $("td", row).eq(5).html("");
+<<<<<<< HEAD
+              //  $("td", row).eq(6).html("").removeClass("viewacc edit-links");
+                $("td", row).eq(6).html("").removeClass("editacc edit-links");
+=======
                 $("td", row).eq(6).html("");
               //  $("td", row).eq(6).html("").removeClass("viewacc edit-links");
                 $("td", row).eq(7).html("").removeClass("editacc edit-links");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
              //   $("td", row).eq(8).html("").removeClass("editacc edit-links");
                 //   $("td", row).eq(6).html("").removeClass("deleteacc delete-links"); ;
 
@@ -201,6 +206,14 @@
                     row.addClass("even");
                     $("td", row).eq(0).html($(this).find("RowNumber").text());
                     $("td", row).eq(1).html($(this).find("ApplicationNo").text());
+<<<<<<< HEAD
+                    $("td", row).eq(2).html($(this).find("TempNo").text());
+                    $("td", row).eq(3).html($(this).find("StudentName").text());
+                    $("td", row).eq(4).html($(this).find("Class").text());
+                    $("td", row).eq(5).html($(this).find("Status").text());
+                   // $("td", row).eq(6).html(vhref).addClass("viewacc view-links");
+                    $("td", row).eq(6).html(ehref).addClass("editacc edit-links");
+=======
                     $("td", row).eq(2).html($(this).find("RegNo").text());
                     $("td", row).eq(3).html($(this).find("TempNo").text());
                     $("td", row).eq(4).html($(this).find("StudentName").text());
@@ -208,6 +221,7 @@
                     $("td", row).eq(6).html($(this).find("Status").text());
                    // $("td", row).eq(6).html(vhref).addClass("viewacc view-links");
                     $("td", row).eq(7).html(ehref).addClass("editacc edit-links");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                   //  $("td", row).eq(8).html(dhref).addClass("editacc edit-links");
 
                     //  $("td", row).eq(6).html(dhref).addClass("deleteacc delete-links");
@@ -769,11 +783,17 @@
                         </tr>
                         <tr>
                             <td valign="top" align="center">
+<<<<<<< HEAD
+                                <button id="btnSearch" type="button" class="btn-icon btn-navy btn-search" onclick="GetStudentInfo(1);">
+                                    <span></span>Search</button>
+                                &nbsp; <asp:Button ID="btnSync" runat="server" CssClass="btn-icon button-generate"
+=======
 
                                 <button id="btnSearch" type="submit" class="btn-icon btn-navy btn-search"">
                                     <span></span>Search</button>
                                 &nbsp;
                                <asp:Button ID="btnSync" runat="server" CssClass="btn-icon button-generate"
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                 OnClick="btnSync_Click" Text="Sync" />&nbsp;
                                 <button id="btnkCancel" type="button" class="btn-icon btn-navy btn-cancel1" runat="server"
                                     onclick="return Cancel();">
@@ -811,11 +831,15 @@
                                         HeaderText="Application No" SortExpression="ApplicationNo">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     </asp:BoundField>
+<<<<<<< HEAD
+                                        <asp:BoundField DataField="TempNo" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+=======
                                        <asp:BoundField DataField="RegNo" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
                                         HeaderText="Temp RegNo" SortExpression="RegNo">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     </asp:BoundField>
                                      <asp:BoundField DataField="TempNo" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                         HeaderText="TempNo" SortExpression="TempNo">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     </asp:BoundField>
@@ -827,7 +851,10 @@
                                         HeaderText="Class" SortExpression="Class">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     </asp:BoundField>
+<<<<<<< HEAD
+=======
                                    
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                     <asp:BoundField DataField="Status" HeaderStyle-CssClass="sorting_mod" ItemStyle-HorizontalAlign="Center"
                                         HeaderText="Status" SortExpression="Status">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -981,6 +1008,9 @@
         $(document).ready(function () {
             $("a[rel^='prettyPhoto']").prettyPhoto();
         });
+<<<<<<< HEAD
+=======
        
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
     </script>
 </asp:Content>

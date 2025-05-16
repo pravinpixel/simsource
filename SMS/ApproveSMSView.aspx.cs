@@ -78,7 +78,7 @@ public partial class ApproveSMSView : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -140,7 +140,7 @@ public partial class ApproveSMSView : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "GetSMSListByType '" + msgType + "','" + ReceiverType + "','" + MsgDate + "'";
-        return utl.GetDatasetTable(query, "SMSList").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SMSList").GetXml();
     }
 
 }

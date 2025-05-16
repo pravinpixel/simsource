@@ -153,7 +153,11 @@
             glValue = value;
             $(".ic-grid-tables").each(function () {
                 if ($(this).find("a").attr('class') == value)
+<<<<<<< HEAD
+                    $(this).find("a").attr("style", "background:#071351;")
+=======
                     $(this).find("a").attr("style", "background:#415A77;")
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 else
                     $(this).find("a").removeAttr("style", "background")
                 return;
@@ -162,7 +166,7 @@
 
         function ChangeApplication() {
             var str = document.URL;
-            var res = str.split("/SIMV8/");
+            var res = str.split("/asssource/");
             var urlsplit = res[1].toString().split("&AcademicYear=");
 
             var redirecturl = urlsplit[0].toString().replace(/&/g, '@');
@@ -213,12 +217,12 @@
                     <img src="../img/Amalorpavam-logo.png" alt="Logo" /></div>
                 <div class="float-left1">
                     <h1>
-                        SIM V.8</h1>
+                        Amalorpavam School of Sports</h1>
                 </div>
-                <div style="float: left; margin-top: 31px; margin-left: 80px;">
+               <!--  <div style="float: left; margin-top: 31px; margin-left: 80px;">
                     <span><a class="appnavi" href="javascript:void(0);" onclick="ChangeApplication();">Goto
                         CBSE Application</a></span>
-                </div>
+                </div>-->
                 <asp:HiddenField ID="hfuserid" runat="server" />
                 <div class="floatright1">
                     <div class="floatleft">
