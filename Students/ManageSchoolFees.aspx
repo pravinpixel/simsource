@@ -519,6 +519,18 @@
             $('#txtstudSections').val(xml.find("sectionname").text());
             if (xml.find("AcademicStatus").text() == "Active") {
                 if ($('#txtstudName').val() != "") {
+
+                if (xml.find("SportStudent").text() == "0" && xml.find("StudentId").text() != "") {
+                    setTimeout(() => {
+                       jAlert('He/she is not a Full-time Sport Student, So Request to bill it in the Sport School Billing!!!');
+                    }, 1000);
+                 
+//                    $("[id*=txtBarcode]").val("");
+//                    $("[id*=hdnRegNo]").val("");
+//                    $("[id*=txtRegNo]").val("");
+//                    $("[id*=txtBarcode]").focus();
+                }
+
                     if (xml.find("AdminNo").text() == "0" || xml.find("AdminNo").text() == "") {
                         jAlert('Can\'t Display the Fees Bill, B\'coz the student admission is not approved. !!!');
                     }
