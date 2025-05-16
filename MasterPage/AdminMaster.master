@@ -153,7 +153,11 @@
             glValue = value;
             $(".ic-grid-tables").each(function () {
                 if ($(this).find("a").attr('class') == value)
+<<<<<<< HEAD
                     $(this).find("a").attr("style", "background:#071351;")
+=======
+                    $(this).find("a").attr("style", "background:#415A77;")
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 else
                     $(this).find("a").removeAttr("style", "background")
                 return;

@@ -336,31 +336,28 @@
                                                         <asp:TextBox ID="txtConductedby" runat="server" CssClass="jsrequired" Width="400px"></asp:TextBox>
                                                     </td>
                                                 </tr>
-                                                  <tr>
+                                                <tr>
                                                     <td class="col1" align="left">
-                                                        6<label>. 
-                                                        Name of the Program <span style="color: Red">*</span>
+                                                        6<label>. Name of the Program <span style="color: Red">*</span>
                                                         </label>
                                                     </td>
                                                     <td colspan="2">
                                                         :
                                                     </td>
                                                     <td style="text-align: left">
-                                                        <asp:TextBox ID="txtEvent" CssClass="jsrequired" runat="server"  Width="400px"></asp:TextBox>
+                                                        <asp:TextBox ID="txtEvent" CssClass="jsrequired" runat="server" Width="400px"></asp:TextBox>
                                                     </td>
                                                 </tr>
-                                              
                                                 <tr>
                                                     <td class="col1" align="left">
                                                         <label>
-                                                            7. Remarks
-                                                        (Winner / Participant)</label></td>
+                                                            7. Remarks (Winner / Participant)</label>
+                                                    </td>
                                                     <td colspan="2">
                                                         :
                                                     </td>
                                                     <td>
-                                                        <asp:TextBox ID="txtremarks" runat="server" Width="400px" MaxLength="200"
-                                                            TextMode="MultiLine"></asp:TextBox>
+                                                        <asp:TextBox ID="txtremarks" runat="server" Width="400px" MaxLength="200" TextMode="MultiLine"></asp:TextBox>
                                                         (Max Upto 200 Characters)
                                                     </td>
                                                 </tr>
@@ -418,28 +415,30 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="col1" align="left">
-                                                        11<label>. Position  <span style="color: Red">*</span>
+                                                        11<label>. Position <span style="color: Red">*</span>
                                                         </label>
                                                     </td>
                                                     <td colspan="2">
                                                         :
                                                     </td>
                                                     <td style="text-align: left">
-                                                         <asp:DropDownList ID="ddlPosition" CssClass="jsrequired" runat="server">
-                                                                <asp:ListItem Selected="True" Value="-1">Select</asp:ListItem>
-                                                                <asp:ListItem Value="I">I</asp:ListItem>
-                                                                <asp:ListItem Value="II">II</asp:ListItem>
-                                                                 <asp:ListItem Value="III">II</asp:ListItem>
-                                                                  <asp:ListItem Value="IV">IV</asp:ListItem>
-                                                                   <asp:ListItem Value="V">V</asp:ListItem>
-                                                                    <asp:ListItem Value="VI">VI</asp:ListItem>
-                                                                     <asp:ListItem Value="VII">VII</asp:ListItem>
-                                                                      <asp:ListItem Value="VIII">VIII</asp:ListItem>
-                                                                       <asp:ListItem Value="IX">IX</asp:ListItem>
-                                                                        <asp:ListItem Value="X">X</asp:ListItem>
-                                                                        <asp:ListItem Value="Consolation">Consolation</asp:ListItem>
-                                                                        <asp:ListItem Value="Winner">Winner</asp:ListItem>
-                                                            </asp:DropDownList>
+                                                        <asp:DropDownList ID="ddlPosition" CssClass="jsrequired" runat="server">
+                                                            <asp:ListItem Selected="True" Value="-1">Select</asp:ListItem>
+                                                            <asp:ListItem Value="I">I</asp:ListItem>
+                                                            <asp:ListItem Value="II">II</asp:ListItem>
+                                                            <asp:ListItem Value="III">III</asp:ListItem>
+                                                            <asp:ListItem Value="IV">IV</asp:ListItem>
+                                                            <asp:ListItem Value="V">V</asp:ListItem>
+                                                            <asp:ListItem Value="VI">VI</asp:ListItem>
+                                                            <asp:ListItem Value="VII">VII</asp:ListItem>
+                                                            <asp:ListItem Value="VIII">VIII</asp:ListItem>
+                                                            <asp:ListItem Value="IX">IX</asp:ListItem>
+                                                            <asp:ListItem Value="X">X</asp:ListItem>
+                                                            <asp:ListItem Value="Consolation">Consolation</asp:ListItem>
+                                                            <asp:ListItem Value="Winner">Winner</asp:ListItem>
+                                                            <asp:ListItem Value="Participant">Participant</asp:ListItem>
+                                                            <asp:ListItem Value="Best Exhibit">Best Exhibit</asp:ListItem>
+                                                        </asp:DropDownList>
                                                     </td>
                                                 </tr>
                                                 <tr>

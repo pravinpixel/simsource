@@ -420,6 +420,7 @@
           <DataField>TamilName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+<<<<<<< HEAD
         <Field Name="Badminton">
           <DataField>Badminton</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -448,6 +449,8 @@
           <DataField>Weekend</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         <Field Name="FatherAadhaarNo">
           <DataField>FatherAadhaarNo</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -471,7 +474,11 @@
       </Query>
       <rd:DataSetInfo>
         <rd:DataSetName>dsCustom</rd:DataSetName>
+<<<<<<< HEAD
         <rd:SchemaPath>E:\6. SIM Projects\ASSSOURCE\App_Code\dsCustom.xsd</rd:SchemaPath>
+=======
+        <rd:SchemaPath>E:\6. SIM Projects\SIMSOURCE - ASS\App_Code\dsCustom.xsd</rd:SchemaPath>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         <rd:TableName>sp_GetCustomReport</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
@@ -500,7 +507,11 @@
               <Width>1in</Width>
             </TablixColumn>
             <TablixColumn>
+<<<<<<< HEAD
               <Width>1.9375in</Width>
+=======
+              <Width>1.85417in</Width>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
             </TablixColumn>
             <TablixColumn>
               <Width>1in</Width>
@@ -557,7 +568,11 @@
               <Width>1.19792in</Width>
             </TablixColumn>
             <TablixColumn>
+<<<<<<< HEAD
               <Width>1.25in</Width>
+=======
+              <Width>1.20833in</Width>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
             </TablixColumn>
             <TablixColumn>
               <Width>1in</Width>
@@ -881,7 +896,11 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
+<<<<<<< HEAD
                     <Textbox Name="Textbox35">
+=======
+                    <Textbox Name="Textbox26">
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -900,7 +919,11 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
+<<<<<<< HEAD
                       <rd:DefaultName>Textbox35</rd:DefaultName>
+=======
+                      <rd:DefaultName>Textbox26</rd:DefaultName>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -917,7 +940,11 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
+<<<<<<< HEAD
                     <Textbox Name="Textbox31">
+=======
+                    <Textbox Name="Textbox34">
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -936,7 +963,11 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
+<<<<<<< HEAD
                       <rd:DefaultName>Textbox31</rd:DefaultName>
+=======
+                      <rd:DefaultName>Textbox34</rd:DefaultName>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1565,7 +1596,11 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
+<<<<<<< HEAD
                     <Textbox Name="Textbox51">
+=======
+                    <Textbox Name="Textbox43">
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -1584,7 +1619,11 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
+<<<<<<< HEAD
                       <rd:DefaultName>Textbox51</rd:DefaultName>
+=======
+                      <rd:DefaultName>Textbox43</rd:DefaultName>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1601,7 +1640,11 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
+<<<<<<< HEAD
                     <Textbox Name="Textbox42">
+=======
+                    <Textbox Name="Textbox41">
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -1620,7 +1663,11 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
+<<<<<<< HEAD
                       <rd:DefaultName>Textbox42</rd:DefaultName>
+=======
+                      <rd:DefaultName>Textbox41</rd:DefaultName>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -6604,7 +6651,11 @@
             </TablixMember>
             <TablixMember>
               <Visibility>
+<<<<<<< HEAD
                 <Hidden>= iif(Parameters!motheraadhaarno.Value = "True", false, true)</Hidden>
+=======
+                <Hidden>=iif(Parameters!motheraadhaarno.Value = "True", false, true)</Hidden>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
               </Visibility>
             </TablixMember>
             <TablixMember>
@@ -6907,7 +6958,11 @@
         <DataSetName>DataSet1</DataSetName>
         <Top>0.19826in</Top>
         <Height>0.5in</Height>
+<<<<<<< HEAD
         <Width>99.96209in</Width>
+=======
+        <Width>92.83709in</Width>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         <Style>
           <Border>
             <Style>None</Style>
@@ -7235,6 +7290,7 @@
       <DataType>Boolean</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+<<<<<<< HEAD
     <ReportParameter Name="badminton">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
@@ -7263,6 +7319,8 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
     <ReportParameter Name="applicationno">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
@@ -7271,16 +7329,28 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+<<<<<<< HEAD
     <ReportParameter Name="motheraadhaarno">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
     <ReportParameter Name="fatheraadhaarno">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+<<<<<<< HEAD
   </ReportParameters>
   <Width>99.96209in</Width>
+=======
+    <ReportParameter Name="motheraadhaarno">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Width>92.83709in</Width>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
   <Page>
     <PageHeader>
       <Height>1.09007in</Height>

@@ -8,12 +8,19 @@
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="SIMV4ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="SIMV4ConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.SIMV4ConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="SIMV8ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="SIMV8ConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.SIMV8ConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="SIMV6ConnectionString" IsAppSettingsProperty="true" Modifier="Assembly" Name="SIMV6ConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.SIMV6ConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+<<<<<<< HEAD
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ASSConnectiontring" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ASSConnectiontring (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ASSConnectiontring.ConnectionString" Provider="System.Data.SqlClient" />
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         </Connections>
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="sp_GetCustomReportTableAdapter" GeneratorDataComponentClassName="sp_GetCustomReportTableAdapter" Name="sp_GetCustomReport" UserDataComponentName="sp_GetCustomReportTableAdapter">
             <MainSource>
+<<<<<<< HEAD
               <DbSource ConnectionRef="ASSConnectiontring (Web.config)" DbObjectName="ASS.dbo.sp_GetCustomReport" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+=======
+              <DbSource ConnectionRef="SIMV1ConnectionString (Web.config)" DbObjectName="SIMV6.dbo.sp_GetCustomReport" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 <SelectCommand>
                   <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
                     <CommandText>dbo.sp_GetCustomReport</CommandText>
@@ -720,6 +727,7 @@
               </xs:element>
               <xs:element name="SUID" msprop:Generator_ColumnVarNameInTable="columnSUID" msprop:Generator_ColumnPropNameInRow="SUID" msprop:Generator_ColumnPropNameInTable="SUIDColumn" msprop:Generator_UserColumnName="SUID" type="xs:string" minOccurs="0" />
               <xs:element name="TamilName" msprop:Generator_ColumnVarNameInTable="columnTamilName" msprop:Generator_ColumnPropNameInRow="TamilName" msprop:Generator_ColumnPropNameInTable="TamilNameColumn" msprop:Generator_UserColumnName="TamilName" type="xs:string" minOccurs="0" />
+<<<<<<< HEAD
               <xs:element name="Badminton" msprop:Generator_ColumnVarNameInTable="columnBadminton" msprop:Generator_ColumnPropNameInRow="Badminton" msprop:Generator_ColumnPropNameInTable="BadmintonColumn" msprop:Generator_UserColumnName="Badminton" type="xs:string" minOccurs="0" />
               <xs:element name="Chess" msprop:Generator_ColumnVarNameInTable="columnChess" msprop:Generator_ColumnPropNameInRow="Chess" msprop:Generator_ColumnPropNameInTable="ChessColumn" msprop:Generator_UserColumnName="Chess" type="xs:string" minOccurs="0" />
               <xs:element name="Tennis" msprop:Generator_ColumnVarNameInTable="columnTennis" msprop:Generator_ColumnPropNameInRow="Tennis" msprop:Generator_ColumnPropNameInTable="TennisColumn" msprop:Generator_UserColumnName="Tennis" type="xs:string" minOccurs="0" />
@@ -727,6 +735,8 @@
               <xs:element name="Forenoon" msprop:Generator_ColumnVarNameInTable="columnForenoon" msprop:Generator_ColumnPropNameInRow="Forenoon" msprop:Generator_ColumnPropNameInTable="ForenoonColumn" msprop:Generator_UserColumnName="Forenoon" type="xs:string" minOccurs="0" />
               <xs:element name="Afternoon" msprop:Generator_ColumnVarNameInTable="columnAfternoon" msprop:Generator_ColumnPropNameInRow="Afternoon" msprop:Generator_ColumnPropNameInTable="AfternoonColumn" msprop:Generator_UserColumnName="Afternoon" type="xs:string" minOccurs="0" />
               <xs:element name="Weekend" msprop:Generator_ColumnVarNameInTable="columnWeekend" msprop:Generator_ColumnPropNameInRow="Weekend" msprop:Generator_ColumnPropNameInTable="WeekendColumn" msprop:Generator_UserColumnName="Weekend" type="xs:string" minOccurs="0" />
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
               <xs:element name="FatherAadhaarNo" msprop:Generator_ColumnVarNameInTable="columnFatherAadhaarNo" msprop:Generator_ColumnPropNameInRow="FatherAadhaarNo" msprop:Generator_ColumnPropNameInTable="FatherAadhaarNoColumn" msprop:Generator_UserColumnName="FatherAadhaarNo" type="xs:string" minOccurs="0" />
               <xs:element name="MotherAadhaarNo" msprop:Generator_ColumnVarNameInTable="columnMotherAadhaarNo" msprop:Generator_ColumnPropNameInRow="MotherAadhaarNo" msprop:Generator_ColumnPropNameInTable="MotherAadhaarNoColumn" msprop:Generator_UserColumnName="MotherAadhaarNo" type="xs:string" minOccurs="0" />
               <xs:element name="ApplicationNo" msprop:Generator_ColumnVarNameInTable="columnApplicationNo" msprop:Generator_ColumnPropNameInRow="ApplicationNo" msprop:Generator_ColumnPropNameInTable="ApplicationNoColumn" msprop:Generator_UserColumnName="ApplicationNo" type="xs:string" minOccurs="0" />

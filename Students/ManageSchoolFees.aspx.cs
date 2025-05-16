@@ -72,7 +72,7 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-       string sqlstr = "sp_GetBusRouteDetails " + "''";
+        string sqlstr = "sp_GetBusRouteDetails " + "''";
         DataTable dt = new DataTable();
         dt = utl.GetDataTable(sqlstr);
 
@@ -498,6 +498,11 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                 string PaidMonthName = "";
                 string cashmode = "";
                 string cardmode = "";
+<<<<<<< HEAD
+=======
+                string remarks = "";
+                string paymodeHTML = "";
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 if (PaidMonthRow.Length > 1)
                     PaidMonthName = PaidMonthRow[0]["monthname"].ToString() + "," + PaidMonthRow[1]["monthname"].ToString();
                 else
@@ -511,15 +516,39 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
                         paymentMode += "<option value=\"" + dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() + "\">" + dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodename"].ToString() + "</option>";
 
-                        if (dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "4")
+                        if (dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "4" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "8" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "9")
                         {
-                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 100px;\" name=\"txtcashamt\" value=\"0\"/>";
-                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 100px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
+
+                        }
+                        if (dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "10" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "11" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "12" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "13" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "14" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "15")
+                        {
+                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
                         }
                         else
                         {
-                            cashmode = "<input type=\"textbox\" disabled=\"disabled\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 100px;\" id=\"txtcashamt\" name=\"txtcashamt\" value=\"0\"/>";
-                            cardmode = "<input type=\"textbox\" disabled=\"disabled\"  onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 100px;\"  id=\"txtcardamt\" name=\"txtcardamt\" value=\"0\"/>";
+                            cashmode = "<input type=\"textbox\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" id=\"txtcashamt\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\"  onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\"  id=\"txtcardamt\" name=\"txtcardamt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
                         }
 
                     }
@@ -1026,9 +1055,30 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
             string feesCatHeadId = "";
             string feesHeadAmt = "";
             string feesCatId = string.Empty;
+
+            string feesHeadActualAmt = "";
+            string feesConcessionAmt = string.Empty;
+
             string feesMonthName = string.Empty;
             string feestotalAmount = string.Empty;
             string paymentMode = string.Empty;
+
+            string sport_academicID = string.Empty;
+            string sport_feesCatHeadId = "";
+            string sport_feesHeadAmt = "";
+            string sport_feesCatId = string.Empty;
+            string sport_feesHeadActualAmt = "";
+            string sport_feesConcessionAmt = "";
+
+            string sport_feesMonthName = string.Empty;
+            string sport_feestotalAmount = string.Empty;
+
+            string ICTYpe_academicID = string.Empty;
+            string ICTYpe_feesCatHeadId = "";
+            string ICTYpe_feesHeadAmt = "";
+            string ICTYpe_feesCatId = string.Empty;
+            string ICTYpe_feesMonthName = string.Empty;
+            string ICTYpe_feestotalAmount = string.Empty;
 
             if (cmd.Parameters["@FeesCatId"] != null)
                 feesCatId = cmd.Parameters["@FeesCatId"].Value.ToString();
@@ -1045,7 +1095,9 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                 string PaidMonthName = "";
                 string cashmode = "";
                 string cardmode = "";
-
+                string qrmode = "";
+                string remarks = "";
+                string paymodeHTML = "";
                 if (PaidMonthRow.Length > 0)
                     PaidMonthName = PaidMonthRow[0]["monthname"].ToString();
 
@@ -1057,15 +1109,42 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
                         paymentMode += "<option value=\"" + dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() + "\">" + dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodename"].ToString() + "</option>";
 
-                        if (dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "4")
+                        if (dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "4" || dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "8" || dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "9")
                         {
-                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 100px;\" name=\"txtcashamt\" value=\"0\"/>";
-                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 100px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            qrmode = "<input type=\"textbox\" id=\"txtqramt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtqramt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "&nbsp;QR:" + qrmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
+
+                        }
+                        if (dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "10" || dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "11" || dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "12" || dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "13" || dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "14" || dsManageSchoolFees.Tables[dsManageSchoolFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "15")
+                        {
+                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            qrmode = "<input type=\"textbox\" id=\"txtqramt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtqramt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "&nbsp;QR:" + qrmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
                         }
                         else
                         {
-                            cashmode = "<input type=\"textbox\" disabled=\"disabled\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 100px;\" id=\"txtcashamt\" name=\"txtcashamt\" value=\"0\"/>";
-                            cardmode = "<input type=\"textbox\" disabled=\"disabled\"  onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 100px;\"  id=\"txtcardamt\" name=\"txtcardamt\" value=\"0\"/>";
+                            cashmode = "<input type=\"textbox\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" id=\"txtcashamt\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\"  onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\"  id=\"txtcardamt\" name=\"txtcardamt\" value=\"0\"/>";
+                            qrmode = "<input type=\"textbox\" id=\"txtqramt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtqramt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "&nbsp;QR:" + qrmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
                         }
                     }
                     paymentMode += "</select>";
@@ -1106,18 +1185,17 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 	                                      <td ><label for='textfield2'>" + dsManageSchoolFees.Tables[2].Rows[0]["sectionname"].ToString().ToUpper() + "</label></td></tr>");
                 if (paymentMode != string.Empty)
                 {
-                    feePOPUPStudentDetails.Append(@"<tr><td >Payment Mode</td>
-	                                          <td >:</td>
-	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display: none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "</td></tr>");
+                    feePOPUPStudentDetails.Append(paymodeHTML);
+
                 }
                 feePOPUPStudentDetails.Append(@"</tr></table>");
 
 
 
 
-
-
-
+                decimal schooltotal = 0;
+                decimal sportstotal = 0;
+                decimal schoolConcessionTotal = 0;
 
                 if (dsManageSchoolFees.Tables[3].Rows.Count > 0 && dsManageSchoolFees.Tables[0].Rows.Count > 0)
                 {
@@ -1127,24 +1205,216 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                     feePOPUPHeadDetails.Append(@"<tr><td colspan='2'><div class='' style='overflow:auto; height:120px; margin:10px 0px;width:100%;'>
                                                 <table width='100%' border='0' cellspacing='0' cellpadding='0'>");
 
+                    decimal sumofactualAmt = 0;
+
                     for (int k = 0; k < dsManageSchoolFees.Tables[3].Rows.Count; k++)
                     {
+                        decimal actualAmt = Convert.ToDecimal(dsManageSchoolFees.Tables[3].Rows[k]["actualamount"]);
+                        decimal amount = Convert.ToDecimal(dsManageSchoolFees.Tables[3].Rows[k]["amount"]);
+                        decimal concession = actualAmt - amount;
+
                         feesCatHeadId += dsManageSchoolFees.Tables[3].Rows[k]["feescatheadid"].ToString() + "|";
                         feesHeadAmt += dsManageSchoolFees.Tables[3].Rows[k]["amount"].ToString() + "|";
-                        feePOPUPHeadDetails.Append(@"<tr><td height='30' class='tdbrd'> " + dsManageSchoolFees.Tables[3].Rows[k]["feesheadname"].ToString().ToUpper() + "</td>");
-                        feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + Math.Round(Convert.ToDecimal(dsManageSchoolFees.Tables[3].Rows[k]["amount"].ToString().ToUpper())) + "</td></tr>");
+                        feesHeadActualAmt += dsManageSchoolFees.Tables[3].Rows[k]["actualamount"].ToString() + "|";
+                        feesConcessionAmt += concession + "|"; ;
 
+
+                        feePOPUPHeadDetails.Append(@"<tr><td height='30' class='tdbrd'> " + dsManageSchoolFees.Tables[3].Rows[k]["feesheadname"].ToString().ToUpper() + "</td>");
+                        //feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + Math.Round(Convert.ToDecimal(dsManageSchoolFees.Tables[3].Rows[k]["amount"].ToString().ToUpper())) + "</td></tr>");
+                        feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + Math.Round(Convert.ToDecimal(dsManageSchoolFees.Tables[3].Rows[k]["actualamount"].ToString().ToUpper())) + "</td></tr>");
+                        sumofactualAmt += Math.Round(actualAmt);
+                        schoolConcessionTotal += concession;
                     }
                     feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
+<<<<<<< HEAD
                     feePOPUPHeadDetails.Append(@"<tr style='font-size:16px'><td height='30' class='tdbrd'>Total </td>
                                                     <td class='tdbrd'>Rs. " + Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString())) + "</td></tr></table>");
+=======
+                    feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
+                                                    <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString())) + "</td></tr></table>");
+
+                    schooltotal = Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString()));
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                 }
 
-                DataTable dtadv = new DataTable();
                 Utilities utl = new Utilities();
+<<<<<<< HEAD
 
                string old_academicID= utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+=======
+                decimal ICTypetotal = 0;
+                //ICTYPE starts
+
+                //string strConnString = ConfigurationManager.AppSettings["SIMCBSEConnection"].ToString();
+                //SqlConnection ICTypeconn = new SqlConnection(strConnString);
+                //DataSet dataICType = new DataSet();
+                //SqlCommand ICTYpe_cmd = new SqlCommand();
+                //ICTYpe_cmd = new SqlCommand("sp_ManageFee");
+
+                //ICTYpe_cmd.CommandType = CommandType.StoredProcedure;
+                //ICTYpe_cmd.Parameters.AddWithValue("@regno", dsManageSchoolFees.Tables[2].Rows[0]["RegNo"].ToString());
+                //ICTYpe_cmd.Parameters.AddWithValue("@AcademicId", sport_academicID);
+                //ICTYpe_cmd.Parameters.Add("@FeesCatId", SqlDbType.Int).Direction = ParameterDirection.Output;
+                //ICTYpe_cmd.Parameters.Add("@FeesMonthName", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                //ICTYpe_cmd.Parameters.Add("@FeesTotalAmt", SqlDbType.Decimal, 18).Direction = ParameterDirection.Output;
+                //ICTYpe_cmd.Parameters["@FeesTotalAmt"].Precision = 18;
+                //ICTYpe_cmd.Parameters["@FeesTotalAmt"].Scale = 2;
+                //ICTYpe_cmd.Parameters.Add("@FeesMonth", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                //ICTYpe_cmd.Parameters.Add("@FeesType", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                //ICTYpe_cmd.Parameters.Add("@isTerm", SqlDbType.Int).Direction = ParameterDirection.Output;
+                //ICTypeconn.Open();
+                //ICTYpe_cmd.Connection = ICTypeconn;
+                //SqlDataAdapter daDataICType = new SqlDataAdapter();
+                //daDataICType.SelectCommand = ICTYpe_cmd;
+
+                //daDataICType.Fill(dataICType);
+                //ICTypeconn.Close();
+
+                //if (dataICType != null && dataICType.Tables.Count > 0 && dataICType.Tables[3].Rows.Count > 0)
+                //{
+
+                //    if (ICTYpe_cmd.Parameters["@FeesCatId"] != null)
+                //        sport_feesCatId = ICTYpe_cmd.Parameters["@FeesCatId"].Value.ToString();
+
+                //    if (ICTYpe_cmd.Parameters["@FeesMonthName"] != null)
+                //        sport_feesMonthName = ICTYpe_cmd.Parameters["@FeesMonthName"].Value.ToString();
+
+                //    if (ICTYpe_cmd.Parameters["@FeesTotalAmt"] != null)
+                //        sport_feestotalAmount = ICTYpe_cmd.Parameters["@FeesTotalAmt"].Value.ToString();
+
+
+                //    feePOPUPHeadDetails.Append(@" <table width='100%' border='0' cellspacing='0' cellpadding='5' class='popup-form'>
+	               //                           <tr class='tlb-trbg'><td width='79%' height='30' align='left' style='padding-left:10px;'>Heads</td><td width='21%' align='center'>Amount</td></tr>");
+                //    feePOPUPHeadDetails.Append(@"<tr><td colspan='2'><div class='' style='overflow:auto; height:120px; margin:10px 0px;width:100%;'>
+                //                                <table width='100%' border='0' cellspacing='0' cellpadding='0'>");
+
+                //    for (int k = 0; k < dataICType.Tables[3].Rows.Count; k++)
+                //    {
+                //        ICTYpe_feesCatHeadId += dataICType.Tables[3].Rows[k]["feescatheadid"].ToString() + "|";
+                //        ICTYpe_feesHeadAmt += dataICType.Tables[3].Rows[k]["amount"].ToString() + "|";
+                //        feePOPUPHeadDetails.Append(@"<tr><td height='30' class='tdbrd'> " + dataICType.Tables[3].Rows[k]["feesheadname"].ToString().ToUpper() + "</td>");
+                //        feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + Math.Round(Convert.ToDecimal(dataICType.Tables[3].Rows[k]["amount"].ToString().ToUpper())) + "</td></tr>");
+                //        ICTYpe_feestotalAmount += Math.Round(Convert.ToDecimal(dataICType.Tables[3].Rows[k]["amount"].ToString().ToUpper()));
+                //    }
+                //    feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
+                //    if (ICTYpe_feestotalAmount == null || ICTYpe_feestotalAmount == "")
+                //    {
+                //        ICTYpe_feestotalAmount = "0";
+                //    }
+
+                //    feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
+                //                                    <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(ICTYpe_feestotalAmount.ToString())) + "</td></tr>");
+
+                //    ICTypetotal = Math.Round(Convert.ToDecimal(ICTYpe_feestotalAmount));
+
+                //    feePOPUPHeadDetails.Append(@"<br/><br/><tr class='tlt-rs'><td height='30' class='tdbrd'>Grand Total </td>
+                //                                    <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(schooltotal) + Convert.ToDecimal(ICTypetotal)) + "</td></tr></table>");
+
+                //}
+
+                //ICTYPE ends
+
+
+                DataSet dataSports = new DataSet();
+                sport_academicID = utl.ExecuteASSScalar("select top 1 academicID from m_academicyear where isactive=1 order by academicID desc ");
+
+                string sport_Student = utl.ExecuteASSScalar("select count(*)  from s_studentinfo where RegNo = " + dsManageSchoolFees.Tables[2].Rows[0]["RegNo"].ToString() + " and academicID=" + sport_academicID);
+
+                SqlConnection sport_conn = new SqlConnection(ConfigurationManager.AppSettings["ASSConnection"].ToString());
+                string sqlstr = "select isactive from m_academicyear where AcademicID='" + sport_academicID + "'";
+                string sport_Isactive = utl.ExecuteASSScalar(sqlstr);
+                HttpContext.Current.Session["sport_Isactive"] = sport_Isactive.ToString();
+                SqlCommand sport_cmd = new SqlCommand();
+                if (sport_Student != "0" && sport_Student != null && sport_Student != "")
+                {
+                    if (sport_Isactive == "True")
+                {
+                    sport_cmd = new SqlCommand("sp_ManageFee");
+                }
+                else
+                {
+                    sport_cmd = new SqlCommand("[sp_ManageOldFee]");
+                }
+
+                sport_cmd.CommandType = CommandType.StoredProcedure;
+                sport_cmd.Parameters.AddWithValue("@regno", dsManageSchoolFees.Tables[2].Rows[0]["RegNo"].ToString());
+                sport_cmd.Parameters.AddWithValue("@AcademicId", sport_academicID);
+                sport_cmd.Parameters.Add("@FeesCatId", SqlDbType.Int).Direction = ParameterDirection.Output;
+                sport_cmd.Parameters.Add("@FeesMonthName", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                sport_cmd.Parameters.Add("@FeesTotalAmt", SqlDbType.Decimal, 18).Direction = ParameterDirection.Output;
+                sport_cmd.Parameters["@FeesTotalAmt"].Precision = 18;
+                sport_cmd.Parameters["@FeesTotalAmt"].Scale = 2;
+                sport_cmd.Parameters.Add("@FeesMonth", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                sport_cmd.Parameters.Add("@FeesType", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                sport_cmd.Parameters.Add("@isTerm", SqlDbType.Int).Direction = ParameterDirection.Output;
+                sport_conn.Open();
+                sport_cmd.Connection = sport_conn;
+                SqlDataAdapter daDataSports = new SqlDataAdapter();
+                daDataSports.SelectCommand = sport_cmd;
+
+                daDataSports.Fill(dataSports);
+                sport_conn.Close();
+
+                if (dataSports != null && dataSports.Tables.Count > 0 && dataSports.Tables[3].Rows.Count > 0)
+                {
+
+                    if (sport_cmd.Parameters["@FeesCatId"] != null)
+                        sport_feesCatId = sport_cmd.Parameters["@FeesCatId"].Value.ToString();
+
+                    if (sport_cmd.Parameters["@FeesMonthName"] != null)
+                        sport_feesMonthName = sport_cmd.Parameters["@FeesMonthName"].Value.ToString();
+
+                    if (sport_cmd.Parameters["@FeesTotalAmt"] != null)
+                        sport_feestotalAmount = sport_cmd.Parameters["@FeesTotalAmt"].Value.ToString();
+
+
+                    feePOPUPHeadDetails.Append(@" <table width='100%' border='0' cellspacing='0' cellpadding='5' class='popup-form'>
+	                                          <tr class='tlb-trbg'><td width='79%' height='30' align='left' style='padding-left:10px;'>Heads</td><td width='21%' align='center'>Amount</td></tr>");
+                    feePOPUPHeadDetails.Append(@"<tr><td colspan='2'><div class='' style='overflow:auto; height:120px; margin:10px 0px;width:100%;'>
+                                                <table width='100%' border='0' cellspacing='0' cellpadding='0'>");
+
+                    for (int k = 0; k < dataSports.Tables[3].Rows.Count; k++)
+                    {
+                        sport_feesCatHeadId += dataSports.Tables[3].Rows[k]["feescatheadid"].ToString() + "|";
+                        sport_feesHeadAmt += dataSports.Tables[3].Rows[k]["amount"].ToString() + "|";
+                        feePOPUPHeadDetails.Append(@"<tr><td height='30' class='tdbrd'> " + dataSports.Tables[3].Rows[k]["feesheadname"].ToString().ToUpper() + "</td>");
+                        feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + Math.Round(Convert.ToDecimal(dataSports.Tables[3].Rows[k]["amount"].ToString().ToUpper())) + "</td></tr>");
+                        sport_feestotalAmount += Math.Round(Convert.ToDecimal(dataSports.Tables[3].Rows[k]["amount"].ToString().ToUpper()));
+                    }
+                    feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
+                    if (sport_feestotalAmount == null || sport_feestotalAmount == "")
+                    {
+                        sport_feestotalAmount = "0";
+                    }
+
+                    feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
+                                                    <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(sport_feestotalAmount.ToString())) + "</td></tr>");
+
+                    sportstotal = Math.Round(Convert.ToDecimal(sport_feestotalAmount));
+
+                   // feePOPUPHeadDetails.Append(@"<br/><br/><tr class='tlt-rs'><td height='30' class='tdbrd'>Grand Total </td>
+//<td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(schooltotal) + Convert.ToDecimal(sportstotal)) + "</td></tr></table>");
+
+                }
+}
+                feePOPUPHeadDetails.Append(@" <table width='100%' border='0' cellspacing='0' cellpadding='5' class='popup-form'>");
+
+                if (schoolConcessionTotal > 0)
+                {
+
+                    feePOPUPHeadDetails.Append(@" <tr class='tlt-rs'><td height='30' class='tdbrd'>Concession Granted</td>
+                                                     <td class='tdbrd amt-rgt'>Rs. " + Math.Round(schoolConcessionTotal) + "</td></tr>");
+                }
+
+                feePOPUPHeadDetails.Append(@"<br/><br/><tr class='tlt-rs'><td height='30' class='tdbrd'>Grand Total </td>
+                                                    <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(schooltotal) + Convert.ToDecimal(sportstotal)) + "</td></tr></table>");
+
+
+                DataTable dtadv = new DataTable();
+
+                string old_academicID = utl.ExecuteScalar("select top 1 academicID from m_academicyear where isactive=0 order by academicID desc ");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                 dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill,case when Billrefno is null then BillNo else Billrefno end as ReceiptNo from f_studentbillmaster a 
 	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
@@ -1167,7 +1437,48 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                 feePOPUPContent.Append("<tr><td  class='popup-form' style='padding:6px;'>" + feePOPUPStudentDetails.ToString() + "</td></tr>");
 
                 feePOPUPContent.Append(@"<tr><td  class='popup-form' style='padding:6px;'>" + feePOPUPHeadDetails.ToString() + "</td></tr>");
-                feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'" + regno + "\',\'" + academicId + "\',\'" + feesCatHeadId + "\',\'" + feesHeadAmt + "\',\'" + feesCatId + "\',\'" + feesMonthName + "\',\'" + Math.Round(Convert.ToDecimal(feestotalAmount)) + "\');\" /></td> </tr>");
+
+                if (sport_feestotalAmount == null || sport_feestotalAmount == "")
+                {
+                    sport_feestotalAmount = "0";
+                }
+
+                if (sport_feesHeadAmt == null || sport_feesHeadAmt == "")
+                {
+                    sport_feesHeadAmt = "0";
+                }
+                //if (dataSports != null && dataSports.Tables[0].Rows.Count > 0)
+                if (dataSports != null && dataSports.Tables.Count > 0 && dataSports.Tables[0].Rows.Count > 0)
+                {
+                    //feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'" + regno + "\',\'" + academicId + "-" + sport_academicID + "\',\'" + feesCatHeadId + "-" + sport_feesCatHeadId + "\',\'" + feesHeadAmt + "-" + sport_feesHeadAmt + "\',\'" + feesCatId + "-" + sport_feesCatId + "\',\'" + feesMonthName + "-" + sport_feesMonthName + "\',\'" + Math.Round(Convert.ToDecimal(feestotalAmount)) + "-" + Math.Round(Convert.ToDecimal(sport_feestotalAmount)) + "\');\" /></td> </tr>");
+                    feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy testsport\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'"
+                           + regno + "\',\'"
+                           + academicId + "-" + sport_academicID + "\',\'"
+                           + feesCatHeadId + "-" + sport_feesCatHeadId + "\',\'"
+                           + feesHeadAmt + "-" + sport_feesHeadAmt + "\',\'"
+                           + feesCatId + "-" + sport_feesCatId + "\',\'"
+                           + feesMonthName + "-" + sport_feesMonthName + "\',\'"
+                           + Math.Round(Convert.ToDecimal(feestotalAmount)) + "-" + Math.Round(Convert.ToDecimal(sport_feestotalAmount)) + "\',\'"
+                           + feesHeadActualAmt + "-" + sport_feesHeadActualAmt + "\',\'"
+                           + feesConcessionAmt + "-" + sport_feesConcessionAmt + "\');\" /></td> </tr>");
+
+                }
+                else
+                {
+                    // feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'" + regno + "\',\'" + academicId + "\',\'" + feesCatHeadId + "\',\'" + feesHeadAmt + "\',\'" + feesCatId + "\',\'" + feesMonthName + "\',\'" + Math.Round(Convert.ToDecimal(feestotalAmount)) + "\');\" /></td> </tr>");
+                    feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy test\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'"
+                            + regno + "\',\'"
+                            + academicId + "\',\'"
+                            + feesCatHeadId + "\',\'"
+                            + feesHeadAmt + "\',\'"
+                            + feesCatId + "\',\'"
+                            + feesMonthName + "\',\'"
+                            + Math.Round(Convert.ToDecimal(feestotalAmount)) + "\',\'"
+                            + feesHeadActualAmt + "\',\'"
+                            + feesConcessionAmt + "\');\" /></td> </tr>");
+                }
+
+
                 feePOPUPContent.Append(@"<tr><td colspan='6' ></td></tr> </table>");
                 feePOPUPContent.Append(@"<input type=""hidden"" id=""hdnMonthNum"" value=" + cmd.Parameters["@FeesMonth"].Value.ToString() + ">");
                 feePOPUPContent.Append(@"<input type=""hidden"" id=""hdnFeeType"" value=" + cmd.Parameters["@FeesType"].Value.ToString() + ">");
@@ -1229,21 +1540,105 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string SaveBillDetails(string regNo, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string BillDate, string userId, string PaymentMode, string CashAmt, string CardAmt, string MonthNum, string FeeType)
+    public static string SaveBillDetails(string regNo, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string FeesHeadActualAmt, string FeesHeadConcessionAmt, string BillDate, string userId, string PaymentMode, string CashAmt, string CardAmt, string QRAmount, string Remarks, string MonthNum, string FeeType)
     {
         Utilities utl = new Utilities();
         FeesHeadIds = FeesHeadIds.Substring(0, FeesHeadIds.Length - 1);
         FeesAmount = FeesAmount.Substring(0, FeesAmount.Length - 1);
-        string[] feeHead = FeesHeadIds.Split('|');
-        string[] feeAmount = FeesAmount.Split('|');
 
-        string subQuery = string.Empty;
-        int i = 0;
-        foreach (string head in feeHead)
+        FeesHeadActualAmt = FeesHeadActualAmt.Substring(0, FeesHeadActualAmt.Length - 1);
+        FeesHeadConcessionAmt = FeesHeadConcessionAmt.Substring(0, FeesHeadConcessionAmt.Length - 1);
+
+        //FeesCatId = FeesCatId.Substring(0, FeesCatId.Length - 1);
+        //FeestotalAmount = FeestotalAmount.Substring(0, FeestotalAmount.Length - 1);
+        //CardAmt = CardAmt.Substring(0, CardAmt.Length - 1);
+        //CashAmt = CashAmt.Substring(0, CashAmt.Length - 1);
+        //QRAmount = QRAmount.Substring(0, QRAmount.Length - 1);
+
+        string[] fh = FeesHeadIds.Split('-');
+        string[] feeHead = fh[0].Split('|');
+
+        string[] feeActualAmount = FeesHeadActualAmt.Split('|');
+        string[] feeConcessionAmount = FeesHeadConcessionAmt.Split('|');
+
+        string[] sport_feeHead = new string[2];
+        if (fh.Length > 1)
         {
-            subQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId])VALUES(''DummyBill''," + head + ",''" + FeesMonthName + "''," + feeAmount[i] + ",''True''," + userId + ")";
+            sport_feeHead = fh[1].Split('|');
+        }
 
-            i++;
+
+        string[] ac = AcademicId.Split('-');
+        string academic = ac[0].ToString();
+        string sport_academic = string.Empty;
+        if (ac.Length > 1)
+        {
+            sport_academic = ac[1].ToString();
+        }
+
+        string[] fa = FeesAmount.Split('-');
+        string[] feeAmount = fa[0].Split('|');
+
+        string[] faActual = FeesHeadActualAmt.Split('-');
+        string[] feeActualAmt = faActual[0].Split('|');
+
+
+        string[] faConcession = FeesAmount.Split('-');
+        string[] feeConcessionAmt = faConcession[0].Split('|');
+
+        string[] sport_feeAmount = new string[2];
+        if (fa.Length > 1)
+        {
+            sport_feeAmount = fa[1].Split('|');
+        }
+
+        string[] fc = FeesCatId.Split('-');
+        string feecatid = fc[0].ToString();
+        string sport_feecatid = string.Empty;
+        if (fc.Length > 1)
+        {
+            sport_feecatid = fc[1].ToString();
+        }
+
+        string[] fm = FeesMonthName.Split('-');
+        string feemonth = fm[0].ToString();
+
+        string sport_feemonth = string.Empty;
+        if (fm.Length > 1)
+        {
+            sport_feemonth = fm[1].ToString();
+        }
+
+        string[] fta = FeestotalAmount.Split('-');
+        string feetotalamt = fta[0].ToString();
+        string sport_feetotalamt = string.Empty;
+        if (fta.Length > 1)
+        {
+            sport_feetotalamt = fta[1].ToString();
+        }
+
+        string[] cs = CashAmt.Split('-');
+        string cashamt = cs[0].ToString();
+        string sport_cashamt = string.Empty;
+        if (cs.Length > 1)
+        {
+            sport_cashamt = cs[1].ToString();
+        }
+
+        string[] crd = CardAmt.Split('-');
+        string cardamt = crd[0].ToString();
+        string sport_cardamt = string.Empty;
+        if (crd.Length > 1)
+        {
+            sport_cardamt = crd[1].ToString();
+        }
+
+        string[] qr = QRAmount.Split('-');
+        string qramt = qr[0].ToString();
+        string sport_qramt = string.Empty;
+        if (qr.Length > 1)
+        {
+            sport_qramt = qr[1].ToString();
         }
 
         if (BillDate == string.Empty)
@@ -1257,26 +1652,126 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
         if (PaymentMode == "1")
         {
-            CashAmt = FeestotalAmount;
-            CardAmt = "0";
+            cashamt = feetotalamt;
+            cardamt = "0";
+
+            sport_cashamt = sport_feetotalamt;
+            sport_cardamt = "0";
         }
         else if (PaymentMode == "3")
         {
-            CashAmt = "0";
-            CardAmt = FeestotalAmount;
+            cashamt = "0";
+            cardamt = feetotalamt;
+
+            sport_cashamt = "0";
+            sport_cardamt = sport_feetotalamt;
         }
 
-        string query = "[SP_InsertFeesBill] '0000'," + AcademicId + "," + FeesCatId + "," + regNo + ",'" + FeesMonthName + "'," + FeestotalAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + ",'" + CashAmt + "','" + CardAmt + "'";
+        else if (PaymentMode == "5")
+        {
+            cashamt = "0";
+            cardamt = "0";
+            qramt = feetotalamt;
+            sport_cashamt = "0";
+            sport_cardamt = "0";
+            sport_qramt = sport_feetotalamt;
+        }
+
+        FeesCatId = utl.ExecuteScalar("select feescategoryid from m_feescategory where feescatcode=(select active from s_studentinfo where regno='" + regNo + "')");
+
+        string subAssQuery = string.Empty;
+        int i = 0;
+
+        //ASS BILL Opening
+        if (sport_feeHead.Length > 0)
+        {
+            foreach (string s_head in sport_feeHead)
+            {
+                if (s_head != "" && s_head != null)
+                {
+                    subAssQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId])VALUES(''DummyBill''," + s_head + ",''" + sport_feemonth + "''," + sport_feeAmount[i] + ",''True''," + userId + ")";
+
+                    i++;
+                }
+
+            }
+            string ass_query = "";
+            DataSet dsSportSaveBill = null;
+
+            if (sport_feecatid != "" && sport_feemonth != "" && subAssQuery != "")
+            {
+                ass_query = "[SP_InsertFeesBill] '0000'," + sport_academic + "," + sport_feecatid + "," + regNo + ",'" + sport_feemonth + "'," + sport_feetotalamt + ",'" + formatBillDate + "'," + userId + ",'" + subAssQuery + "'," + PaymentMode + ",'" + sport_cashamt + "','" + sport_cardamt + "','" + sport_qramt + "'";
+
+                dsSportSaveBill = utl.GetAssDataset(ass_query);
+            }
+
+            if (dsSportSaveBill != null && dsSportSaveBill.Tables.Count > 0 && dsSportSaveBill.Tables[0].Rows.Count > 0)
+            {
+
+                ass_query = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear   from m_academicyear  where academicID='" + sport_academic + "'";
+                string sport_AcademicYear = utl.ExecuteASSScalar(ass_query);
+
+                ass_query = "select isnull(count(*),0)+1 from f_studenttaxbillmaster a inner join f_studentbillmaster b on a.BillID=b.BillID where b.academicID='" + sport_academic + "' ";
+                string sport_TaxBillcnt = utl.ExecuteASSScalar(ass_query);
+
+                string sport_schoolabbrivation = utl.ExecuteScalar("select ltrim(rtrim(Schoolabbreviation)) from m_schooldetails");
+                string sport_TaxBillNo = "GST/" + sport_schoolabbrivation.ToString().TrimEnd() + "/" + "" + sport_AcademicYear + "/000" + sport_TaxBillcnt.ToString();
+
+                ass_query = "insert into f_studenttaxbillmaster(TaxBillNo,BillID,isactive,userID)values( '" + sport_TaxBillNo.ToString().Trim() + "'," + dsSportSaveBill.Tables[0].Rows[0][0].ToString() + ",'true'," + userId + ")";
+                utl.ExecuteASSQuery(ass_query);
+
+                string sport_taxBillID = utl.ExecuteASSScalar("SELECT isnull(max(TaxBillID),0) from f_studenttaxbillmaster where isactive=1");
+                string sport_taxQuery = string.Empty;
+                i = 0;
+                foreach (string s_head in sport_feeHead)
+                {
+                    string s_classID = utl.ExecuteASSScalar("select class from s_studentinfo where regno = '" + regNo + "'");
+
+                    string s_headID = utl.ExecuteASSScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + s_head + "' and academicID='" + sport_academic + "' and ClassID='" + s_classID + "' and feescategoryID='" + sport_feecatid + "' and formonth like '%" + sport_feemonth + "%'");
+
+                    DataTable sport_dttax = new DataTable();
+                    sport_dttax = utl.GetASSDataTable("select a.* from m_tax a  where a.isactive=1 and a.academicid='" + AcademicId + "' and a.feeheadid='" + s_headID + "'");
+                    if (sport_dttax.Rows.Count > 0)
+                    {
+                        decimal s_taxvalue = Convert.ToDecimal(sport_feeAmount[i]) / (100 + Convert.ToDecimal(sport_dttax.Rows[0]["Percentage"].ToString())) * Convert.ToDecimal(sport_dttax.Rows[0]["Percentage"].ToString());
+
+                        sport_taxQuery = "insert into f_studenttaxbills(TaxBillID,FeesCatId,TaxID,TaxPercent,TaxAmount,isactive,userid)values('" + sport_taxBillID + "','" + s_head + "','" + sport_dttax.Rows[0]["TaxID"].ToString() + "','" + sport_dttax.Rows[0]["Percentage"].ToString() + "','" + s_taxvalue + "','true','" + userId + "')";
+                        utl.ExecuteASSQuery(sport_taxQuery);
+                    }
+
+                    i++;
+                }
+
+            }
+        }
+
+        //Ass BILL closure
+
+        string subQuery = string.Empty;
+        i = 0;
+        foreach (string head in feeHead)
+        {
+            if (head != null && head != "")
+            {
+                //subQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId])VALUES(''DummyBill''," + head + ",''" + feemonth + "''," + feeAmount[i] + ",''True''," + userId + ")";
+                subQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId],[ActualAmount],[Discount]) " +
+               "VALUES(''DummyBill''," + head + ",''" + feemonth + "''," + feeAmount[i] + ",''True''," + userId + "," + feeActualAmount[i] + "," + feeConcessionAmount[i] + ")";
+
+                i++;
+            }
+
+        }
+        string query = "[SP_InsertFeesBill] '0000'," + academic + ",'" + FeesCatId + "'," + regNo + ",'" + feemonth + "'," + feetotalamt + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + ",'" + cashamt + "','" + cardamt + "','" + qramt + "','" + Remarks + "'";
 
         DataSet dsSaveBill = utl.GetDataset(query);
 
         if (dsSaveBill != null && dsSaveBill.Tables.Count > 0 && dsSaveBill.Tables[0].Rows.Count > 0)
         {
 
-            query = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear   from m_academicyear  where academicID='" + AcademicId + "'";
+            query = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear   from m_academicyear  where academicID='" + academic + "'";
             string AcademicYear = utl.ExecuteScalar(query);
 
-            query = "select isnull(count(*),0)+1 from f_studenttaxbillmaster a inner join f_studentbillmaster b on a.BillID=b.BillID where b.academicID='" + AcademicId + "' ";
+            query = "select isnull(count(*),0)+1 from f_studenttaxbillmaster a inner join f_studentbillmaster b on a.BillID=b.BillID where b.academicID='" + academic + "' ";
             string TaxBillcnt = utl.ExecuteScalar(query);
 
             string schoolabbrivation = utl.ExecuteScalar("select ltrim(rtrim(Schoolabbreviation)) from m_schooldetails");
@@ -1290,21 +1785,24 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
             i = 0;
             foreach (string head in feeHead)
             {
-                string classID = utl.ExecuteScalar("select class from s_studentinfo where regno = '" + regNo + "'");
-
-                string headID = utl.ExecuteScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + head + "' and academicID='" + AcademicId + "' and ClassID='" + classID + "' and feescategoryID='" + FeesCatId + "' and formonth like '%" + FeesMonthName + "%'");
-
-                DataTable dttax = new DataTable();
-                dttax = utl.GetDataTable("select a.* from m_tax a  where a.isactive=1 and a.academicid='" + AcademicId + "' and a.feeheadid='" + headID + "'");
-                if (dttax.Rows.Count > 0)
+                if (head != null && head != "")
                 {
-                    decimal taxvalue = Convert.ToDecimal(feeAmount[i]) / (100 + Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString())) * Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString());
+                    string classID = utl.ExecuteScalar("select class from s_studentinfo where regno = '" + regNo + "'");
 
-                    taxQuery = "insert into f_studenttaxbills(TaxBillID,FeesCatId,TaxID,TaxPercent,TaxAmount,isactive,userid)values('" + taxBillID + "','" + head + "','" + dttax.Rows[0]["TaxID"].ToString() + "','" + dttax.Rows[0]["Percentage"].ToString() + "','" + taxvalue + "','true','" + userId + "')";
-                    utl.ExecuteQuery(taxQuery);
+                    string headID = utl.ExecuteScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + head + "' and academicID='" + AcademicId + "' and ClassID='" + classID + "' and feescategoryID='" + FeesCatId + "' and formonth like '%" + FeesMonthName + "%'");
+
+                    DataTable dttax = new DataTable();
+                    dttax = utl.GetDataTable("select a.* from m_tax a  where a.isactive=1 and a.academicid='" + AcademicId + "' and a.feeheadid='" + headID + "'");
+                    if (dttax.Rows.Count > 0)
+                    {
+                        decimal taxvalue = Convert.ToDecimal(feeAmount[i]) / (100 + Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString())) * Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString());
+
+                        taxQuery = "insert into f_studenttaxbills(TaxBillID,FeesCatId,TaxID,TaxPercent,TaxAmount,isactive,userid)values('" + taxBillID + "','" + head + "','" + dttax.Rows[0]["TaxID"].ToString() + "','" + dttax.Rows[0]["Percentage"].ToString() + "','" + taxvalue + "','true','" + userId + "')";
+                        utl.ExecuteQuery(taxQuery);
+                    }
+
+                    i++;
                 }
-
-                i++;
             }
 
 
@@ -1324,8 +1822,9 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
 
 
+
     [WebMethod]
-    public static string UpdateBillDetails(string BillId, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string BillDate, string userId, string PaymentMode, string CashAmt, string CardAmt, string MonthNum, string FeeType)
+    public static string UpdateBillDetails(string BillId, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string BillDate, string userId, string PaymentMode, string CashAmt, string CardAmt, string QRAmount, string Remarks, string MonthNum, string FeeType)
     {
         Utilities utl = new Utilities();
         FeesHeadIds = FeesHeadIds.Substring(0, FeesHeadIds.Length - 1);
@@ -1349,19 +1848,20 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
         if (PaymentMode == "1")
         {
             CashAmt = FeestotalAmount;
-            CardAmt = "0";
         }
         else if (PaymentMode == "3")
         {
-            CashAmt = "0";
             CardAmt = FeestotalAmount;
         }
-
+        else if (PaymentMode == "5")
+        {
+            QRAmount = FeestotalAmount;
+        }
 
         string[] formats = { "dd/MM/yyyy" };
         string formatBillDate = DateTime.ParseExact(BillDate, formats, new CultureInfo("en-US"), DateTimeStyles.None).ToShortDateString();
 
-        string query = "[SP_UpdateFeesBill] '0000'," + AcademicId + "," + FeesCatId + "," + BillId + ",'" + FeesMonthName + "'," + FeestotalAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + ",'" + CashAmt + "','" + CardAmt + "'";
+        string query = "[SP_UpdateFeesBill] '0000'," + AcademicId + "," + FeesCatId + "," + BillId + ",'" + FeesMonthName + "'," + FeestotalAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + ",'" + CashAmt + "','" + CardAmt + "','" + QRAmount + "','" + Remarks + "'";
 
         DataSet dsSaveBill = utl.GetDataset(query);
 
@@ -1536,10 +2036,29 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
                 if (dsPrint.Tables[0].Rows.Count > 0)
                 {
+                    decimal totalConcessionAmount = 0;
+
                     str.Append("<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0' style=' border:1px dashed #000000;' class='billcont'><tr><td width='380' style='padding-left:5px;padding-right:5px;'><table width='300' border='0' cellspacing='0' cellpadding='3'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='30' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;' >" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='30' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td width='52%' height='40'>&nbsp;Reg. No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td><td width='48%'><div style='float:right;'>Rec. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</div></td></tr><tr class='billcont'><td height='40' colspan='2'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td></tr><tr class='billcont'><td width='52%' height='40'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td><td><div style='float:right;'>Month : " + dsPrint.Tables[0].Rows[0]["BillMonth"].ToString() + "</div></td></tr><tr><td height='10' colspan='2'></td></tr><tr><td colspan='2'><table width='100%' border='0' align='center' cellpadding='3' cellspacing='0' class='particulars' style='border:1px solid #000;'><tr class='billcont'><td width='75%' height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'><div align='center'>PARTICULARS</div></td><td width='30%' style='border-bottom: 1px solid #000;'><div align='center'>AMOUNT</div></td></tr>");
                     for (int i = 0; i < dsPrint.Tables[1].Rows.Count; i++)
                     {
-                        str.Append(" <tr class='billcont'><td height='25' style='border-right:1px solid #000;'>" + dsPrint.Tables[1].Rows[i]["FeesHeadName"].ToString() + "</td><td><div align='center'> " + dsPrint.Tables[1].Rows[i]["Amount"].ToString() + " </div></td></tr> ");
+                        //  str.Append(" <tr class='billcont'><td height='25' style='border-right:1px solid #000;'>" + dsPrint.Tables[1].Rows[i]["FeesHeadName"].ToString() + "</td><td><div align='center'> " + dsPrint.Tables[1].Rows[i]["Amount"].ToString() + " </div></td></tr> ");
+                        string feesHeadName = dsPrint.Tables[1].Rows[i]["FeesHeadName"].ToString();
+                        string actualAmount = dsPrint.Tables[1].Rows[i]["ActualAmount"].ToString();
+                        string concessionAmount = dsPrint.Tables[1].Rows[i]["ConcessionAmount"].ToString();
+                        decimal concessionVal;
+                        if (decimal.TryParse(concessionAmount, out concessionVal))
+                        {
+                            totalConcessionAmount += concessionVal;
+                        }
+                        str.Append(" <tr class='billcont'>" +
+                                   "<td height='25' style='border-right:1px solid #000;'>" + feesHeadName + "</td>" +
+                                   "<td>" + "<div align='center'>" + actualAmount + "</div>" + "</td></tr> ");
+
+                    }
+                    if (totalConcessionAmount > 0)
+                    {
+                        str.Append(" <tr class='billcont'>" + "<td height='25' style='border-right:1px solid #000;'>Concession Granted </td>" +
+                                  "<td>" + "<div align='center'>" + totalConcessionAmount + "</div>" + "</td></tr> ");
                     }
 
                     Code39BarCode barcode = new Code39BarCode();
@@ -1553,16 +2072,24 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                     }
 
                     str.Append("<tr class='billcont'><td height='45' style='border-top: 1px solid #000;border-right: 1px solid #000;'>TOTAL</td><td style='border-top:1px solid #000;'><div align='center'>" + dsPrint.Tables[0].Rows[0]["TotalAmount"].ToString() + "</div></td></tr></table></td></tr><br/><br/>");
+<<<<<<< HEAD
                     
                      DataTable dtadv=new DataTable();
                      string old_academicID = utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
                      dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
+=======
+
+                    DataTable dtadv = new DataTable();
+                    string old_academicID = utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+                    dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
 	  inner join s_studentinfo info on info.RegNo=b.RegNo
 	  inner join f_studentbills d on d.BillId=a.BillId and d.isactive=1
 	  inner join m_feescategoryhead e on e.FeesCatHeadID=d.FeesCatHeadId and e.AcademicId=b.AcademicId
 	  inner join m_feeshead f on f.FeesHeadId=e.FeesHeadId and f.FeesHeadCode='A'
       WHERE  info.regno = '" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + "  and b.AcademicId= '" + old_academicID + "' order by a.billID desc");
+<<<<<<< HEAD
               if (dtadv != null && dtadv.Rows.Count > 0)
               {
                   str.Append("<tr><td colspan='2' class='billcont'>Remarks:</td></tr>");
@@ -1571,14 +2098,40 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                   str.Append("<tr><td colspan='2' class='billcont'>Bill Date: " + dtadv.Rows[0]["datebill"].ToString() + "</td></tr>");
                   str.Append("<tr><td></td></tr>");
               }
+=======
+                    if (dtadv != null && dtadv.Rows.Count > 0)
+                    {
+                        str.Append("<tr><td colspan='2' class='billcont'>Remarks:</td></tr>");
+                        str.Append("<tr><td colspan='2' class='billcont'>Advance Received: " + dtadv.Rows[0]["TotalAmount"].ToString() + "</td></tr>");
+                        str.Append("<tr><td colspan='2' class='billcont'>Bill No: " + dtadv.Rows[0]["BillNo"].ToString() + "</td></tr>");
+                        str.Append("<tr><td colspan='2' class='billcont'>Bill Date: " + dtadv.Rows[0]["datebill"].ToString() + "</td></tr>");
+                        str.Append("<tr><td></td></tr>");
+                    }
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
-              str.Append("<tr ><td colspan='2' class='billcont'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "<br/><br/></td></tr><tr><td colspan='2' class='billcont'>Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:5px;border-left: 1px dashed #000000;border-right: 1px dashed #000000;'><table width='300' border='0' align='center' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;'>" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='billcont'><U>DELIVERY SLIP - BOOKS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%' style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td><td height='50' style='padding-right:10px;' align='right'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td></tr><tr class='billcont'><td height='50'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td colspan='2' align='center' valign='top' class='barcodeimage'><img style='max-width:inherit;' width='201' src= '../Students/Barcodes/" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + ".JPG' /></td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> &nbsp;Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:0px;'><table width='300' border='0' align='right' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;' >" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' class='billcont' align='center' colspan='2'><U>DELIVERY SLIP - UNIFORMS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%'style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td><td height='50' style='padding-right:10px;' align='right'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td></tr><tr class='billcont'><td height='50'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td colspan='2' align='center' valign='top' class='barcodeimage'><img style='max-width:inherit;' width='201' src= '../Students/Barcodes/" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + ".JPG' /></td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td></tr></table>");
+                    str.Append("<tr ><td colspan='2' class='billcont'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "<br/><br/></td></tr><tr><td colspan='2' class='billcont'>Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:5px;border-left: 1px dashed #000000;border-right: 1px dashed #000000;'><table width='300' border='0' align='center' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;'>" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='billcont'><U>DELIVERY SLIP - BOOKS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%' style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td><td height='50' style='padding-right:10px;' align='right'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td></tr><tr class='billcont'><td height='50'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td colspan='2' align='center' valign='top' class='barcodeimage'><img style='max-width:inherit;' width='201' src= '../Students/Barcodes/" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + ".JPG' /></td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> &nbsp;Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:0px;'><table width='300' border='0' align='right' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;' >" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' class='billcont' align='center' colspan='2'><U>DELIVERY SLIP - UNIFORMS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%'style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td><td height='50' style='padding-right:10px;' align='right'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td></tr><tr class='billcont'><td height='50'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td colspan='2' align='center' valign='top' class='barcodeimage'><img style='max-width:inherit;' width='201' src= '../Students/Barcodes/" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + ".JPG' /></td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td></tr></table>");
 
                     sqlstr = "select isnull(count(b.TaxBillID),0) from f_studenttaxbillmaster a inner join f_studenttaxbills b on a.TaxBillID=b.TaxBillID where BillID='" + billId + "' and a.isactive=1";
                     string ibillcnt = utl.ExecuteScalar(sqlstr);
                     if (ibillcnt == "0")
                     {
-                        sqlstr = " select* from f_studentbills where billID='" + billId + "'";
+
+                        query = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear from m_academicyear  where academicID='" + HttpContext.Current.Session["AcademicID"] + "'";
+                        string AcademicYear = utl.ExecuteScalar(query);
+
+                        query = "select isnull(count(*),0)+1 from f_studenttaxbillmaster a inner join f_studentbillmaster b on a.BillID=b.BillID where b.academicID='" + HttpContext.Current.Session["AcademicID"] + "' ";
+                        string TaxBillcnt = utl.ExecuteScalar(query);
+
+                        string schoolabbrivation = utl.ExecuteScalar("select ltrim(rtrim(Schoolabbreviation)) from m_schooldetails");
+                        string TaxBillNo = "GST/" + schoolabbrivation.ToString().TrimEnd() + "/" + "" + AcademicYear + "/000" + TaxBillcnt.ToString();
+
+                        query = "insert into f_studenttaxbillmaster(TaxBillNo,BillID,isactive,userID)values( '" + TaxBillNo.ToString().Trim() + "'," + billId + ",'true'," + dsPrint.Tables[1].Rows[0]["UserId"].ToString().Trim() + ")";
+                        utl.ExecuteQuery(query);
+
+                        string taxBillID = utl.ExecuteScalar("SELECT isnull(max(TaxBillID),0) from f_studenttaxbillmaster where isactive=1");
+
+
+                        sqlstr = " select * from f_studentbills where billID='" + billId + "'";
                         DataTable dtbill = new DataTable();
                         dtbill = utl.GetDataTable(sqlstr);
                         if (dtbill != null && dtbill.Rows.Count > 0)
@@ -1590,40 +2143,143 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                                 string headID = utl.ExecuteScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + dtbill.Rows[i]["FeesCatHeadId"] + "' and academicID='" + HttpContext.Current.Session["AcademicID"] + "' and ClassID='" + classID + "' and feescategoryID='" + dsPrint.Tables[0].Rows[0]["FeesCategoryID"].ToString() + "' and formonth like '%" + dsPrint.Tables[1].Rows[0]["BillMonth"].ToString() + "%'");
 
                                 DataTable dttax = new DataTable();
-                                dttax = utl.GetDataTable("select a.* from m_tax a  where a.isactive=1 and a.academicid='" + HttpContext.Current.Session["AcademicID"] + "' and a.feeheadid='" + headID + "'");
+                                dttax = utl.GetDataTable("select a.* from m_tax a where a.isactive=1 and a.academicid='" + HttpContext.Current.Session["AcademicID"] + "' and a.feeheadid='" + headID + "'");
                                 if (dttax.Rows.Count > 0)
                                 {
                                     decimal taxvalue = Convert.ToDecimal(dtbill.Rows[i]["Amount"]) / (100 + Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString())) * Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString());
-
-                                    string taxQuery = "insert into f_studenttaxbills(TaxBillID,FeesCatId,TaxID,TaxPercent,TaxAmount,isactive,userid)values('" + dsPrint.Tables[3].Rows[0]["TaxBillID"].ToString().Trim() + "','" + dtbill.Rows[i]["FeesCatHeadId"].ToString().Trim() + "','" + dttax.Rows[0]["TaxID"].ToString().Trim() + "','" + dttax.Rows[0]["Percentage"].ToString().Trim() + "','" + taxvalue + "','true','" + dsPrint.Tables[1].Rows[0]["UserId"].ToString().Trim() + "')";
-                                    utl.ExecuteQuery(taxQuery);
+                                    if (dsPrint.Tables[3].Rows.Count > 0)
+                                    {
+                                        string taxQuery = "insert into f_studenttaxbills(TaxBillID,FeesCatId,TaxID,TaxPercent,TaxAmount,isactive,userid)values('" + taxBillID.ToString().Trim() + "','" + dtbill.Rows[i]["FeesCatHeadId"].ToString().Trim() + "','" + dttax.Rows[0]["TaxID"].ToString().Trim() + "','" + dttax.Rows[0]["Percentage"].ToString().Trim() + "','" + taxvalue + "','true','" + dsPrint.Tables[1].Rows[0]["UserId"].ToString().Trim() + "')";
+                                        utl.ExecuteQuery(taxQuery);
+                                    }
                                 }
                             }
                         }
-
                     }
-
-                    str.Append("<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0' class='break-after'><tr class='billcont'><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><br/><tr class='billcont'><td height='30'>Hail Mary!</td><td style='text-align:right;' height='30'>Praise the Lord!</td></tr><tr class='billcont'><td height='5'></td><td height='5'></td></tr><tr class='billcont'><td style='text-align:center;font-size: 18px;' colspan='2' height='25'>" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td style='text-align:center;' colspan='2' height='25'> (A unit of Amalorpavam Educational Welfare Society)</td></tr><tr class='billcont'><td style='text-align:center;' colspan='2' height='25'> " + dsPrint.Tables[2].Rows[0]["SchoolAddress"].ToString().ToUpper() + ", " + dsPrint.Tables[2].Rows[0]["SchoolCity"].ToString().ToUpper() + ", " + dsPrint.Tables[2].Rows[0]["SchoolDist"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td style='text-align:center;' colspan='2' height='25'><b>GSTIN : </b>" + dsPrint.Tables[2].Rows[0]["GSTIN"].ToString().ToUpper() + "</td></tr><br/><br/><br/><tr class='billcont'><td height='25'>BILL No.: " + dsPrint.Tables[3].Rows[0]["TaxBillNo"].ToString().ToUpper() + "</td><td style='padding-left:500px;' height='25'>Ref. No .: " + dsPrint.Tables[3].Rows[0]["BillNo"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td height='25'>Regn. No.: " + dsPrint.Tables[3].Rows[0]["RegNo"].ToString().ToUpper() + "</td><td style='padding-left:500px;' height='25'>Class & Sec. : " + dsPrint.Tables[3].Rows[0]["ClassName"].ToString().ToUpper() + " " + dsPrint.Tables[3].Rows[0]["SectionName"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td height='25'>Student Name : " + dsPrint.Tables[3].Rows[0]["StName"].ToString().ToUpper() + " </td><td style='padding-left:500px;' height='25'>State Code : 34</td></tr><tr class='billcont'><td height='5'></td><td height='5'></td></tr></table><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0' style='border:1px solid #000;'><tr class='billcont'><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>SL. NO.</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>DESCRIPTION OF GOODS</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>QTY</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>RATE</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>TAXABLE VALUE</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>GST%</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>GST% AMOUNT</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>SGST</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>CGST</th><th style='border-bottom: 1px solid #000;'>AMOUNT</th></tr> ");
-                    decimal total = 0;
-
-
-
-                    for (int i = 0; i < dsPrint.Tables[4].Rows.Count; i++)
+                    else
                     {
-                        total += Math.Round(Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["Amount"]));
+                        string taxBillID = utl.ExecuteScalar("SELECT TaxBillID from f_studenttaxbillmaster where billID='" + billId + "'");
 
-                        str.Append(" <tr class=' billcont' style='text-align:center;'><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'> " + (i + 1).ToString() + " </td><td height='25' style='text-align:left;border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["FeesHeadName"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["qty"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["extax"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + (Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["qty"]) * Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["extax"])).ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'> " + dsPrint.Tables[4].Rows[i]["TaxPercent"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["TaxAmount"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["cgst"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["cgst"].ToString().ToUpper() + " </td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;text-align:right;padding-right: 10px;'>  " + Math.Round(Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["Amount"].ToString().ToUpper())).ToString() + " </td></tr>");
+                        sqlstr = " select * from f_studentbills where billID='" + billId + "'";
+                        DataTable dtbill = new DataTable();
+                        dtbill = utl.GetDataTable(sqlstr);
+                        if (dtbill != null && dtbill.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dtbill.Rows.Count; i++)
+                            {
+                                string classID = utl.ExecuteScalar("select class from s_studentinfo where regno = '" + dsPrint.Tables[1].Rows[0]["RegNo"].ToString() + "'");
+
+                                string headID = utl.ExecuteScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + dtbill.Rows[i]["FeesCatHeadId"] + "' and academicID='" + HttpContext.Current.Session["AcademicID"] + "' and ClassID='" + classID + "' and feescategoryID='" + dsPrint.Tables[0].Rows[0]["FeesCategoryID"].ToString() + "' and formonth like '%" + dsPrint.Tables[1].Rows[0]["BillMonth"].ToString() + "%'");
+
+                                DataTable dttax = new DataTable();
+                                dttax = utl.GetDataTable("select a.* from m_tax a where a.isactive=1 and a.academicid='" + HttpContext.Current.Session["AcademicID"] + "' and a.feeheadid='" + headID + "'");
+                                if (dttax.Rows.Count > 0)
+                                {
+                                    decimal taxvalue = Convert.ToDecimal(dtbill.Rows[i]["Amount"]) / (100 + Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString())) * Convert.ToDecimal(dttax.Rows[0]["Percentage"].ToString());
+                                    if (dsPrint.Tables[3].Rows.Count > 0)
+                                    {
+                                        string icnt = utl.ExecuteScalar("select count(*) from f_studenttaxbills where TaxBillID='" + taxBillID.ToString().Trim() + "'");
+                                        if (icnt == "" || icnt == "0")
+                                        {
+                                            string taxQuery = "insert into f_studenttaxbills(TaxBillID,FeesCatId,TaxID,TaxPercent,TaxAmount,isactive,userid)values('" + taxBillID.ToString().Trim() + "','" + dtbill.Rows[i]["FeesCatHeadId"].ToString().Trim() + "','" + dttax.Rows[0]["TaxID"].ToString().Trim() + "','" + dttax.Rows[0]["Percentage"].ToString().Trim() + "','" + taxvalue + "','true','" + dsPrint.Tables[1].Rows[0]["UserId"].ToString().Trim() + "')";
+                                            utl.ExecuteQuery(taxQuery);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
+                    if (dsPrint.Tables[3].Rows.Count > 0)
+                    {
+                        str.Append("<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0' class='break-after'><tr class='billcont'><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><br/><tr class='billcont'><td height='30'>Hail Mary!</td><td style='text-align:right;' height='30'>Praise the Lord!</td></tr><tr class='billcont'><td height='5'></td><td height='5'></td></tr><tr class='billcont'><td style='text-align:center;font-size: 18px;' colspan='2' height='25'>" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td style='text-align:center;' colspan='2' height='25'> (A unit of Amalorpavam Educational Welfare Society)</td></tr><tr class='billcont'><td style='text-align:center;' colspan='2' height='25'> " + dsPrint.Tables[2].Rows[0]["SchoolAddress"].ToString().ToUpper() + ", " + dsPrint.Tables[2].Rows[0]["SchoolCity"].ToString().ToUpper() + ", " + dsPrint.Tables[2].Rows[0]["SchoolDist"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td style='text-align:center;' colspan='2' height='25'><b>GSTIN : </b>" + dsPrint.Tables[2].Rows[0]["GSTIN"].ToString().ToUpper() + "</td></tr><br/><br/><br/><tr class='billcont'><td height='25'>BILL No.: " + dsPrint.Tables[3].Rows[0]["TaxBillNo"].ToString().ToUpper() + "</td><td style='padding-left:500px;' height='25'>Ref. No .: " + dsPrint.Tables[3].Rows[0]["BillNo"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td height='25'>Regn. No.: " + dsPrint.Tables[3].Rows[0]["RegNo"].ToString().ToUpper() + "</td><td style='padding-left:500px;' height='25'>Class & Sec. : " + dsPrint.Tables[3].Rows[0]["ClassName"].ToString().ToUpper() + " " + dsPrint.Tables[3].Rows[0]["SectionName"].ToString().ToUpper() + "</td></tr><tr class='billcont'><td height='25'>Student Name : " + dsPrint.Tables[3].Rows[0]["StName"].ToString().ToUpper() + " </td><td style='padding-left:500px;' height='25'>State Code : 34</td></tr><tr class='billcont'><td height='5'></td><td height='5'></td></tr></table><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0' style='border:1px solid #000;'><tr class='billcont'><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>SL. NO.</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>DESCRIPTION OF GOODS</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>QTY</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>RATE</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>TAXABLE VALUE</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>GST%</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>GST% AMOUNT</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>SGST</th><th style='border-bottom: 1px solid #000;border-right: 1px solid #000;' height='25'>CGST</th><th style='border-bottom: 1px solid #000;'>AMOUNT</th></tr> ");
+                        decimal total = 0, totalconcessionamountPage2 = 0;
 
-                    string roundoff = utl.ExecuteScalar("select round(" + Math.Round(Convert.ToDecimal(total)).ToString() + ",-1)");
-                    decimal roundval = Convert.ToDecimal(roundoff) - Math.Round(Convert.ToDecimal(total));
+                        for (int i = 0; i < dsPrint.Tables[4].Rows.Count; i++)
+                        {
+                            total += Math.Round(Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["Amount"]));
+                            totalconcessionamountPage2 += Math.Round(Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["concessionamount"]));
 
-                    str.Append("<tr class='billcont'><td colspan='9' height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;text-align:right;padding-right: 10px;'> SUB TOTAL</td><td height='25' style='border-bottom: 1px solid #000;text-align:right;padding-right: 10px;'> " + Math.Round(Convert.ToDecimal(total)) + "</td></tr><tr class='billcont'><td colspan='9' height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;text-align:right;padding-right: 10px;'> ROUND OFF</td><td height='25' style='border-bottom: 1px solid #000;text-align:right;padding-right: 10px;'> " + Convert.ToDecimal(roundval).ToString() + "</td></tr><tr class='billcont'><td colspan='9' height='25' style='border-right: 1px solid #000;text-align:right;padding-right: 10px;'> TOTAL</td><td height='25' style='text-align:right;padding-right: 10px;'> " + roundoff.ToString().ToUpper() + "</td></tr></table><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr class='billcont'><td height='5'></td><td height='5'></td></tr><tr class='billcont'><td colspan='2' height='10'>Amount in words :  " + utl.retWord(Math.Round(Convert.ToDecimal(roundoff.ToString().ToUpper()))) + " Only</td></tr><tr class='billcont'><td height='50'>Date : " + dsPrint.Tables[3].Rows[0]["BillDate"].ToString() + "</td><td height='50' style='text-align:right;'><strong>Cashier:  " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "</strong></td></tr></table></tr></table>");
+                            // str.Append(" <tr class=' billcont' style='text-align:center;'><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'> " + (i + 1).ToString() + " </td><td height='25' style='text-align:left;border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["FeesHeadName"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["qty"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["extax"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + (Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["qty"]) * Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["extax"])).ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'> " + dsPrint.Tables[4].Rows[i]["TaxPercent"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["TaxAmount"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["cgst"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["cgst"].ToString().ToUpper() + " </td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;text-align:right;padding-right: 10px;'>  " + Math.Round(Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["Amount"].ToString().ToUpper())).ToString() + " </td></tr>");
+                            str.Append(" <tr class=' billcont' style='text-align:center;'><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'> " + (i + 1).ToString() + " </td><td height='25' style='text-align:left;border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["FeesHeadName"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["qty"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["extax"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + (Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["qty"]) * Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["extax"])).ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'> " + dsPrint.Tables[4].Rows[i]["TaxPercent"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["TaxAmount"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["cgst"].ToString().ToUpper() + "</td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;'>  " + dsPrint.Tables[4].Rows[i]["cgst"].ToString().ToUpper() + " </td><td height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;text-align:right;padding-right: 10px;'>  " + Math.Round(Convert.ToDecimal(dsPrint.Tables[4].Rows[i]["actualamount"].ToString().ToUpper())).ToString() + " </td></tr>");
 
+                        }
+
+                        string roundoff = utl.ExecuteScalar("select round(" + Math.Round(Convert.ToDecimal(total)).ToString() + ",-1)");
+                        decimal roundval = Convert.ToDecimal(roundoff) - Math.Round(Convert.ToDecimal(total));
+
+                        // str.Append("<tr class='billcont'><td colspan='9' height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;text-align:right;padding-right: 10px;'> SUB TOTAL</td><td height='25' style='border-bottom: 1px solid #000;text-align:right;padding-right: 10px;'> " + Math.Round(Convert.ToDecimal(total)) + "</td></tr><tr class='billcont'><td colspan='9' height='25' style='border-bottom: 1px solid #000;border-right: 1px solid #000;text-align:right;padding-right: 10px;'> ROUND OFF</td><td height='25' style='border-bottom: 1px solid #000;text-align:right;padding-right: 10px;'> " + Convert.ToDecimal(roundval).ToString() + "</td></tr><tr class='billcont'><td colspan='9' height='25' style='border-right: 1px solid #000;text-align:right;padding-right: 10px;'> TOTAL</td><td height='25' style='text-align:right;padding-right: 10px;'> " + roundoff.ToString().ToUpper() + "</td></tr></table><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr class='billcont'><td height='5'></td><td height='5'></td></tr><tr class='billcont'><td colspan='2' height='10'>Amount in words :  " + utl.retWord(Math.Round(Convert.ToDecimal(roundoff.ToString().ToUpper()))) + " Only</td></tr><tr class='billcont'><td height='50'>Date : " + dsPrint.Tables[3].Rows[0]["BillDate"].ToString() + "</td><td height='50' style='text-align:right;'><strong>Cashier:  " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "</strong></td></tr></table></tr></table>");
+                        str.Append(@"
+<tr class='billcont'>
+    <td colspan='9' height='25' style='border-bottom: 1px solid #000; border-right: 1px solid #000; text-align:right; padding-right: 10px;'> 
+        SUB TOTAL
+    </td>
+    <td height='25' style='border-bottom: 1px solid #000; text-align:right; padding-right: 10px;'> 
+        " + Math.Round(Convert.ToDecimal(total)) + @"
+    </td>
+</tr>");
+
+                        if (totalconcessionamountPage2 > 0)
+                        {
+                            str.Append(@"
+<tr class='billcont'>
+    <td colspan='9' height='25' style='border-bottom: 1px solid #000; border-right: 1px solid #000; text-align:right; padding-right: 10px;'> 
+        CONCESSION GRANTED
+    </td>
+    <td height='25' style='border-bottom: 1px solid #000; text-align:right; padding-right: 10px;'> 
+        " + Convert.ToDecimal(totalconcessionamountPage2).ToString("0.00") + @"
+    </td>
+</tr>");
+                        }
+
+                        str.Append(@"
+<tr class='billcont'>
+    <td colspan='9' height='25' style='border-bottom: 1px solid #000; border-right: 1px solid #000; text-align:right; padding-right: 10px;'> 
+        ROUND OFF
+    </td>
+    <td height='25' style='border-bottom: 1px solid #000; text-align:right; padding-right: 10px;'> 
+        " + Convert.ToDecimal(roundval).ToString("0.00") + @"
+    </td>
+</tr>
+
+<tr class='billcont'>
+    <td colspan='9' height='25' style='border-right: 1px solid #000; text-align:right; padding-right: 10px;'> 
+        TOTAL
+    </td>
+    <td height='25' style='text-align:right; padding-right: 10px;'> 
+        " + roundoff.ToString().ToUpper() + @"
+    </td>
+</tr>
+
+</table>
+
+<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'>
+<tr class='billcont'>
+    <td height='5'></td>
+    <td height='5'></td>
+</tr>
+
+<tr class='billcont'>
+    <td colspan='2' height='10'>
+        Amount in words : " + utl.retWord(Math.Round(Convert.ToDecimal(roundoff.ToString().ToUpper()))) + @" Only
+    </td>
+</tr>
+
+<tr class='billcont'>
+    <td height='50'>
+        Date : " + dsPrint.Tables[3].Rows[0]["BillDate"].ToString() + @"
+    </td>
+    <td height='50' style='text-align:right;'>
+        <strong>Cashier: " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + @"</strong>
+    </td>
+</tr>
+</table>
+");
+                    }
                 }
 
                 strPrintContent = str.ToString();
             }
+
         }
         else
         {
@@ -1868,12 +2524,12 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                 }
 
                 str.Append("<tr class='billcont'><td height='45' style='border-top: 1px solid #000;border-right: 1px solid #000;'>TOTAL</td><td style='border-top:1px solid #000;'><div align='center'>" + dsPrint.Tables[0].Rows[0]["TotalAmount"].ToString() + "</div></td></tr></table></td></tr><tr ><td colspan='2' class='billcont'>&nbsp;Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "<br/><br/></td></tr><tr><td colspan='2' class='billcont'>Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/><br/><br/></td></tr>");
-                    
-                
-              
-                   
 
-                      str.Append("</table></td><td width='300' valign='top' style='padding-left:5px;padding-right:5px;border-left: 1px dashed #000000;border-right: 1px dashed #000000;'><table width='300' border='0' align='center' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;'>" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='billcont'><U>DELIVERY SLIP - BOOKS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%' style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> &nbsp;Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:0px;'><table width='300' border='0' align='right' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;' >" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' class='billcont' align='center' colspan='2'><U>DELIVERY SLIP - UNIFORMS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%'style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td></tr></table>");
+
+
+
+
+                str.Append("</table></td><td width='300' valign='top' style='padding-left:5px;padding-right:5px;border-left: 1px dashed #000000;border-right: 1px dashed #000000;'><table width='300' border='0' align='center' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;'>" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='billcont'><U>DELIVERY SLIP - BOOKS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%' style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> &nbsp;Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td><td width='300' valign='top' style='padding-left:5px;padding-right:0px;'><table width='300' border='0' align='right' cellpadding='3' cellspacing='0'><tr><td height='10' colspan='2' align='center' class='billcont' ></td></tr><tr><td height='50' colspan='2' align='center' class='billcont' style='border-bottom: 1px solid #000;margin-left:20px;margin-right:20px;' >" + dsPrint.Tables[2].Rows[0]["SchoolShortName"].ToString().ToUpper() + "</td></tr><tr><td height='50' colspan='2' align='center' class='ph'> " + dsPrint.Tables[2].Rows[0]["Schoolstate"].ToString().ToUpper() + "-" + dsPrint.Tables[2].Rows[0]["SchoolZip"].ToString() + " PHONE NO-" + dsPrint.Tables[2].Rows[0]["phoneno"].ToString().ToUpper() + "</td></tr><tr><td height='50' class='billcont' align='center' colspan='2'><U>DELIVERY SLIP - UNIFORMS</U></td></tr><tr class='billcont'><td width='55%' height='50'>Ref. No. : " + dsPrint.Tables[0].Rows[0]["BillNo"].ToString() + "</td><td width='45%'style='padding-right:10px;' align='right'>Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Reg No. : " + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "</td></tr><tr class='billcont'><td height='50' colspan='2'>Name : " + dsPrint.Tables[0].Rows[0]["stname"].ToString() + "</td></tr><tr class='billcont'><td height='50'>Class &amp;Sec : " + dsPrint.Tables[0].Rows[0]["classname"].ToString() + "  " + dsPrint.Tables[0].Rows[0]["sectionname"].ToString() + " </td><td style='padding-right:10px;' align='right'>Gender : " + dsPrint.Tables[0].Rows[0]["Sex"].ToString().ToUpper() + "</td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr class='billcont'><td colspan='2' style='border-top: 1px solid #000;border-bottom: 1px solid #000;'><br/> Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString() + "<br/><br/></td></tr><tr class='billcont'><td colspan='2' style='border-bottom: 1px solid #000;'><div align='center'><br/> Delivery Details<br/><br/></div></td></tr><tr><td colspan='2' >&nbsp;</td></tr><tr class='billcont'><td colspan='2'>&nbsp;Date : <br/><br/></td></tr><tr class='billcont'><td colspan='2'>Issued By :<br/><br/><br/></td></tr></table></td></tr></table>");
 
             }
 

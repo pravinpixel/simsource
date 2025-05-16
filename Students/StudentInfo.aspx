@@ -2100,6 +2100,7 @@
             setDatePicker("[id*=txtValidity]");
             setDatePicker("[id*=txtDOA]");
             setDatePicker("[id*=txtCancellationDate]");
+            getICType();
 
             //            if (window.location.hash == "#acc=1") {
             //                window.location.hash = '';
@@ -2505,7 +2506,11 @@
             //            $("[id*=txtFirstlang]").html("English");
             //$("[id*=txtDOA]").attr("disabled", true);
 
+<<<<<<< HEAD
             GetSportsByClass();
+=======
+
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         });
 
         function GetSectionByClass() {
@@ -3037,6 +3042,7 @@
                 }
                 $.each(StudentInfos, function () {
 
+<<<<<<< HEAD
                     var SchoolType = $(this).find("SchoolType").text();
 
                     if (SchoolType == "ala") {
@@ -3058,6 +3064,27 @@
                     $("[id*=hfRegNo]").val($(this).find("RegNo").text());
                     $("[id*=lblRegNo]").html($(this).find("RegNo").text());
                     $("[id*=lblASSRegNo]").html($(this).find("ASSNo").text());
+=======
+                    var ClassID = $(this).find("ClassID").text();
+                    $("[id*=ddlClass] option[value='" + ClassID + "']").attr("selected", "true");
+                    FlagSectionID = $(this).find("SectionID").text();
+                    GetSectionByClass();
+
+                    $("[id*=hfStudentInfoID]").val($(this).find("StudentID").text());
+                    $("[id*=hfRegNo]").val($(this).find("RegNo").text());
+                    $("[id*=lblApplicationNo]").html($(this).find("ApplicationNo").text());
+                    $("[id*=lblRegNo]").html($(this).find("RegNo").text());
+
+                    if ($("[id*=lblApplicationNo]").html() != "") {
+                        $("[id*=spnRegno]").css("display", "block");
+                        $("[id*=spnAppno]").css("display", "block");
+                    } else {
+                        $("[id*=spnRegno]").css("display", "block");
+                        $("[id*=spnAppno]").css("display", "block");
+
+                    }
+
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     $("[id*=lblStudentName]").html($(this).find("StudentName").text());
                     if ($(this).find("SectionID").text() == "") {
                         $("[id*=lblClass]").html($(this).find("Class").text() + " / " + "New")
@@ -3072,6 +3099,7 @@
 
                     $("[id*=txtRegNo]").val($(this).find("RegNo").text());
                     $("[id*=txtConcessionReason]").val($(this).find("Reason").text());
+<<<<<<< HEAD
                     var Gender = $(this).find("Gender").text();
 
                     if (Gender == "Male" || Gender == "M") {
@@ -3321,6 +3349,290 @@
                         RecordCount: parseInt(pager.find("RecordCount").text())
                     });
 
+=======
+
+
+                    var BusFacility = $(this).find("BusFacility").text();
+                    var BusRouteID = $(this).find("BusRouteID").text();
+                    if (BusFacility.trim() == "Y") {
+                        $("[id*=rbtnBusYes]").prop("checked", true);
+                    }
+                    else if (BusFacility.trim() == "N") {
+                        $("[id*=rbtnBusNo]").prop("checked", false);
+                    }
+                    GetBusRouteDetails(BusRouteID);
+
+                    var IcStudent = $(this).find("IcStudent").text();
+                    if (IcStudent.trim() == "Y") {
+                        $("[id*=chkICStudent]").prop("checked", true);
+                    }
+                    else if (IcStudent.trim() == "N") {
+                        $("[id*=chkICStudent]").prop("checked", false);
+                    }
+                    getICType();
+
+                    var IcType = $(this).find("IcType").text();
+                    $("[id*=rbtnICType1]").attr("checked", false);
+                    $("[id*=rbtnICType2]").attr("checked", false);
+
+                    if (IcType.trim() == "1") {
+                        $("[id*=rbtnICType1]").attr("checked", true);
+                        $("[id*=rbtnICType2]").attr("checked", false);
+                    }
+                    else if (IcType.trim() == "2") {
+                        $("[id*=rbtnICType1]").attr("checked", false);
+                        $("[id*=rbtnICType2]").attr("checked", true);
+                    }
+
+                    var Gender = $(this).find("Gender").text();
+
+                    if (Gender == "Male" || Gender == "M") {
+                        $("[id*=rbtnMale]").attr("checked", true);
+                    }
+                    else if (Gender == "Female" || Gender == "F") {
+                        $("[id*=rbtnFemale]").attr("checked", true);
+                    }
+                    $("[id*=txtDOB]").val($(this).find("DOB").text());
+                    $("[id*=txtMotherTongue]").val($(this).find("MotherTongue").text());
+
+
+                    var Religion = $(this).find("ReligionID").text();
+                    $("[id*=ddlReligion] option[value='" + Religion + "']").attr("selected", "true");
+
+                    var Community = $(this).find("CommunityID").text();
+                    $("[id*=ddlCommunity] option[value='" + Community + "']").attr("selected", "true");
+
+                    var Caste = $(this).find("CasteID").text();
+                    $("[id*=ddlCaste] option[value='" + Caste + "']").attr("selected", "true");
+
+                    $("[id*=txtAadhaar]").val($(this).find("AadhaarNo").text());
+                    $("[id*=txtFatherAadhaar]").val($(this).find("FatherAadhaarNo").text());
+                    $("[id*=txtMotherAadhaar]").val($(this).find("MotherAadhaarNo").text());
+                    $("[id*=txtTempAddress]").val($(this).find("TempAddr").text());
+                    $("[id*=txtPerAddress]").val($(this).find("PerAddr").text());
+                    $("[id*=txtEmail]").val($(this).find("Email").text());
+                    $("[id*=txtPhoneNo]").val($(this).find("PhoneNo").text());
+                    $("[id*=txtRationCardNo]").val($(this).find("RationCardNo").text());
+                    $("[id*=txtSmartCardNo]").val($(this).find("SmartCardNo").text());
+                    $("[id*=txtSSLC]").val($(this).find("SSLCNo").text());
+                    $("[id*=ddlSSLC]").val($(this).find("SSLCYear").text());
+                    $("[id*=txtHSC]").val($(this).find("HSCNo").text());
+                    $("[id*=ddlHSC]").val($(this).find("HSCYear").text());
+                    $("[id*=txtSUID]").val($(this).find("SUID").text());
+                    $("[id*=txtTamilname]").val($(this).find("tamilname").text());
+
+                    var CareTaker = $(this).find("CareTaker").text();
+
+                    if (CareTaker == "Parent") {
+                        $("[id*=rbtnParent]").attr("checked", true);
+                    }
+                    else if (CareTaker == "Guardian") {
+                        $("[id*=rbtnGuardian]").attr("checked", true);
+                    }
+                    var Sports = $(this).find("Sports").text();
+                    if (Sports == "true") {
+                        $("[id*=rbtnSports]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnFine]").attr("checked", true);
+                    }
+
+                    var FineArts = $(this).find("FineArts").text();
+                    if (FineArts == "true") {
+                        $("[id*=rbtnFine]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnSports]").attr("checked", true);
+                    }
+
+                    $("[id*=txtCurricularRemarks]").val($(this).find("CurricularRemarks").text());
+
+                    var Skills = $(this).find("Skills").text();
+                    if (Skills == "true") {
+                        $("[id*=rbtnSkillYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnSkillNo]").attr("checked", true);
+                    }
+
+                    $("[id*=txtSkillRemarks]").val($(this).find("SkillRemarks").text());
+
+                    var PhotoFile = $(this).find("PhotoFile").text();
+                    if (PhotoFile) {
+                        $("[id*=img_prev]").attr('src', "../Students/Photos/" + PhotoFile.toString() + "?rand=" + Math.random()).width(114).height(114)
+                    }
+                    else {
+                        $("[id*=img_prev]").attr('src', "../img/Photo.jpg").width(114).height(114);
+                    }
+
+                    $("[id*=ddlBloodGroup]").val($(this).find("BloodGroupID").text());
+                    $("[id*=txtDisease]").val($(this).find("DisOrders").text());
+                    $("[id*=txtHeight]").val($(this).find("Height").text());
+                    $("[id*=txtWeight]").val($(this).find("Weight").text());
+                    $("[id*=txtEmergencyPhNo]").val($(this).find("EmerPhNo").text());
+                    $("[id*=txtFamilyDocName]").val($(this).find("Doctor").text());
+                    $("[id*=txtFamilyDocAdd]").val($(this).find("DocAddr").text());
+                    $("[id*=txtFamilyDocPhNo]").val($(this).find("DocPhNo").text());
+                    if ($(this).find("IdMarks").text() != "") {
+                        var IDnMarks = $(this).find("IdMarks").text().split(":");
+                        if (IDnMarks.length > 1) {
+                            $("[id*=txtIdentificationMarks1]").val(IDnMarks[0]);
+                            $("[id*=txtIdentificationMarks2]").val(IDnMarks[1]);
+                        }
+                        else {
+                            $("[id*=txtIdentificationMarks1]").val(IDnMarks[0]);
+                            $("[id*=txtIdentificationMarks2]").val("");
+                        }
+                    }
+                    if ($(this).find("Handicap").text() == "Y") {
+                        $("[id*=rbtnPHYes]").attr('checked', true);
+                    }
+                    else {
+                        $("[id*=rbtnNoPH]").attr('checked', true);
+                    }
+                    showphysical();
+                    $("[id*=txtPhysicalHandicapped]").val($(this).find("HandicaptDetails").text());
+                    $("[id*=txtAdmissionNo]").val($(this).find("AdmissionNo").text());
+
+                    var AdClassID = $(this).find("AdClassID").text();
+                    $("[id*=ddlAdClass] option[value='" + AdClassID + "']").attr("selected", "true");
+                    FlagAdSectionID = $(this).find("AdSectionID").text();
+                    GetAdSectionByAdClass();
+
+                    $("[id*=txtDOJ]").val($(this).find("DOJ").text());
+                    $("[id*=txtDOA]").val($(this).find("DOA").text());
+
+                    var Mode = $(this).find("TransportId").text();
+                    $("[id*=ddlModeofTrans] option[value='" + Mode + "']").attr("selected", "true");
+
+                    $("[id*=ddlSchoolMedium]").val($(this).find("mediumID").text());
+                    $("[id*=txtFirstlang]").val($(this).find("Firstlang").text());
+                    //$("[id*=txtFirstlang]").html($(this).find("Firstlang").text());
+                    $("[id*=ddlSeclang]").val($(this).find("Seclang").text());
+                    var Scholar = $(this).find("Scholar").text();
+                    if (Scholar == "Y") {
+                        $("[id*=rbtnScholarYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnNoScholar]").attr("checked", true);
+                    }
+                    ShowScholarship();
+
+                    var Concession = $(this).find("Concession").text();
+
+                    if (Concession == "Y") {
+                        $("[id*=rbtnConcessYes]").attr("checked", true);
+                    }
+                    else {
+                        $("[id*=rbtnNoConcess]").attr("checked", true);
+                    }
+                    ShowConcession();
+
+
+                    var ScholarshipId = $(this).find("ScholarshipId").text();
+                    // $("[id*=ddlScholarship] option[value='" + ScholarshipId + "']").attr("selected", "true");
+
+                    $("[id*=hfAcademicyear]").val($(this).find("AcademicYear").text());
+                    $("[id*=ddlStatus]").val($(this).find("Active").text());
+                    $("[id*=lblStatus]").html($(this).find("Status").text());
+                    row.addClass("even");
+
+                    if ($(this).find("FRelation").text() == "Father") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("FRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("FName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("FQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("FOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("FIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("FOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("FEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("FatherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("MRelation").text() == "Mother") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("MRelation").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("MRelation").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("MName").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("MQual").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("MOccupation").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("MIncome").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word;'>" + $(this).find("MOccAddress").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("MEmail").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("MotherCell").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian1").text() == "Guardian I") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian1").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian1").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName1").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual1").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc1").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc1").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr1").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail1").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno1").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+                    if ($(this).find("Guardian2").text() == "Guardian II") {
+                        isRelationExist = 1;
+                        var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + eanchorEnd;
+                        var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Guardian2").text() + danchorEnd;
+                        $("td", row).eq(0).html($(this).find("Guardian2").text()).attr("valign", "top");
+                        $("td", row).eq(1).html($(this).find("GName2").text()).attr("valign", "top");
+                        $("td", row).eq(2).html($(this).find("GQual2").text()).attr("valign", "top");
+                        $("td", row).eq(3).html($(this).find("GOcc2").text()).attr("valign", "top");
+                        $("td", row).eq(4).html($(this).find("GInc2").text()).attr("valign", "top");
+                        $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("GAddr2").text() + "</p>");
+                        $("td", row).eq(6).html($(this).find("GEmail2").text()).attr("valign", "top");
+                        $("td", row).eq(7).html($(this).find("GPhno2").text()).attr("valign", "top");
+                        $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                        $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+                        $("[id*=dgRelationship]").append(row);
+                        row = $("[id*=dgRelationship] tr:last-child").clone(true);
+                    }
+
+
+                    if ($("[id*=hfEditPrm]").val() == 'false') {
+                        $('.editacc').hide();
+                    }
+                    else {
+                        $('.editacc').show();
+                    }
+                    if ($("[id*=hfDeletePrm]").val() == 'false') {
+                        $('.deleteacc').hide();
+                    }
+                    else {
+                        $('.deleteacc').show();
+                    }
+                    var pager = xml.find("Pager");
+
+                    $(".Pager").ASPSnippets_Pager({
+                        ActiveCssClass: "current",
+                        PagerCssClass: "pager",
+                        PageIndex: parseInt(pager.find("PageIndex").text()),
+                        PageSize: parseInt(pager.find("PageSize").text()),
+                        RecordCount: parseInt(pager.find("RecordCount").text())
+                    });
+
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                 });
             }
             var RegNo = $("[id*=hfRegNo]").val();
@@ -3336,7 +3648,7 @@
                 GetMedicalRemarkInfo(RegNo);
                 GetAcademicRemarkInfo(RegNo);
                 GetHostelInfo(RegNo);
-                GetBusRouteDetails(0);
+                //GetBusRouteDetails(0);
                 GetStaffChildrenInfo(RegNo);
                 GetOldSchoolInfo(RegNo);
                 GetConcessionInfo(RegNo);
@@ -3462,6 +3774,7 @@
 
                 $.each(family, function () {
 
+<<<<<<< HEAD
                     if ($(this).find("FRelation").text() == "Father") {
                         isRelationExist = 1;
                         var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("FRelation").text() + eanchorEnd;
@@ -3479,6 +3792,20 @@
                         $("[id*=dgRelationship]").append(row);
                         row = $("[id*=dgRelationship] tr:last-child").clone(true);
                     }
+=======
+                    var ehref = eanchor + $(this).find("StudentID").text() + "','" + $(this).find("Relation").text() + eanchorEnd;
+                    var dhref = danchor + $(this).find("StudentID").text() + "','" + $(this).find("Relation").text() + danchorEnd;
+                    $("td", row).eq(0).html($(this).find("Relation").text()).attr("valign", "top");
+                    $("td", row).eq(1).html($(this).find("Name").text().replace("'", "''")).attr("valign", "top");
+                    $("td", row).eq(2).html($(this).find("Qual").text()).attr("valign", "top");
+                    $("td", row).eq(3).html($(this).find("Occupation").text()).attr("valign", "top");
+                    $("td", row).eq(4).html($(this).find("Income").text()).attr("valign", "top");
+                    $("td", row).eq(5).html("<p style='word-wrap: break-word; width:300px;'>" + $(this).find("OccAddress").text() + "</p>");
+                    $("td", row).eq(6).html($(this).find("RelEmail").text()).attr("valign", "top");
+                    $("td", row).eq(7).html($(this).find("Cell").text()).attr("valign", "top");
+                    $("td", row).eq(8).html(ehref).addClass("editacc edit-links").attr("valign", "top");
+                    $("td", row).eq(9).html(dhref).addClass("deleteacc delete-links").attr("valign", "top");
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                     if ($(this).find("MRelation").text() == "Mother") {
                         isRelationExist = 1;
@@ -5139,8 +5466,30 @@
                     if (Section == "New") {
                         Section = "";
                     }
+
+                    var IcStudent;
+                    if ($("[id*=chkICStudent]").is(':checked')) {
+                        IcStudent = "Y";
+                    }
+                    else {
+                        IcStudent = "N";
+                    }
+
+                    var IcType;
+                    if ($("[id*=rbtnICType1]").is(':checked')) {
+                        IcType = "1";
+                    }
+
+                    else if ($("[id*=rbtnICType2]").is(':checked')) {
+                        IcType = "2";
+                    }
+
                     var Academicyear = $("[id*=hfAcademicyear]").val();
+<<<<<<< HEAD
                     var parameters = '{"id": "' + StudentInfoID + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","academicyear": "' + Academicyear + '"}';
+=======
+                    var parameters = '{"id": "' + StudentInfoID + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","academicyear": "' + Academicyear + '","IcStudent": "' + IcStudent + '","IcType": "' + IcType + '"}';
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     $.ajax({
                         type: "POST",
                         url: "../Students/StudentInfo.aspx/SaveandPayAdvanceFees",
@@ -5239,6 +5588,26 @@
                     var HSCYear = $("[id*=ddlHSC]").val();
                     var SUID = $("[id*=txtSUID]").val();
                     var Tamilname = $("[id*=txtTamilname]").val();
+<<<<<<< HEAD
+=======
+                     
+                    var IcStudent;
+                    if ($("[id*=chkICStudent]").is(':checked')) {
+                        IcStudent = "Y";
+                    }
+                    else {
+                        IcStudent = "N";
+                    }
+
+                    var IcType;
+                    if ($("[id*=rbtnICType1]").is(':checked')) {
+                        IcType = "1";
+                    }
+
+                    else if ($("[id*=rbtnICType2]").is(':checked')) {
+                        IcType = "2";
+                    }
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
 
                     if (Section == "New") {
                         Section = "";
@@ -5248,7 +5617,11 @@
                     }
 
                     var Academicyear = $("[id*=hfAcademicyear]").val();
+<<<<<<< HEAD
                     var parameters = '{"id": "' + StudentInfoID + '","SearchRegno": "' + Regno + '","studenttype": "' + StudentType + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","sstatus": "' + sstatus + '","userid": "' + $("[id*=hfuserid]").val() + '"}';
+=======
+                    var parameters = '{"id": "' + StudentInfoID + '","studentname": "' + StudentName + '","classname": "' + Classname + '","classid": "' + Class + '","sectionname": "' + Section + '","gender": "' + Gender + '","dob": "' + DOB + '","doj": "' + DOJ + '","religion": "' + Religion + '","mtongue": "' + MotherTongue + '","community": "' + Community + '","caste": "' + Caste + '","aadhaar": "' + Aadhaar + '","fatheraadhaar": "' + FatherAadhaar + '","motheraadhaar": "' + MotherAadhaar + '","tempaddress": "' + TempAddress + '","peraddress": "' + PerAddress + '","email": "' + Email + '","phoneno": "' + PhoneNo + '","smartcard": "' + SmartCard + '","rationcard": "' + RationCard + '","photopath": "' + PhotoPath + '","photofile": "' + PhotoFile + '","sslcno": "' + SSLCNo + '","sslcyear": "' + SSLCYear + '","hscno": "' + HSCNo + '","hscyear": "' + HSCYear + '","suid": "' + SUID + '","tamilname": "' + Tamilname + '","academicyear": "' + Academicyear + '","sstatus": "' + sstatus + '","IcStudent": "' + IcStudent + '","IcType": "' + IcType + '","userid": "' + $("[id*=hfuserid]").val() + '"}';
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                     $.ajax({
                         type: "POST",
                         url: "../Students/StudentInfo.aspx/SaveStudentInfo",
@@ -7433,7 +7806,27 @@
             if (document.getElementById('rbtnInsNo').checked == true) {
                 $("#dvInstitution").slideUp("slow");
             }
-        } 
+        }
+
+        function getICType() {
+            const chkICStudent = document.getElementById('chkICStudent');
+            const rbtnICType1 = document.getElementById('rbtnICType1');
+            const rbtnICType2 = document.getElementById('rbtnICType2');
+
+            if (chkICStudent.checked) {
+                // Enable both radio buttons if checkbox is checked
+                rbtnICType1.disabled = false;
+                rbtnICType2.disabled = false;
+            } else {
+                // Disable both radio buttons and uncheck them if checkbox is unchecked
+                rbtnICType1.disabled = true;
+                rbtnICType2.disabled = true;
+
+                rbtnICType1.checked  = false;
+                rbtnICType2.checked  = false;
+            }
+        }
+
     </script>
     <script type="text/javascript">
         function CheckAll() {
@@ -7620,9 +8013,12 @@
                                 <span id="spnAppno">Application No :<asp:Label ID="lblApplicationNo" runat="server"></asp:Label></span>
                             </td>
                             <td style="width: 250px; float: left">
+<<<<<<< HEAD
                                 <span id="Span1">ASOS Reg. No :<asp:Label ID="lblASSRegNo" runat="server"></asp:Label></span>
                             </td>
                             <td style="width: 250px; float: left">
+=======
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                 <span id="spnRegno">Registration No :<asp:Label ID="lblRegNo" runat="server"></asp:Label></span>
                             </td>
                             <td style="width: 250px; float: left">
@@ -7810,6 +8206,26 @@
                                         <tr>
                                             <td>
                                                 <label>
+                                                    Father Aadhaar card :</label>
+                                            </td>
+                                            <td>
+                                                <label for="textarea">
+                                                </label>
+                                                <asp:TextBox ID="txtFatherAadhaar" runat="server"></asp:TextBox>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    Mother Aadhaar card :</label>
+                                            </td>
+                                            <td>
+                                                <label for="textarea">
+                                                </label>
+                                                <asp:TextBox ID="txtMotherAadhaar" runat="server"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label>
                                                     Temporary Address :</label>
                                             </td>
                                             <td>
@@ -7930,7 +8346,31 @@
                                                 <asp:TextBox ID="txtTamilname" CssClass="text_tam" runat="server"></asp:TextBox>
                                             </td>
                                         </tr>
+<<<<<<< HEAD
                                         <tr id="trpersonal">
+=======
+                                          <tr>
+                                            <td>
+                                                <label>
+                                                    Is IC Student :</label>
+                                            </td>
+                                            <td>
+                                               <label> <input type="checkbox" name="chkICStudent" id="chkICStudent" onchange="getICType();"  />
+                                                    Yes</label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    IC Type :</label>
+                                            </td>
+                                             <td class="col2">
+                                                <label>
+                                                    <input type="radio" name="ic1" id="rbtnICType1" value="1" />NEET</label>
+                                                <label>
+                                                    <input type="radio" name="ic1" id="rbtnICType2" value="2" />JEEE</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                                             <td colspan="4" align="center">
                                                 <table border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
@@ -8646,7 +9086,7 @@
                                         <tr>
                                             <td width="22%" class="col1">
                                                 <label>
-                                                    Medium:</label>
+                                                    Medium of Instruction:</label>
                                             </td>
                                             <td width="27%" class="col2">
                                                 <asp:DropDownList ID="ddlSchoolMedium" CssClass="jsrequired" runat="server" AppendDataBoundItems="True">
@@ -8654,7 +9094,7 @@
                                             </td>
                                             <td width="22%" class="col2">
                                                 <label>
-                                                    First Language:</label>
+                                                    Second Language:</label>
                                             </td>
                                             <td width="29%" class="col2">
                                                 <asp:DropDownList ID="txtFirstlang" CssClass="" runat="server" AppendDataBoundItems="True">
@@ -8664,7 +9104,7 @@
                                         <tr>
                                             <td>
                                                 <label>
-                                                    Second language :</label>
+                                                    First language :</label>
                                             </td>
                                             <td>
                                                 <asp:DropDownList ID="ddlSeclang" CssClass="" runat="server" AppendDataBoundItems="True">
@@ -8837,8 +9277,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
                     <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
                         class="menuitem">Co-curricular activities during school hours</a>
+=======
+                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                        Co-curricular activities during school hours</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvCurricular" style="border-bottom-style: none; border-bottom-width: 0px;"
@@ -8928,8 +9373,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
                     <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
                         class="menuitem">Skill based education</a>
+=======
+                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                        Skill based education</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvSkill" style="border-bottom-style: none; border-bottom-width: 0px;" class="frm-block">
@@ -8991,8 +9441,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
                     <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
                         class="menuitem">Evening Special sports and Fine Arts classes</a>
+=======
+                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                        Evening Special sports and Fine Arts classes</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvActivites" style="border-bottom-style: none; border-bottom-width: 0px;"
@@ -9037,8 +9492,13 @@
                             </li>
                         </ul>
                     </li>
+<<<<<<< HEAD
                     <li><a style="display: none; border-width: 1px; border-style: dotted; border-color: #CCCCCC;"
                         class="menuitem">Scholarship Details</a>
+=======
+                    <li><a style="border-width: 1px; border-style: dotted; border-color: #CCCCCC;" class="menuitem">
+                        Scholarship Details</a>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <ul class="johnmenu">
                             <li>
                                 <div id="dvscholarshipDetails" style="border-bottom-style: none; border-bottom-width: 0px;"

@@ -155,7 +155,7 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
 
         }
         BindSectionByClass();
-    }       
+    }
 
     protected void BindSectionByClass()
     {
@@ -199,7 +199,7 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
         }
     }
 
-   
+
 
     protected void btnSearch_Click(object sender, EventArgs e)
     {
@@ -226,7 +226,7 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
     {
         try
         {
-          printdata =  DISPLAY();
+            printdata = DISPLAY();
         }
         catch
         {
@@ -246,10 +246,26 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
         utl = new Utilities();
         string sqlqry = "select YEAR(StartDate) from m_academicyear where AcademicId='" + AcademicID + "'";
         acadamicyear = utl.ExecuteScalar(sqlqry);
+
+        string sqlstr = "select isactive from m_academicyear where AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
+        string Isactive = utl.ExecuteScalar(sqlstr);
+        HttpContext.Current.Session["Isactive"] = Isactive.ToString();
+
         if (Session["strCompfor"].ToString() != "")
         {
+<<<<<<< HEAD
 
             sqlstr = "[sp_GetStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','" + ddlType.Text + "','" + txtSearch.Text + "'";
+=======
+            if (Isactive == "True")
+            {
+                sqlstr = "[sp_GetStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','" + ddlType.Text + "','" + txtSearch.Text + "'";
+            }
+            else
+            {
+                sqlstr = "[sp_GetOldStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','" + ddlType.Text + "','" + txtSearch.Text + "'";
+            }
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
             dsGet = utl.GetDataset(sqlstr);
         }
         if (dsGet != null && dsGet.Tables.Count > 0 && dsGet.Tables[0].Rows.Count > 0)
@@ -258,63 +274,64 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
             {
                 //if (examnochk != dsGet.Tables[0].Rows[i]["RegNo"].ToString())
                 //{
-                    string photofile = "../Students/Photos/" + dsGet.Tables[0].Rows[i]["Photo"].ToString().ToUpper() + "";
-                    if (!File.Exists(Server.MapPath("../Students/Photos/" + dsGet.Tables[0].Rows[i]["Photo"].ToString().ToUpper() + "")))
+                string photofile = "../Students/Photos/" + dsGet.Tables[0].Rows[i]["Photo"].ToString().ToUpper() + "";
+                if (!File.Exists(Server.MapPath("../Students/Photos/" + dsGet.Tables[0].Rows[i]["Photo"].ToString().ToUpper() + "")))
+                {
+                    photofile = "../Students/Photos/noimage.jpg";
+                }
+
+                string TemplateName = "../Masters/Templates/" + dsGet.Tables[0].Rows[i]["TemplateName"].ToString() + "";
+                if (!File.Exists(Server.MapPath("../Masters/Templates/" + dsGet.Tables[0].Rows[i]["TemplateName"].ToString() + "")))
+                {
+                    TemplateName = "../Masters/Templates/noimage.jpg";
+                }
+                //style='background-repeat: no-repeat;margin: 0 auto;background-image: url(" + TemplateName + ")'
+                stroption += @"<div class='merit-certificate'> <table width='800px' border='0' cellspacing='0' cellpadding='0' class='merit-bg'>";
+
+                DataRow[] drExamPattern = dsGet.Tables[0].Select("RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " ");
+
+                if (drExamPattern.Length > 0)
+                {
+                    string crttpe = "";
+                    if (dsGet.Tables[0].Rows[i]["remarks"].ToString().Replace("\n","").ToUpper() == "WINNER")
                     {
-                        photofile = "../Students/Photos/noimage.jpg";
+                        crttpe = "Merit";
+                    }
+                    else
+                    {
+                        crttpe = "Participation";
                     }
 
-                    string TemplateName = "../Masters/Templates/" + dsGet.Tables[0].Rows[i]["TemplateName"].ToString() + "";
-                    if (!File.Exists(Server.MapPath("../Masters/Templates/" + dsGet.Tables[0].Rows[i]["TemplateName"].ToString() + "")))
-                    {
-                        TemplateName = "../Masters/Templates/noimage.jpg";
-                    }
-                    //style='background-repeat: no-repeat;margin: 0 auto;background-image: url(" + TemplateName + ")'
-                    stroption += @"<div class='merit-certificate'> <table width='800px' border='0' cellspacing='0' cellpadding='0' class='merit-bg'>";
-                    
-                    DataRow[] drExamPattern = dsGet.Tables[0].Select("RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " ");
+                    stroption += @"<tr> <td height='1130px' align='center' valign='top' style=' padding-top: 8%;'> <table width='90%' border='0' cellspacing='0' cellpadding='0' class='merit-table' > <col width='35%'></col> <col width='65%'></col><tr><td colspan='2' style='text-align: center;'><img src='" + photofile + "' width='130px' height='150px'  /></td></tr> <tr><td colspan='2' style='text-align: center;font-size: 45px;text-transform: uppercase;color: #00abed;'>Certificate of " + crttpe.ToString().ToUpper() + "</td></tr> <tr> <td class='label'>Name:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Register No:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["RegNo"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Class & Sec:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["Class"].ToString().ToUpper() + " - " + dsGet.Tables[0].Rows[i]["Section"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Name of the Program:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["eventname"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Date of the Program:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["compdate"].ToString().ToUpper() + "</div></td></tr><tr><td class='label'>Name of the Event:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["awardtype"].ToString().ToUpper() + "</div></td></tr>";
+                    //if (dsGet.Tables[0].Rows[i]["result"].ToString() == "Winner")
+                    //{
+                    //    if (dsGet.Tables[0].Rows[i]["remarks"].ToString().ToUpper() == "WINNER")
+                    //    {
+                    //        stroption += @"<tr> <td class='label'>Result:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["position"].ToString().ToUpper() + "</div></td></tr></table> </td></tr>";
+                    //    }
+                    //    else
+                    //    {
+                    //        stroption += @"<tr> <td class='label'>Result:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["position"].ToString().ToUpper() + " Prize</div></td></tr></table> </td></tr>";
+                    //    }
 
-                    if (drExamPattern.Length > 0)
-                    {
-                        string crttpe = "";
-                        if (dsGet.Tables[0].Rows[i]["result"].ToString()=="Winner")
-                        {
-                            crttpe = "Merit";
-                        }
-                        else
-                        {
-                            crttpe = "Participation";
-                        }
+                    //}
+                    stroption += @"<tr> <td class='label'>Result:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["position"].ToString().ToUpper() + " </div></td></tr>";
 
-                        stroption += @"<tr> <td height='1130px' align='center' valign='top' style=' padding-top: 8%;'> <table width='90%' border='0' cellspacing='0' cellpadding='0' class='merit-table' > <col width='35%'></col> <col width='65%'></col><tr><td colspan='2' style='text-align: center;'><img src='" + photofile + "' width='130px' height='150px'  /></td></tr> <tr><td colspan='2' style='text-align: center;font-size: 45px;text-transform: uppercase;color: #00abed;'>Certificate of " + crttpe.ToString().ToUpper() + "</td></tr> <tr> <td class='label'>Name:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Register No:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["RegNo"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Class & Sec:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["Class"].ToString().ToUpper() + " - " + dsGet.Tables[0].Rows[i]["Section"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Name of the Program:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["eventname"].ToString().ToUpper() + "</div></td></tr><tr> <td class='label'>Date of the Program:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["compdate"].ToString().ToUpper() + "</div></td></tr><tr><td class='label'>Name of the Event:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["awardtype"].ToString().ToUpper() + "</div></td></tr>";
-                        if (dsGet.Tables[0].Rows[i]["result"].ToString() == "Winner")
-                        {
-							if(dsGet.Tables[0].Rows[i]["position"].ToString().ToUpper()=="WINNER")
-							{
-								stroption += @"<tr> <td class='label'>Awarded:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["position"].ToString().ToUpper() + "</div></td></tr></table> </td></tr>";
-							}
-							else
-							{
-								stroption += @"<tr> <td class='label'>Awarded:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["position"].ToString().ToUpper() + " Prize</div></td></tr></table> </td></tr>";
-							}								
-							
-                        }
-                       
-                        stroption += @"</table> </td></tr>";
-                        //<tr> <td class='label'>Name of the Competition:</td><td> <div class='value'> " + dsGet.Tables[0].Rows[i]["title"].ToString().ToUpper() + "</div></td></tr>
-                        //<tr> <td class='label'>Position:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["remarks"].ToString().ToUpper() + "</div></td></tr>
-                    }
+                    stroption += @"</table> </td></tr>";
+                    //<tr> <td class='label'>Name of the Competition:</td><td> <div class='value'> " + dsGet.Tables[0].Rows[i]["title"].ToString().ToUpper() + "</div></td></tr>
+                    //<tr> <td class='label'>Position:</td><td> <div class='value'>" + dsGet.Tables[0].Rows[i]["remarks"].ToString().ToUpper() + "</div></td></tr>
+                }
 
-                    stroption += @"</table> </div>";
-               // }
+                stroption += @"</table> </div>";
+                // }
 
-               // examnochk = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
+                // examnochk = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
             }
         }
         return stroption;
     }
 
-    
+
     protected void ddlTmp_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (ddlTmp.SelectedItem.Text == "---Select---" || ddlTmp.SelectedItem.Value == "---Select---")

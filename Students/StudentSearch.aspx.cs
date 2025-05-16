@@ -335,7 +335,25 @@ public partial class Students_StudentSearch : System.Web.UI.Page
         {
             query = "[GetPromoStudentInfo_Pager]";
         }
+        string stracademicyear = "";
+        string icnt = "";
+        if (regno != "")
+        {
+            stracademicyear = utl.ExecuteScalar("select academicyear from s_studentinfo where regno='" + regno + "'");
+            if (stracademicyear != "" && stracademicyear != "0")
+            {
+                icnt = utl.ExecuteScalar("select count(*) from s_studentpromotion where regno='" + regno + "' and academicid='" + stracademicyear + "'");
+
+                if (icnt=="" || icnt=="0")
+                {
+                    utl.ExecuteQuery("insert into  s_studentpromotion(regno,ClassID,SectionID,BusFacility,Concession,Hostel,Scholar,AcademicId,Active,UserId)(select regno,Class,case when Section=0 then NULL else section end,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo where regno= '" + regno + "')");
+                }
+            }
+          
+        }
+        
        
+        
         SqlCommand cmd = new SqlCommand(query);
         cmd.CommandType = CommandType.StoredProcedure;
         cmd.Parameters.AddWithValue("@PageIndex", pageIndex);

@@ -21,7 +21,7 @@ using System.Web.SessionState;
 using System.Web.UI.HtmlControls;
 
 public partial class Reports_ConsolidateReport : System.Web.UI.Page
-{   
+{
     string strExamName = "";
     string strExamNameID = "";
     string strExamType = "";
@@ -31,7 +31,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
     string strClassID = "";
     string strSectionID = "";
     Utilities utl = null;
-   
+
     public static int Userid = 0;
     public static int AcademicID = 0;
     protected void Page_Load(object sender, EventArgs e)
@@ -100,7 +100,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
     {
         if (ddlExamName.SelectedItem.Text == "-----Select-----" || ddlExamName.SelectedItem.Value == "-----Select-----" || ddlClass.SelectedItem.Text == "---Select---" || ddlClass.SelectedItem.Value == "---Select---")
         {
-           // ddlExamType.Items.Insert(0, "---Select---");
+            // ddlExamType.Items.Insert(0, "---Select---");
         }
 
         else
@@ -178,9 +178,9 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
         if (strClassID != "")
         {
             DataTable DataTable1 = new DataTable();
-            DataTable1 = utl.GetDataTable("SP_GetConsolidateReport " + "'" + strClassID + "','" + strSectionID + "','" + strExamNameID + "','" + strExamTypeID + "','" + ddlType.SelectedItem.Text + "','" + AcademicID + "'");
+            DataTable1 = utl.GetDataTable("SP_GetConsolidateReport " + "'" + strClassID + "','" + strSectionID + "','" + strExamNameID + "','" + strExamTypeID + "','" + ddlType.SelectedItem.Text + "','','" + AcademicID + "'");
             if (DataTable1.Rows.Count > 0)
-            {                
+            {
 
                 DataTable dtSchool = new DataTable();
                 dtSchool = utl.GetDataTable("exec sp_schoolDetails");
@@ -213,11 +213,11 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
                         {
                             str.Append("<td align='center' style='color:black'>" + DataTable1.Rows[i]["" + DataTable1.Columns[j].ColumnName.ToUpper() + ""].ToString() + "</td>");
                         }
-                      
+
                     }
                     str.Append(@"</tr>");
                 }
-               
+
                 str.Append(@"</table>");
                 dvCard.InnerHtml = str.ToString();
             }
@@ -240,7 +240,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
         int subjectcount = 0;
 
         string sql = "select COUNT(*)as subjectcount from p_classsubjects where ClassID='" + strClassID + "' and IsActive=1 and SubjectType='" + ddlType.SelectedItem.Text + "' and AcademicID='" + AcademicID + "'";
-        subjectcount =Convert.ToInt32(utl.ExecuteScalar(sql));
+        subjectcount = Convert.ToInt32(utl.ExecuteScalar(sql));
 
         if (subjectcount > 0)
         {
@@ -248,7 +248,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
             dsGet = utl.GetDataset(sqlqry);
 
             if (dsGet != null && dsGet.Tables.Count > 0 && dsGet.Tables[0].Rows.Count > 0)
-            {              
+            {
 
                 str.Append("<div style='float:left;padding-bottom:20px'><div style='float:left;margin-left:10px'><table class='performancedata'  border=1 cellspacing=5 cellpadding=10 width='100%'><tr><td><strong>SUBJECTS</strong></td><td><strong>NO OF STUDENTS</strong></td></tr>");
 
@@ -277,7 +277,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
                             str.Append("<tr><td>" + word.ToUpper() + " SUBJECT FAIL</td><td>" + drFailcount.Length.ToString() + "</td></tr>");
                         }
 
-                       
+
                         total += drFailcount.Length;
                     }
                 }
@@ -293,7 +293,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
 
 
 
-        
+
         //Subject wise details-start
 
         DataSet dsGet1 = new DataSet();
@@ -309,33 +309,33 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
         {
             foreach (string SUBListID in SUBList)
             {
-               int drSubject = dsGet1.Tables[0].Select("res='0' and SubExperienceId='" + SUBListID + "' ").Length;
-               string query = "select SubExperienceName from m_subexperiences where SubExperienceId =" + SUBListID + "";
-               string subjectName = utl.ExecuteScalar(query);
+                int drSubject = dsGet1.Tables[0].Select("res='0' and SubExperienceId='" + SUBListID + "' ").Length;
+                string query = "select SubExperienceName from m_subexperiences where SubExperienceId =" + SUBListID + "";
+                string subjectName = utl.ExecuteScalar(query);
 
-               if (drSubject == 0)
-               {
-                   str.Append("<tr><td>" + subjectName + "</td><td>NIL</td></tr>");
-               }
-               else
-               {
-                   str.Append("<tr><td>" + subjectName + "</td><td>" + drSubject.ToString() + "</td></tr>");
-               }
+                if (drSubject == 0)
+                {
+                    str.Append("<tr><td>" + subjectName + "</td><td>NIL</td></tr>");
+                }
+                else
+                {
+                    str.Append("<tr><td>" + subjectName + "</td><td>" + drSubject.ToString() + "</td></tr>");
+                }
 
-              
+
             }
-                        
+
         }
-        
+
         str.Append("</table></div></div>");
 
         //Subject wise details-end
 
-        
+
 
     }
 
-    
+
     private string Disp_SubjectList()
     {
         string SubjectListID = "";
@@ -350,16 +350,16 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                    if (SubjectListID == "")
-                    {
-                        SubjectListID = ds.Tables[0].Rows[i]["Subjectid"].ToString();
-                    }
+                if (SubjectListID == "")
+                {
+                    SubjectListID = ds.Tables[0].Rows[i]["Subjectid"].ToString();
+                }
 
-                    else
-                    {
-                        SubjectListID = SubjectListID + "," + ds.Tables[0].Rows[i]["Subjectid"].ToString();
-                    }
-               
+                else
+                {
+                    SubjectListID = SubjectListID + "," + ds.Tables[0].Rows[i]["Subjectid"].ToString();
+                }
+
             }
         }
 
@@ -445,6 +445,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
             Response.Write("<font color=red>" + ex.Message + "</font>");
         }
     }
+
     private void LoadPath(DataRow objDataRow, string strImageField, string FilePath)
     {
         try
@@ -528,9 +529,7 @@ public partial class Reports_ConsolidateReport : System.Web.UI.Page
             Session["strExamName"] = ddlExamName.SelectedItem.Text;
             Session["strExamNameID"] = ddlExamName.SelectedValue;
             BindExamType();
-           
-        }
 
-      
+        }
     }
 }

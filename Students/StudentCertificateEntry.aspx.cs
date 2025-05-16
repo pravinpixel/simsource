@@ -89,6 +89,10 @@ public partial class Students_StudentCertificateEntry : System.Web.UI.Page
         {
             query = "[sp_GetStudentCertificateInfo] " + id + ",'" + compfor + "'," + acdid + "";
         }
+        else
+        {
+            query = "[Sp_getoldstudentcertificateinfo] " + id + ",'" + compfor + "'," + acdid + "";
+        }
 
 
         DataSet ds = new DataSet();

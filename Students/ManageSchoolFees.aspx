@@ -35,6 +35,7 @@
     <script type="text/javascript">
 
         $(function () {
+            $("#modes").css("display", "none");
             $('#dvbus').css("display", "none");
             $('#txtRegNo').focus();
             //        GetStudentInfos Function on page load
@@ -51,7 +52,7 @@
             if ($("[id*=hdnRegNo]").length > 0) {
                 $('#txtRegNo').val($("[id*=hdnRegNo]").val());
                 BindStudDetails();
-               // GetAcademicDetails();
+                // GetAcademicDetails();
             }
         });
     </script>
@@ -159,7 +160,11 @@
 
             //  $("[id*=tblViewBill] tr").not($("[id*=tblViewBill] tr:first-child")).remove();
             $("[id*=tblViewBill] tr").remove();
-
+            var totalConcession = 0;
+            $.each(studentBill, function (index, element) {
+                var concessionamount = parseFloat($(element).find("concessionamount").text()) || 0;
+                totalConcession += concessionamount;              
+            });
 
             $.each(billMaster, function () {
                 $("[id*=lblRegNo]").html($(this).find("RegNo").text());
@@ -171,14 +176,21 @@
                 $("[id*=lblTotAmt]").html($(this).find("TotalAmount").text());
                 $("[id*=lblFeesDate]").html($(this).find("BillDate").text());
                 $("[id*=lblCashier]").html($(this).find("staffname").text());
-
+                if (totalConcession > 0) {
+                    $("#lblConcessionAmt").html(totalConcession.toFixed(2));
+                    $("#lblConcessionAmt").closest("div").show(); // Show the parent div
+                } else {
+                    $("#lblConcessionAmt").closest("div").hide(); // Hide the parent div if amount is 0
+                }
             });
 
             $.each(studentBill, function () {
 
                 var row = "<tr><td class=\"billHead\" width=\"8%\" height=\"25\" align=\"center\">" + S_No + "</td>" +
                           "<td class=\"billHead\" width=\"54%\">" + $(this).find("FeesHeadName").text() + "</td>" +
-                          "<td class=\"billHeadAmt\"  width=\"54%\">" + $(this).find("Amount").text() + "</td></tr>";
+                    "<td class=\"billHeadAmt\"  width=\"54%\">" + $(this).find("actualamount").text() + "</td></tr>";
+
+                    //  "<td class=\"billHeadAmt\"  width=\"54%\">" + $(this).find("Amount").text() + "</td></tr>";
                 $("[id*=tblViewBill]").append(row);
                 S_No += 1;
             });
@@ -195,7 +207,7 @@
 
         }
 
-        function SaveFeesBill(Regno, AcademicId, FeesHeadIds, FeesAmount, FeesCatId, FeesMonthName, FeestotalAmount) {
+        function SaveFeesBill(Regno, AcademicId, FeesHeadIds, FeesAmount, FeesCatId, FeesMonthName, FeestotalAmount, FeesHeadActualAmt, FeesHeadConcessionAmt) {
             $("#btnSubmit").attr("disabled", "true");
 
             if ($("[id*=hdnUpdateBillID]").val().length == 0) {
@@ -203,7 +215,26 @@
                 $.ajax({
                     type: "POST",
                     url: "../Students/ManageSchoolFees.aspx/SaveBillDetails",
-                    data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                   // data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","QRAmount":"' + $('#txtqramt').val() + '","Remarks":"' + $('#txtremarks').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                    data: '{"regNo":"' + Regno +
+                        '","AcademicId":"' + AcademicId +
+                        '","FeesHeadIds":"' + FeesHeadIds +
+                        '","FeesAmount":"' + FeesAmount +
+                        '","FeesCatId":"' + FeesCatId +
+                        '","FeesMonthName":"' + FeesMonthName +
+                        '","FeestotalAmount":"' + FeestotalAmount +
+                        '","FeesHeadActualAmt":"' + FeesHeadActualAmt +
+                        '","FeesHeadConcessionAmt":"' + FeesHeadConcessionAmt +
+                        '","BillDate":"' + $("[id*=txtBillDate]").val() +
+                        '","userId":"' + $("[id*=hdnUserId]").val() +
+                        '","PaymentMode":"' + $('#selPaymentMode').val() +
+                        '","CashAmt":"' + $('#txtcashamt').val() +
+                        '","CardAmt":"' + $('#txtcardamt').val() +
+                        '","QRAmount":"' + $('#txtqramt').val() +
+                        '","Remarks":"' + $('#txtremarks').val() +
+                        '","MonthNum":"' + $('#hdnMonthNum').val() +
+                        '","FeeType":"' + $('#hdnFeeType').val() + '"}'
+                    ,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {
@@ -232,7 +263,7 @@
                 $.ajax({
                     type: "POST",
                     url: "../Students/ManageSchoolFees.aspx/UpdateBillDetails",
-                    data: '{"BillId":"' + $("[id*=hdnUpdateBillID]").val() + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                    data: '{"BillId":"' + $("[id*=hdnUpdateBillID]").val() + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","QRAmount":"' + $('#txtqramt').val() + '","Remarks":"' + $('#txtremarks').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {
@@ -376,7 +407,7 @@
                     $.ajax({
                         type: "POST",
                         url: "../Students/ManageSchoolFees.aspx/SaveBillDetails",
-                        data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"0","CashAmt":"0","CardAmt":"0","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                        data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","QRAmount":"' + $('#txtqramt').val() + '","Remarks":"' + $('#txtremarks').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (response) {
@@ -446,7 +477,7 @@
 
         function LoadData() {
             $("[id*=hdnRegNo]").val($('#txtBarcode').val());
-           // GetAcademicDetails();
+            // GetAcademicDetails();
             BindStudDetails();
             $("[id*=txtRegNo]").focus();
         }
@@ -565,7 +596,7 @@
                 $.ajax({
                     type: "POST",
                     url: "../Students/ManageSchoolFees.aspx/SaveBiMonthBillDetails",
-                    data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
+                    data: '{"regNo":"' + Regno + '","AcademicId":"' + AcademicId + '","FeesHeadIds":"' + FeesHeadIds + '","FeesAmount":"' + FeesAmount + '","FeesCatId":"' + FeesCatId + '","FeesMonthName":"' + FeesMonthName + '","FeestotalAmount":"' + FeestotalAmount + '","BillDate":"' + $("[id*=txtBillDate]").val() + '","userId":"' + $("[id*=hdnUserId]").val() + '","PaymentMode":"' + $('#selPaymentMode').val() + '","CashAmt":"' + $('#txtcashamt').val() + '","CardAmt":"' + $('#txtcardamt').val() + '","QRAmount":"' + $('#txtqramt').val() + '","Remarks":"' + $('#txtremarks').val() + '","MonthNum":"' + $('#hdnMonthNum').val() + '","FeeType":"' + $('#hdnFeeType').val() + '"}',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {
@@ -659,16 +690,26 @@
         //        });
 
         function bindpaymode(sel) {
-            if (sel.value == "4") {
+            $("#txtcashamt").removeAttr("disabled");
+            $("#txtcardamt").removeAttr("disabled");
+             $("#txtqramt").removeAttr("disabled");
+            $("#txtremarks").attr("disabled", "disabled");
+            $("#modes").css("display", "none");
+            if (sel.value == "4" || sel.value == "8" || sel.value == "9") {
                 $("#txtcashamt").removeAttr("disabled");
                 $("#txtcardamt").removeAttr("disabled");
+                $("#txtqramt").removeAttr("disabled", "disabled");
+                $("#txtremarks").attr("disabled", "disabled");
                 $("#modes").css("display", "block");
             }
-            else {
+            if (sel.value == "10" || sel.value == "11" || sel.value == "12" || sel.value == "13" || sel.value == "14" || sel.value == "15") {
                 $("#txtcashamt").attr("disabled", "disabled");
                 $("#txtcardamt").attr("disabled", "disabled");
+                $("#txtqramt").attr("disabled", "disabled");
+                $("#txtremarks").removeAttr("disabled");
                 $("#modes").css("display", "none");
             }
+
         }
         function checkval(sel) {
             if (!$.isNumeric(sel.value)) {
@@ -816,8 +857,12 @@
                             </table>
                         </td>
                     </tr>
+<<<<<<< HEAD
                     
                     <tr style="display:none;">
+=======
+                    <tr>
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
                         <td height="30" class="formsubheading">
                             <span>Academic Year Fee Structure</span>
                         </td>
@@ -827,40 +872,39 @@
                             <label>
                                 <input type="radio" onkeydown="GetAcademicDetails();" checked="checked" name="btype"
                                     id="rbtnMonth" value="Single" />Single Month Billing</label>
-                            <label>
-                                <input type="radio" id="rbtnBiMonth" onkeydown="GetAcademicDetails();" name="btype"
-                                    value="Double" />Bi-month Billing</label>
+                            <label style="display: none;">
+                                <input type="radio" id="rbtnBiMonth" onkeydown="GetAcademicDetails();"
+                                    name="btype" value="Double" />Bi-month Billing</label>
                         </td>
                     </tr>
                     <tr style="display:none;">
                         <td height="30" class="formsubheading">
                             <span>Do you want to enroll for Bus?</span>&nbsp;
                             <label>
-                                <input type="radio" onclick="showbus();"  name="bustype" id="rbtnBusYes"
-                                    value="Yes" />Yes</label>
+                                <input type="radio" onclick="showbus();" name="bustype" id="rbtnBusYes" value="Yes" />Yes</label>
                             <label>
-                                <input type="radio" id="rbtnBusNo" onclick="showbus();" checked="checked" name="bustype" value="No" />No</label>
-
-                           
+                                <input type="radio" id="rbtnBusNo" onclick="showbus();" checked="checked" name="bustype"
+                                    value="No" />No</label>
                         </td>
                     </tr>
-                     <tr>
-                     <td>
-                      <div id="dvbus" style="display: none;">
+                    <tr>
+                        <td>
+                            <div id="dvbus" style="display: none;">
                                 <span>Select Bus Route</span>&nbsp;
                                 <asp:DropDownList ID="ddlRouteCode" CssClass="jsrequired" runat="server" AppendDataBoundItems="True">
                                     <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
-                                </asp:DropDownList>&nbsp;
-                                    <asp:TextBox ID="txtDateofBusReg" CssClass="jsrequired dateNL date-picker" runat="server"></asp:TextBox>&nbsp;
-                                   <button id="btnBusRouteSubmit" type="button" runat="server" class="btn-icon btn-navy btn-update"
-                                                    onclick="SaveBusRouteDetails();">
-                                                    <span></span>
-                                                    <div id="Div1">
-                                                        Update</div>
-                                                </button>
+                                </asp:DropDownList>
+                                &nbsp;
+                                <asp:TextBox ID="txtDateofBusReg" CssClass="jsrequired dateNL date-picker" runat="server"></asp:TextBox>&nbsp;
+                                <button id="btnBusRouteSubmit" type="button" runat="server" class="btn-icon btn-navy btn-update"
+                                    onclick="SaveBusRouteDetails();">
+                                    <span></span>
+                                    <div id="Div1">
+                                        Update</div>
+                                </button>
                             </div>
-                     </td>
-                     </tr>
+                        </td>
+                    </tr>
                     <tr>
                         <td height="30">
                             <div class="block1">
@@ -1011,13 +1055,27 @@
                                                                 <label id="lblCashier">
                                                                 </label>
                                                             </td>
-                                                            <td width="38%" valign="top" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;
+                                                            <%--<td width="38%" valign="top" style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;
                                                                 font-weight: bold; color: #000; padding-right: 25px; padding-top: 5px; text-align: right;
                                                                 border-left: 0px solid #bfbfbf; border-top: 1px solid #bfbfbf;">
                                                                 Total &raquo; &nbsp;&nbsp;
                                                                 <label id="lblTotAmt">
                                                                     0.00</label>
-                                                            </td>
+                                                            </td>--%>
+                                                            <td width="38%" valign="top" style="font-family: Arial, Helvetica, sans-serif; font-size: 13px;
+    font-weight: bold; color: #000; padding-right: 25px; padding-top: 5px; text-align: right;
+    border-left: 0px solid #bfbfbf; border-top: 1px solid #bfbfbf; line-height: 24px;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="white-space: nowrap;">Concession Granted :</span>
+        <label id="lblConcessionAmt" style="min-width: 100px; text-align: right;"></label>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="white-space: nowrap;">Total &raquo;&nbsp;&nbsp;</span>
+        <label id="lblTotAmt" style="min-width: 100px; text-align: right;"></label>
+    </div>
+</td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -1037,7 +1095,8 @@
             </div>
             <div id="divBillDetials" style="background: url(../img/overly.png) repeat; width: 100%;
                 display: none; height: 100%; position: fixed; top: 0; left: 0; z-index: 10000;">
-                <div id="divBillContents" style="position: absolute; top: 25%; left: 31%;">
+                <div id="divBillContents" style="position: absolute; left: 31%;">
+                    <!-- top: 25%; -->
                 </div>
             </div>
         </div>

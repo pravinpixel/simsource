@@ -208,6 +208,7 @@ public partial class Reports_CustomReport : System.Web.UI.Page
             ReportParameter weekend = new ReportParameter("weekend", "False", false);
             CustomReport.LocalReport.SetParameters(new ReportParameter[] { weekend });
 
+
             ReportParameter Schoolname = new ReportParameter("Schoolname", dtSchool.Rows[0]["SchoolName"].ToString());
             CustomReport.LocalReport.SetParameters(new ReportParameter[] { Schoolname });
             ReportParameter Printdate = new ReportParameter("Printdate", System.DateTime.Now.ToString("dd/MM/yyyy"));
@@ -273,11 +274,19 @@ public partial class Reports_CustomReport : System.Web.UI.Page
         string sqlstr = "";
         if (Isactive == "1" || Isactive == "True")
         {
+<<<<<<< HEAD
             sqlstr = "SELECT upper(COLUMN_NAME) as Columnname FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'vw_getallstudent' and COLUMN_NAME  in ('studentname','regno','AdmissionNo','AdClass','AdSection','class','section','DOB','DOA','DOJ','Sex','MotherTongue','Religion','Community','Caste','AadhaarNo','TempAddr','PerAddr','Email','FName','FOccupation','FOccAddress','FQual','FEmail','FIncome','MName','MOccupation','MOccAddress','MQual','MEmail','MIncome','FatherCell','MotherCell','BloodGroup','EmerPhNo','Doctor','DocPhNo','DocAddr','TransportName','Firstlang','Seclang','GName1','GEmail1','GOcc1','GPhno1','GAddr1','SmartCardNo','RationCardNo','IDmarks','ExamNo','Nationality','HandicaptDetails','DisOrders','Medium','PhoneNo','AcademicRemarks','MedicalRemarks','SSLCNo','SSLCYear','HSCNo','HSCYear','GName2','GAddr2','GPhno2','GOcc2','GEmail2','Caretaker','CurricularRemarks','SUID', 'TamilName', 'Height', 'Weight','Badminton','Chess','Tennis','Five Hours','Forenoon','Afternoon','Weekend','ApplicationNo','TempNo','FatherAadhaarNo','MotherAadhaarNo' )  order by column_name";
         }
         else if (Isactive == "0" || Isactive == "False")
         {
             sqlstr = "SELECT upper(COLUMN_NAME) as Columnname FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'vw_getalloldstudent' and COLUMN_NAME  in ('studentname','regno','AdmissionNo','AdClass','AdSection','class','section','DOB','DOA','DOJ','Sex','MotherTongue','Religion','Community','Caste','AadhaarNo','TempAddr','PerAddr','Email','FName','FOccupation','FOccAddress','FQual','FIncome','MIncome','FEmail','MName','MOccupation','MOccAddress','MQual','MEmail','FatherCell','MotherCell','BloodGroup','EmerPhNo','Doctor','DocPhNo','DocAddr','TransportName','Firstlang','Seclang','GName1','GEmail1','GOcc1','GPhno1','GAddr1','SmartCardNo','RationCardNo','IDmarks','ExamNo','Nationality','HandicaptDetails','DisOrders','Medium','PhoneNo','AcademicRemarks','MedicalRemarks','SSLCNo','SSLCYear','HSCNo','HSCYear','GName2','GAddr2','GPhno2','GOcc2','GEmail2','Caretaker','CurricularRemarks','SUID', 'TamilName', 'Height', 'Weight','Badminton','Chess','Tennis','Five Hours','Forenoon','Afternoon','Weekend','ApplicationNo','TempNo','FatherAadhaarNo','MotherAadhaarNo' )  order by column_name";
+=======
+            sqlstr = "SELECT upper(COLUMN_NAME) as Columnname FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'vw_getallstudent' and COLUMN_NAME  in ('studentname','regno','AdmissionNo','AdClass','AdSection','class','section','DOB','DOA','DOJ','Sex','MotherTongue','Religion','Community','Caste','AadhaarNo','FatherAadhaarNo','MotherAadhaarNo','TempAddr','PerAddr','Email','FName','FOccupation','FOccAddress','FQual','FEmail','FIncome','MName','MOccupation','MOccAddress','MQual','MEmail','MIncome','FatherCell','MotherCell','BloodGroup','EmerPhNo','Doctor','DocPhNo','DocAddr','TransportName','Firstlang','Seclang','GName1','GEmail1','GOcc1','GPhno1','GAddr1','SmartCardNo','RationCardNo','IDmarks','ExamNo','Nationality','HandicaptDetails','DisOrders','Medium','PhoneNo','AcademicRemarks','MedicalRemarks','SSLCNo','SSLCYear','HSCNo','HSCYear','GName2','GAddr2','GPhno2','GOcc2','GEmail2','Caretaker','CurricularRemarks','SUID', 'TamilName', 'Height', 'Weight','ApplicationNo','TempNo' )  order by column_name";
+        }
+        else if (Isactive == "0" || Isactive == "False")
+        {
+            sqlstr = "SELECT upper(COLUMN_NAME) as Columnname FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'vw_getalloldstudent' and COLUMN_NAME  in ('studentname','regno',applicationo,'AdmissionNo','AdClass','AdSection','class','section','DOB','DOA','DOJ','Sex','MotherTongue','Religion','Community','Caste','AadhaarNo','FatherAadhaarNo','MotherAadhaarNo','TempAddr','PerAddr','Email','FName','FOccupation','FOccAddress','FQual','FIncome','MIncome','FEmail','MName','MOccupation','MOccAddress','MQual','MEmail','FatherCell','MotherCell','BloodGroup','EmerPhNo','Doctor','DocPhNo','DocAddr','TransportName','Firstlang','Seclang','GName1','GEmail1','GOcc1','GPhno1','GAddr1','SmartCardNo','RationCardNo','IDmarks','ExamNo','Nationality','HandicaptDetails','DisOrders','Medium','PhoneNo','AcademicRemarks','MedicalRemarks','SSLCNo','SSLCYear','HSCNo','HSCYear','GName2','GAddr2','GPhno2','GOcc2','GEmail2','Caretaker','CurricularRemarks','SUID', 'TamilName', 'Height', 'Weight','ApplicationNo','TempNo' )  order by column_name";
+>>>>>>> 7789961bccf2b02174274a9b05290f7cf20f22a1
         }
         
         dt = utl.GetDataTable(sqlstr);
@@ -816,6 +825,34 @@ public partial class Reports_CustomReport : System.Web.UI.Page
                 }
 
             }
+            if (li.Text.ToLower() == "application no")
+            {
+                if (li.Selected == true)
+                {
+                    ReportParameter applicationno = new ReportParameter("applicationno", "True", true);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { applicationno });
+                }
+                else
+                {
+                    ReportParameter applicationno = new ReportParameter("applicationno", "False", false);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { applicationno });
+                }
+
+            }
+            if (li.Text.ToLower() == "temp no")
+            {
+                if (li.Selected == true)
+                {
+                    ReportParameter tempno = new ReportParameter("tempno", "True", true);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { tempno });
+                }
+                else
+                {
+                    ReportParameter tempno = new ReportParameter("tempno", "False", false);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { tempno });
+                }
+
+            }
             if (li.Text.ToLower() == "aadhaar no")
             {
                 if (li.Selected == true)
@@ -827,6 +864,34 @@ public partial class Reports_CustomReport : System.Web.UI.Page
                 {
                     ReportParameter aadhaarno = new ReportParameter("aadhaarno", "False", false);
                     CustomReport.LocalReport.SetParameters(new ReportParameter[] { aadhaarno });
+                }
+
+            }
+            if (li.Text.ToLower() == "father aadhaar no")
+            {
+                if (li.Selected == true)
+                {
+                    ReportParameter fatheraadhaarno = new ReportParameter("fatheraadhaarno", "True", true);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { fatheraadhaarno });
+                }
+                else
+                {
+                    ReportParameter fatheraadhaarno = new ReportParameter("fatheraadhaarno", "False", false);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { fatheraadhaarno });
+                }
+
+            }
+            if (li.Text.ToLower() == "mother aadhaar no")
+            {
+                if (li.Selected == true)
+                {
+                    ReportParameter motheraadhaarno = new ReportParameter("motheraadhaarno", "True", true);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { motheraadhaarno });
+                }
+                else
+                {
+                    ReportParameter motheraadhaarno = new ReportParameter("motheraadhaarno", "False", false);
+                    CustomReport.LocalReport.SetParameters(new ReportParameter[] { motheraadhaarno });
                 }
 
             }
