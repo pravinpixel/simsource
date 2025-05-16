@@ -66,7 +66,7 @@
 
             $(".formsc").printElement(
             {
-                leaveOpen: false,
+                leaveOpen: true,
                 printBodyOptions:
             {
                 styleToAdd: 'padding:0px 0px 0px 0px;margin:0px 0px 0px 0px;color:#000 !important;'
@@ -118,6 +118,10 @@
                             </asp:DropDownList>
                         </td>
                         <td align="left">
+                         <label>
+                                Name : &nbsp;</label>
+                            <asp:DropDownList ID="ddlType" runat="server">
+                            </asp:DropDownList>
                            </td>
                         <td align="left">
                         <label>

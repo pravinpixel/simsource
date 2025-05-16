@@ -671,6 +671,7 @@
                                                     <asp:ListItem Value="O">Old</asp:ListItem>
                                                     <asp:ListItem Value="D">Discontinued</asp:ListItem>
                                                     <asp:ListItem Value="F">Temporary</asp:ListItem>
+                                                     <asp:ListItem Value="E">Cancelled</asp:ListItem>
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>

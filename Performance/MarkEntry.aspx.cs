@@ -213,7 +213,7 @@ public partial class Performance_MarkEntry : System.Web.UI.Page
                     if (marks[i] == string.Empty)
                         replace = "null";
 
-                    string qry = utl.ExecuteScalar("ISSTUDENTEXAMMARKEXISTS " + mark.examId + "," + mark.regNo + "," + mark.classID + "," + mark.sectionId + ",'" + mark.type + "'," + str + "");
+                    string qry = utl.ExecuteScalar("ISSTUDENTEXAMMARKEXISTS " + mark.examId + "," + mark.regNo + "," + mark.classID + "," + mark.sectionId + ",'" + mark.type + "'," + str + ",'" + HttpContext.Current.Session["AcademicID"] + "'");
 
                     if (qry == "1")
                     {

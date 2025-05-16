@@ -60,7 +60,7 @@
         function SaveTCDetails(isPrintTc) {
             if ($("[id*=hfAddPrm]").val() == 'true') {
                 if ($('#aspnetForm').valid()) {
-                    var parameters = '{"isPrint":"' + isPrintTc + '","regNo": "' + $("[id*=hdnRegNo]").val() + '","academicId": "' + $("[id*=hfAcademicYear]").val() + '","userId": "' + $("[id*=hfuserid]").val() + '","leaveOfStudy": "' + $("[id*=txtSTD]").val() + '","promotionText": "' + $("[id*=txtPromotion]").val() + '","medicalCheckup": "' + $("[id*=sltMedicalInspection]").val() + '","lastDate": "' + $("[id*=txtTCStudLateDate]").val() + '","conduct": "' + $("[id*=ddlConduct]").val() + '","applicationDate": "' + $("[id*=txtTCAppDate]").val() + '","tcDate": "' + $("[id*=txtTCDate]").val() + '","courseofStudy": "' + $("[id*=txtTCCoures]").val() + '","printtc":"1"}';
+                    var parameters = '{"isPrint":"' + isPrintTc + '","regNo": "' + $("[id*=hdnRegNo]").val() + '","academicId": "' + $("[id*=hfAcademicYear]").val() + '","userId": "' + $("[id*=hfuserid]").val() + '","leaveOfStudy": "' + $("[id*=txtSTD]").val() + '","promotionText": "' + $("[id*=txtPromotion]").val() + '","medicalCheckup": "' + $("[id*=sltMedicalInspection]").val() + '","lastDate": "' + $("[id*=txtTCStudLateDate]").val() + '","conduct": "' + $("[id*=ddlConduct]").val() + '","applicationDate": "' + $("[id*=txtTCAppDate]").val() + '","tcDate": "' + $("[id*=txtTCDate]").val() + '","courseofStudy": "' + $("[id*=txtTCCoures]").val() + '","TCReason": "' + $("[id*=txtTCReason]").val() + '","printtc":"1"}';
                     $.ajax({
                         type: "POST",
                         url: "../Students/TransferCertificate.aspx/SaveTCDetails",
@@ -453,6 +453,20 @@
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
                                         15.
                                     </td>
+                                    <td valign="top" style="vertical-align: top; padding-top: 9px;">
+                                        <span class="alignleft">Reason for availing Transfer Certificate</span>
+                                    </td>
+                                    <td valign="top" style="vertical-align: top; padding-top: 9px;">
+                                        :
+                                    </td>
+                                    <td valign="top" class="tc-txt-upper">
+                                        <input id="txtTCReason" class="jsrequired" runat="server" name="txtTCReason" type="text" value="Died on 02/11/2024" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
+                                        16.
+                                    </td>
                                     <td style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">The pupil’s conduct and character </span>
                                     </td>
@@ -465,9 +479,10 @@
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
+                                
                                 <tr>
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
-                                        16.
+                                        17.
                                     </td>
                                     <td valign="top" style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">Date on which application for Transfer Certificate was made
@@ -482,7 +497,7 @@
                                 </tr>
                                 <tr>
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
-                                        17.
+                                        18.
                                     </td>
                                     <td style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">Date of&nbsp; Transfer Certificate </span>
@@ -496,7 +511,7 @@
                                 </tr>
                                 <tr>
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
-                                        18.
+                                        19.
                                     </td>
                                     <td style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">Course of Study </span>

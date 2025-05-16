@@ -171,18 +171,22 @@ public partial class Students_TransferCertificate : System.Web.UI.Page
             }
             else
             {
-                query = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear   from m_academicyear  where academicID='" + HttpContext.Current.Session["AcademicID"] + "'";
+                query = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear from m_academicyear  where academicID='" + HttpContext.Current.Session["AcademicID"] + "'";
                 string AcademicYear = utl.ExecuteScalar(query);
 
                 query = "select count(*) from s_studenttc where academicID='" + HttpContext.Current.Session["AcademicID"] + "'";
                 string Icnt = utl.ExecuteScalar(query);
 
-                query = "update s_studenttc set TCSlno=convert(varchar(10),'" + Convert.ToInt32(Icnt)+1 + "')+ ' / ' + '" + AcademicYear + "'  where academicID='" + HttpContext.Current.Session["AcademicID"] + "' and regno='"+ regno +"'";
+                sql = "select TCReason from s_studenttc where RegNo=" + regno + "  and AcademicId=" + Session["AcademicID"] + " and isactive=1";
+                string TCReason = utl.ExecuteScalar(sql);
+
+                query = "update s_studenttc set TCSlno=convert(varchar(10),'" + Convert.ToInt32(Icnt) + 1 + "')+ ' / ' + '" + AcademicYear + "',TCReason='" + TCReason + "'  where academicID='" + HttpContext.Current.Session["AcademicID"] + "' and regno='" + regno + "'";
 
                 _SerialNo = Convert.ToInt32(Icnt) + 1 + " / " + AcademicYear;
 
 
             }
+
             txtPromotion.Text = dsTCDetail.Tables[0].Rows[0]["PromotionText"].ToString();
             if (dsTCDetail.Tables[0].Rows[0]["MedicalCheckup"].ToString() != string.Empty)
             sltMedicalInspection.Value = dsTCDetail.Tables[0].Rows[0]["MedicalCheckup"].ToString();
@@ -193,10 +197,15 @@ public partial class Students_TransferCertificate : System.Web.UI.Page
             txtTCAppDate.Value = dsTCDetail.Tables[0].Rows[0]["ApplicationDate"].ToString();
             txtTCDate.Value = dsTCDetail.Tables[0].Rows[0]["TcDate"].ToString(); 
             txtTCCoures.Value = dsTCDetail.Tables[0].Rows[0]["CourseofStudy"].ToString();
+            sql = "select TCReason from s_studenttc where RegNo=" + regno + "  and AcademicId=" + HttpContext.Current.Session["AcademicID"] + " and isactive=1";
+            string TCReason1 = utl.ExecuteScalar(sql);
+            if (TCReason1 != null && TCReason1 != "")
+            {
+                txtTCReason.Value = TCReason1.ToString();
+            }            
         }
-        
-
     }
+
     protected void BindConduct()
     {
 
@@ -248,7 +257,7 @@ public partial class Students_TransferCertificate : System.Web.UI.Page
 
     [WebMethod]
     public static string SaveTCDetails(string isPrint, string regNo, string academicId, string userId, string leaveOfStudy, string promotionText, string medicalCheckup, string lastDate, string conduct, string applicationDate, string tcDate,
-        string courseofStudy, string printtc )
+        string courseofStudy, string TCReason, string printtc)
     {
         string tcSlno = string.Empty;
         string[] formats = { "dd/MM/yyyy" };
@@ -314,9 +323,19 @@ public partial class Students_TransferCertificate : System.Web.UI.Page
             query = "select count(*) from s_studenttc where academicID='" + HttpContext.Current.Session["AcademicID"] + "'";
             string Icnt = utl.ExecuteScalar(query);
 
-            query = "update s_studenttc set TCSlno=convert(varchar(10),'" + Icnt + "')+ ' / ' + '" + AcademicYear + "',ApproveStatus=null   where academicID='" + HttpContext.Current.Session["AcademicID"] + "' and tcID='" + Slno + "'";
+            query = "update s_studenttc set TCSlno=convert(varchar(10),'" + Icnt + "')+ ' / ' + '" + AcademicYear + "',ApproveStatus=null,TCReason='" + TCReason + "'   where academicID='" + HttpContext.Current.Session["AcademicID"] + "' and tcID='" + Slno + "'";
             strError = utl.ExecuteScalar(query);
-        
+
+            string icnt = "";
+            icnt = utl.ExecuteScalar("select count(*) from s_studentpromotion where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+            if (icnt == "" || icnt == "0")
+            {
+                utl.ExecuteQuery("insert into s_studentpromotion(RegNo,AcademicId,ClassId,SectionId,UserId) (select regno,Class,Section,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo  where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "')");
+            }
+            else
+            {
+                utl.ExecuteQuery("update s_studentpromotion set active='O' where regno='" + regNo + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+            }
         if (strError == string.Empty)
             return isPrint;
         else

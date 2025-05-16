@@ -187,7 +187,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
                             dts = utl.GetDataTable("select top 1 * from f_studentbillmaster where RegNo ='" + regno.ToString().Trim() + "' and AcademicId='" + dtss.Rows[0]["academicyear"].ToString().Trim() + "' and isactive=1 order by billid asc");
                             if (dts.Rows.Count > 0)
                             {
-                                utl.ExecuteQuery("update a set a.feescatheadid=f.feescatheadid from f_studentbills as  a inner join f_studentbillmaster  as b on a.billid=b.billid  inner join s_studentinfo e on e.regno=b.regno and e.AcademicYear=b.AcademicId inner join m_feescategory g on e.Active=g.FeesCatCode  inner join m_feescategoryhead c on c.feescatheadid=a.feescatheadid  inner join m_feeshead d  on d.feesheadid=c.feesheadid left join m_feescategoryhead f on (e.class=f.classid and f.feesheadid=c.feesheadid   and f.FeesCategoryId=g.FeesCategoryId  and e.AcademicYear=f.AcademicId) where e.regno='" + regno.ToString() + "' and b.BillId=" + dts.Rows[0]["billid"].ToString().Trim() + "  and  e.AcademicYear='" + dtss.Rows[0]["academicyear"].ToString() + "' ");
+                                utl.ExecuteQuery("update a set a.feescatheadid=f.feescatheadid from f_studentbills as a inner join f_studentbillmaster  as b on a.billid=b.billid  inner join s_studentinfo e on e.regno=b.regno and e.AcademicYear=b.AcademicId inner join m_feescategory g on e.Active=g.FeesCatCode  inner join m_feescategoryhead c on c.feescatheadid=a.feescatheadid  inner join m_feeshead d  on d.feesheadid=c.feesheadid left join m_feescategoryhead f on (e.class=f.classid and f.feesheadid=c.feesheadid   and f.FeesCategoryId=g.FeesCategoryId  and e.AcademicYear=f.AcademicId) where e.regno='" + regno.ToString() + "' and b.BillId=" + dts.Rows[0]["billid"].ToString().Trim() + "  and  e.AcademicYear='" + dtss.Rows[0]["academicyear"].ToString() + "' ");
                             }
                         }
                        // return;
@@ -335,7 +335,25 @@ public partial class Students_StudentSearch : System.Web.UI.Page
         {
             query = "[GetPromoStudentInfo_Pager]";
         }
+        string stracademicyear = "";
+        string icnt = "";
+        if (regno != "")
+        {
+            stracademicyear = utl.ExecuteScalar("select academicyear from s_studentinfo where regno='" + regno + "'");
+            if (stracademicyear != "" && stracademicyear != "0")
+            {
+                icnt = utl.ExecuteScalar("select count(*) from s_studentpromotion where regno='" + regno + "' and academicid='" + stracademicyear + "'");
+
+                if (icnt=="" || icnt=="0")
+                {
+                    utl.ExecuteQuery("insert into  s_studentpromotion(regno,ClassID,SectionID,BusFacility,Concession,Hostel,Scholar,AcademicId,Active,UserId)(select regno,Class,case when Section=0 then NULL else section end,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo where regno= '" + regno + "')");
+                }
+            }
+          
+        }
+        
        
+        
         SqlCommand cmd = new SqlCommand(query);
         cmd.CommandType = CommandType.StoredProcedure;
         cmd.Parameters.AddWithValue("@PageIndex", pageIndex);

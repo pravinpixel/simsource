@@ -242,7 +242,7 @@ public partial class Reports_MonthwiseAttendanceReport : System.Web.UI.Page
                 for (int k = 0; k < dtmon.Rows.Count; k++)
                 {
 
-                    str.Append(@"<td style='vertical-align: top; color:Black ; text-align: center;' cellspacing=2 cellpadding=5><b>" + dtmon.Rows[k]["shortmonth"].ToString() + "</b></td>");
+                    str.Append(@"<td style='vertical-align: top; color:Black;text-align: center;'cellspacing=2 cellpadding=5><b>" + dtmon.Rows[k]["shortmonth"].ToString() + "</b></td>");
 
                 }
             }
@@ -278,7 +278,7 @@ public partial class Reports_MonthwiseAttendanceReport : System.Web.UI.Page
                                         sqlstr = "select COUNT(*) from m_DaysList where ClassID=" + strClassID + " and MonthID='" + dtmon.Rows[k]["MonthID"].ToString() + "' and AcademicID=" + AcademicID + " and IsActive=1";
                                         string strtotdays = utl.ExecuteScalar(sqlstr);
                                         string MonthAtt = Attenance(dsGet.Tables[0].Rows[i]["RegNo"].ToString(), dtmon.Rows[k]["MonthID"].ToString(), Convert.ToInt32(strtotdays));
-                                        
+
                                         if (Convert.ToDouble(MonthAtt) < 0)
                                         {
                                             str.Append(@"<td style='vertical-align: top;text-align: center;'>0</td>");
@@ -294,11 +294,10 @@ public partial class Reports_MonthwiseAttendanceReport : System.Web.UI.Page
                             }
                         }
 
-                        str.Append(@"<td style='vertical-align: top;text-align: center;'>" + present.ToString() + "</td><td style='vertical-align: top;text-align: center;'>" + actual.ToString() + "</td><td style='vertical-align: top;text-align: center;'>" + Math.Ceiling(Convert.ToDouble((present/ actual)*100)).ToString() + "</td>");
+                        str.Append(@"<td style='vertical-align: top;text-align: center;'>" + present.ToString() + "</td><td style='vertical-align: top;text-align: center;'>" + actual.ToString() + "</td><td style='vertical-align: top;text-align: center;'>" + Math.Ceiling(Convert.ToDouble((present / actual) * 100)).ToString() + "</td>");
 
                         str.Append(@"</tr>");
                         examnochk = dsGet.Tables[0].Rows[i]["RegNo"].ToString();
-
                     }
                 }
 

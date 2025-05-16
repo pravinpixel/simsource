@@ -192,6 +192,12 @@ public partial class Students_ViewTransferCertificate : System.Web.UI.Page
             txtTCAppDate.Value = dsTCDetail.Tables[0].Rows[0]["ApplicationDate"].ToString();
             txtTCDate.Value = dsTCDetail.Tables[0].Rows[0]["TcDate"].ToString();
             txtTCCoures.Value = dsTCDetail.Tables[0].Rows[0]["CourseofStudy"].ToString();
+            sql = "select TCReason from s_studenttc where RegNo=" + regno + "  and AcademicId=" + Session["AcademicID"] + " and isactive=1";
+            string TCReason = utl.ExecuteScalar(sql);
+            if (TCReason != null && TCReason != "")
+            {
+                txtTCReason.Value = TCReason.ToString();
+            }
         }
 
 

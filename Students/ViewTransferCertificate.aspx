@@ -467,9 +467,24 @@
                                             type="text" />
                                     </td>
                                 </tr>
-                                <tr>
+                                
+                                 <tr>
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
                                         15.
+                                    </td>
+                                    <td valign="top" style="vertical-align: top; padding-top: 9px;">
+                                        <span class="alignleft">Reason for availing Transfer Certificate</span>
+                                    </td>
+                                    <td valign="top" style="vertical-align: top; padding-top: 9px;">
+                                        :
+                                    </td>
+                                    <td valign="top" class="tc-txt-upper">
+                                        <input id="txtTCReason" class="jsrequired" runat="server" name="txtTCReason" type="text" value="Died on 02/11/2024" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
+                                        16.
                                     </td>
                                     <td style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">The pupil’s conduct and character </span>
@@ -478,13 +493,15 @@
                                         :
                                     </td>
                                     <td class="tc-txt-upper">
-                                        <asp:DropDownList ID="ddlConduct" runat="server">
+                                        <asp:DropDownList ID="ddlConduct" runat="server" AppendDataBoundItems="True">
+                                            <asp:ListItem Selected="True" Value="">Select</asp:ListItem>
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
+                                
                                 <tr>
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
-                                        16.
+                                        17.
                                     </td>
                                     <td valign="top" style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">Date on which application for Transfer Certificate was made
@@ -499,7 +516,7 @@
                                 </tr>
                                 <tr>
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
-                                        17.
+                                        18.
                                     </td>
                                     <td style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">Date of&nbsp; Transfer Certificate </span>
@@ -513,7 +530,7 @@
                                 </tr>
                                 <tr>
                                     <td height="40" class="tdHeight35" style="vertical-align: top; padding-top: 9px;">
-                                        18.
+                                        19.
                                     </td>
                                     <td style="vertical-align: top; padding-top: 9px;">
                                         <span class="alignleft">Course of Study </span>

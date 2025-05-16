@@ -26,24 +26,16 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
     Utilities utl = null;
     public static int Userid = 0;
     public int m_currentPageIndex;
-    public IList<Stream> m_streams;
-    private PageSettings m_pagesettings;
-    PrintDocument printDoc = new PrintDocument();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            cmbPrinters.Items.Clear();
-            foreach (string sPrinters in System.Drawing.Printing.PrinterSettings.InstalledPrinters)
-            {
-                cmbPrinters.Items.Add(sPrinters);
-            }
+
             BindAcademicMonths();
             BindClass();
             DataTable dtSchool = new DataTable();
             utl = new Utilities();
             dtSchool = utl.GetDataTable("exec sp_schoolDetails");
-            ReportParameter Schoolname = new ReportParameter("Schoolname", dtSchool.Rows[0]["SchoolName"].ToString());
             string monthname = "";
             if (ddlMonth.SelectedItem != null)
             {
@@ -67,20 +59,8 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
                 Session["strType"] = "PaidList";
             }
             string istrType = Session["strType"].ToString();
-            ReportParameter Month = new ReportParameter("Month", monthname);
-            ReportParameter Printdate = new ReportParameter("Printdate", System.DateTime.Now.ToString("dd/MM/yyyy"));
-            ReportParameter strType = new ReportParameter("strType", istrType);
-            ReportParameter Class = new ReportParameter("Class", "");
-            PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Schoolname });
-            PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Month });
-            PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Printdate });
-            PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { strType });
-            PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Class });
-            ReportParameter tlPortrait = new ReportParameter("TLPORTRAIT", "false", false);
-            PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { tlPortrait });
-
         }
-     
+
     }
 
     private void BindAcademicMonths()
@@ -108,7 +88,7 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
             }
             ddlMonth.Items.Insert(0, new ListItem("---Select---", ""));
         }
-    }                          
+    }
 
     protected void BindClass()
     {
@@ -142,7 +122,7 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
         {
             ddlSection.Items.Clear();
         }
-       
+
         ddlSection.DataSource = null;
         ddlSection.AppendDataBoundItems = false;
         if (dsSection != null && dsSection.Tables.Count > 0 && dsSection.Tables[0].Rows.Count > 0)
@@ -162,14 +142,6 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
         ddlSection.Items.Insert(0, "-----Select-----");
     }
 
-    protected void Page_UnLoad(object sender, EventArgs e)
-    {
-        if (PaidUnPaidReport != null)
-        {
-            PaidUnPaidReport.Dispose();
-            GC.Collect();
-        }    
-    }
 
     private void Page_Init(object sender, EventArgs e)
     {
@@ -178,19 +150,11 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
         {
             Response.Redirect("Default.aspx?ses=expired");
         }
-        else
-        {
-            btnSearch_Click(sender, e);
-        }
-
     }
-    
-    protected void btnSearch_Click(object sender, EventArgs e)
+
+    private void LOAD_RESULT()
     {
-        DataTable dtSchool = new DataTable();
         utl = new Utilities();
-        dtSchool = utl.GetDataTable("exec sp_schoolDetails");
-        ReportParameter Schoolname = new ReportParameter("Schoolname", dtSchool.Rows[0]["SchoolName"].ToString());
         string monthname = "";
         if (ddlMonth.SelectedItem != null)
         {
@@ -203,6 +167,15 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
                 monthname = ddlMonth.SelectedItem.Text;
             }
         }
+
+        //string feetype = "";
+        //if (dpFeesType.SelectedItem != null)
+        //{
+        //    feetype = dpFeesType.SelectedItem.Text;
+
+        //}
+        DataTable dts = new DataTable();
+        string istrType = Session["strType"].ToString();
         if (rbtnPaid.Checked == true)
         {
             rbtnUnPaid.Checked = false;
@@ -213,26 +186,44 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
             rbtnPaid.Checked = false;
             Session["strType"] = "UnPaidList";
         }
-        string istrType = Session["strType"].ToString();
-        ReportParameter Month = new ReportParameter("Month", monthname);
-        ReportParameter Printdate = new ReportParameter("Printdate", System.DateTime.Now.ToString("dd/MM/yyyy"));
-        ReportParameter strType = new ReportParameter("strType", istrType);
-        ReportParameter Class = new ReportParameter("Class", Session["strClass"] + "/" + Session["strSection"]);
-        PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Schoolname });
-        PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Month });
-        PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Printdate });
-        PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { strType });
-        PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { Class });
-        ReportParameter tlPortrait = new ReportParameter("TLPORTRAIT", "false", false);
-        PaidUnPaidReport.LocalReport.SetParameters(new ReportParameter[] { tlPortrait });
+
+        Session["strClassID"] = ddlClass.SelectedValue.ToString();
+        Session["strSectionID"] = ddlSection.SelectedValue.ToString();
+        dts = utl.GetDataTable("[PaidUnPaidList] '" + Session["strType"] + "','" + ddlMonth.SelectedValue + "','" + Session["AcademicID"] + "','" + Session["strClassID"] + "','" + Session["strSectionID"] + "'");
+        string strmaintable = string.Empty;
+        if (dts != null && dts.Rows.Count > 0)
+        {
+            strmaintable = "<table border='1' cellspacing='0' cellpadding='0'><thead><tr><th>Sl.No.</th><th>RegNo</th><th>Class</th><th>Section</th><th>Name</th><th>Actual</th><th>Paid</th><th>FatherCell</th><th>MotherCell</th></tr></thead><tbody>";
+            int k = 0;
+
+            for (int i = 0; i < dts.Rows.Count; i++)
+            {
+                k = k + 1;
+                strmaintable = strmaintable + "<tr><td>" + (k).ToString() + "</td><td>" + dts.Rows[i]["regno"].ToString() + "</td><td>" + dts.Rows[i]["Classname"].ToString() + "</td><td>" + dts.Rows[i]["Sectionname"].ToString() + "</td><td>" + dts.Rows[i]["student"].ToString() + "</td><td>" + dts.Rows[i]["ActualAmt"].ToString() + "</td><td>" + dts.Rows[i]["PaidAmt"].ToString() + "</td><td>" + dts.Rows[i]["fathercell"].ToString() + "</td><td>" + dts.Rows[i]["mothercell"].ToString() + "</td></tr>";
+
+            }
+            strmaintable = strmaintable + "</tbody></table>";
+
+            dvCard.InnerHtml = strmaintable;
+        }
+    }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            LOAD_RESULT();
+        }
+
+        catch (Exception ex)
+        {
+            //Response.Write("<script>alert('"+ex.Message+"')</script>");
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "bnn", "<script>jAlert('" + ex.Message + "')</script>");
+        }
+
+
     }
 
-    protected void btnPrint_Click(object sender, EventArgs e)
-    {
-        Export(PaidUnPaidReport.LocalReport);
-        m_currentPageIndex = 0;
-        Print();
-    }
+
     protected void ddlMonth_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (ddlMonth.Text == "" || ddlMonth.SelectedValue == "---Select---" || ddlMonth.SelectedItem.Text == "---Select---")
@@ -245,78 +236,12 @@ public partial class Reports_PaidUnPaidReport : System.Web.UI.Page
             Session["Month"] = ddlMonth.SelectedValue;
         }
     }
-    public void Dispose()
-    {
-        if (m_streams != null)
-        {
-            foreach (Stream stream in m_streams)
-                stream.Close();
-            m_streams = null;
-        }
-    }
 
-    public void Export(LocalReport report)
-    {
-        m_pagesettings = new PageSettings();
-        Margins margins = m_pagesettings.Margins;
-        ReportPageSettings rps = report.GetDefaultPageSettings();
-        printDoc.DefaultPageSettings.Landscape = true;
-        printDoc.DefaultPageSettings.PaperSize = new PaperSize(rps.PaperSize.Kind.ToString(),rps.PaperSize.Height, rps.PaperSize.Width);
-        
-        string deviceInfo = string.Format(
-                CultureInfo.InvariantCulture,
-                "<DeviceInfo><OutputFormat>emf</OutputFormat><StartPage>0</StartPage><EndPage>0</EndPage><MarginTop>{0}</MarginTop><MarginLeft>{1}</MarginLeft><MarginRight>{2}</MarginRight><MarginBottom>{3}</MarginBottom><PageHeight>{4}</PageHeight><PageWidth>{5}</PageWidth></DeviceInfo>",
-                "0.25in",
-                "0.25in",
-               "15in",
-               "0.25in",
-                ToInches(rps.PaperSize.Height), "11.5in");
 
-        Warning[] warnings;
-        m_streams = new List<Stream>();
-        report.Render("Image", deviceInfo, CreateStream,
-           out warnings);
-        foreach (Stream stream in m_streams)
-            stream.Position = 0;
-    }
-    private static string ToInches(int hundrethsOfInch)
-    {
-        double inches = hundrethsOfInch / 100.0;
-        return inches.ToString(CultureInfo.InvariantCulture) + "in";
-    }
-    // Handler for PrintPageEvents
-    public void PrintPage(object sender, PrintPageEventArgs ev)
-    {
-        Metafile pageImage = new
-           Metafile(m_streams[m_currentPageIndex]);
-        ev.Graphics.DrawImage(pageImage, ev.PageBounds);
-        m_currentPageIndex++;
-        ev.HasMorePages = (m_currentPageIndex < m_streams.Count);
-    }
 
-    public void Print()
-    {
-        if (m_streams == null || m_streams.Count == 0)
-            return;
-        printDoc.PrinterSettings.PrinterName = cmbPrinters.SelectedItem.Text;
-        if (!printDoc.PrinterSettings.IsValid)
-        {
-            string msg = String.Format(
-               "Can't find printer \"{0}\".", cmbPrinters.SelectedItem.Text);
-            return;
-        }
-        printDoc.PrintPage += new PrintPageEventHandler(PrintPage);
-        printDoc.Print();
-    }
-    private Stream CreateStream(string name, string fileNameExtension, Encoding encoding, string mimeType, bool willSeek)
-    {
-        Stream stream = new MemoryStream();
-        m_streams.Add(stream);
-        return stream;
-    }
     protected void rbtnPaid_CheckedChanged(object sender, EventArgs e)
     {
-        if (rbtnPaid.Checked==true)
+        if (rbtnPaid.Checked == true)
         {
             rbtnUnPaid.Checked = false;
             Session["strType"] = "PaidList";

@@ -309,13 +309,13 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
         string sqlqry = "select YEAR(StartDate) from m_academicyear where AcademicId='" + AcademicID + "'";
         acadamicyear = utl.ExecuteScalar(sqlqry);
 
-
+        stroption = "";
         utl = new Utilities();
 
         string[] SUBList = SubjectListID.Split(',');
         if ((Session["strClassID"] != null && Session["strSectionID"] != null) && (Session["strClassID"].ToString() != "" && Session["strSectionID"].ToString() != ""))
         {
-            sqlstr = "sp_getscholasticreport '" + Session["strClassID"] + "','" + ddlSection.SelectedValue + "'," + "'" + ddlExamName.SelectedValue + "'" + "," + "''" + "," + AcademicID;
+            sqlstr = "sp_getscholasticreport '" + Session["strClassID"] + "','" + ddlSection.SelectedValue + "'," + "'" + ddlExamName.SelectedValue + "'" + "," + "''" + ",'" + txtSearch.Text + "'," + AcademicID;
             dsGet = utl.GetDataset(sqlstr);
         }
         sqlstr = "select schooltypeid from m_class where classid='" + ddlClass.SelectedValue + "'";
@@ -324,14 +324,17 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
 
         if (dsGet != null && dsGet.Tables.Count > 0 && dsGet.Tables[0].Rows.Count > 0)
         {
+            DataSet dsGetRank = new DataSet();
+            sqlstr1 = "SP_GetConsolidateReport '" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlExamName.SelectedValue + "'" + "," + "''" + "," + "'General'" + ",'" + txtSearch.Text + "'," + AcademicID;
+            dsGetRank = utl.GetDataset(sqlstr1);
+
             for (int i = 0; i < dsGet.Tables[0].Rows.Count; i++)
             {
                 if (examnochk != dsGet.Tables[0].Rows[i]["RegNo"].ToString())
                 {
                     string dateofissue = utl.ExecuteScalar("select convert(varchar(10),dateofissue,103) from p_exammarks xmark inner join p_examtypes xtype on (xmark.ClassId=xtype.ClassId and xmark.ExamTypeId=xtype.ExamTypeID and xmark.AcademicID=xtype.AcademicID and xmark.IsActive=1)  where  xmark.ClassID= '" + Session["strClassID"] + "' and xtype.ExamNameID= '" + ddlExamName.SelectedValue + "' and type='General' and xmark.academicId='" + AcademicID + "' and xmark.isactive=1 and dateofissue is not null and regno='" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "'");
 
-                    stroption += @"<table width='100%' border='0' cellspacing='0' cellpadding='0' class='terms-bg'><tr><td height='1350' align='center' valign='top'><div class='terms-cont'> <table width='1000' border='0' cellspacing='0' cellpadding='0'><tr><td height='20' align='center'><br/><h3 style='font-size: 31px;'>AMALORPAVAM HR. SEC. SCHOOL </h3> <h3 style=' margin-top: -20px;'>LOURDES CAMPUS, VANARAPET, PUDUCHERRY.</h3><h3 style=' margin-top: -5px;'>www.amalorpavamschool.org</h3></td></tr><tr><td height='30' align='center'><table border='0' cellspacing='0' cellpadding='0'><tr><td align='right' valign='bottom'><img src='../img/title-left.jpg' width='113' height='74' /></td><td class='titlebg' ><Div class='title-hd'><h1>PERFORMANCE CHART</h1> </Div> </td><td align='left'> <img src='../img/title-right.jpg' width='110' height='74' /></td></tr></table></td><td></td></tr><tr><td><Div class='terms-student-details terms-studentname'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='10' colspan='4'>&nbsp;</td></tr><tr><td align='left' height='40' valign='top'></td>
-                  </tr><tr><td width='19%' style='border-bottom:1px solid #000;' height='35'>Student Name&nbsp;&nbsp;&nbsp;<span style='padding-left:3px;'>:</span> </td><td colspan='3' style='border-bottom:1px solid #000;'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString() + "</td><td  style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Reg. No : " + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Class & Section : </td><td  colspan='3' style='border-bottom:1px solid #000;' width='15%'>" + ddlClass.SelectedItem.Text + "  " + ddlSection.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' width='48%'>Exam No : " + dsGet.Tables[0].Rows[i]["ExamNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Exam Name :</td><td colspan='3' style='border-bottom:1px solid #000;'> " + ddlExamName.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Date :" + dateofissue.ToString() + "</td></tr></table></div></td></tr>";
+                    stroption += @"<table width='100%' border='0' cellspacing='0' cellpadding='0' class='terms-bg'><tr><td height='1419' align='center' valign='top'><div class='terms-cont'> <table width='1000' border='0' cellspacing='0' cellpadding='0'><tr><td height='20' align='center'><br/><h3 style='font-size: 31px;'>AMALORPAVAM HR. SEC. SCHOOL </h3> <h3 style=' margin-top: -20px;'>LOURDES CAMPUS, VANARAPET, PUDUCHERRY.</h3><h3 style=' margin-top: -5px;'>www.amalorpavamschool.org</h3></td></tr><tr><td height='30' align='center'><table border='0' cellspacing='0' cellpadding='0'><tr><td align='right' valign='bottom'><img src='../img/title-left.jpg' width='113' height='74' /></td><td class='titlebg' ><Div class='title-hd'><h1>PERFORMANCE CHART</h1> </Div> </td><td align='left'> <img src='../img/title-right.jpg' width='110' height='74' /></td></tr></table></td><td></td></tr><tr><td><Div class='terms-student-details terms-studentname'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='left' height='40' valign='top'></td></tr><tr><td width='19%' style='border-bottom:1px solid #000;' height='35'>Student Name&nbsp;&nbsp;&nbsp;<span style='padding-left:3px;'>:</span> </td><td colspan='3' style='border-bottom:1px solid #000;'  width='25%'>" + dsGet.Tables[0].Rows[i]["StudentName"].ToString() + "</td><td  style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Reg. No : " + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Class & Section : </td><td  colspan='3' style='border-bottom:1px solid #000;' width='15%'>" + ddlClass.SelectedItem.Text + "  " + ddlSection.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' width='48%'>Exam No : " + dsGet.Tables[0].Rows[i]["ExamNo"].ToString() + "</td></tr><tr><td style='border-bottom:1px solid #000;' height='35'>Exam Name :</td><td colspan='3' style='border-bottom:1px solid #000;'> " + ddlExamName.SelectedItem.Text + "</td><td style='border-bottom:1px solid #000;padding-left: 200px;' height='35'>Date :" + dateofissue.ToString() + "</td></tr></table></div></td></tr>";
 
                     DataRow[] drExamPattern = dsGet.Tables[0].Select("Pattern='None' and RegNo=" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + " ");
 
@@ -339,11 +342,6 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                     {
                         //General Type only - Result -START
 
-                        DataSet dsGetRank = new DataSet();
-                        sqlstr1 = "SP_GetConsolidateReport '" + ddlClass.SelectedValue + "',''," + "'" + ddlExamName.SelectedValue + "'" + "," + "''" + "," + "'General'" + "," + AcademicID;
-                        dsGetRank = utl.GetDataset(sqlstr1);
-
-                        
                             stroption += @"<tr><td><div class='terms-student-details terms-markareaHSSCO'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>
               <td height='35' align='center' class='terms-title'>SCHOLASTIC AREAS </td></tr><tr><td><div class='scholastictable'><table width='100%' border='0' cellspacing='0' cellpadding='0'> <tr><td class='heading' width='15%' height='20'>Subjects</td><td class='heading' width='15%'>Minimum Marks</td><td class='heading' width='15%'>Maximum Marks</td><td class='heading' width='15%'>Marks Obtained</td><td class='heading' width='15%'>Result</td>";
                        
@@ -450,7 +448,9 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
 
                             if (ddlType.Text == "Grade")
                             {
-                                stroption += @"<tr><td colspan='2' align='left' style='padding-left:42px;'><b>TOTAL &nbsp;&nbsp;&nbsp;<span style='padding-left:42px;'>:</span> " + TotalMarks.ToString() + " / " + MaxMarks.ToString() + "</b></td><td colspan='4' style='padding-left: 172px;' align='left'><b>PERCENTAGE &nbsp;&nbsp;&nbsp;<span style='padding-left:1px;'>:</span> " + MarksPercetage + "</b></td></tr><tr><td height='20' colspan='2' align='left' style='padding-left:42px;'><b>SECTION RANK : " + drRank[0]["SectionRank"].ToString() + " / " + SectionCnt + "</b></td><td align='left' colspan='4' style='padding-left: 172px;'><b>OVERALL RANK : " + drRank[0]["ClassRank"].ToString() + " / " + ClassCnt + "</b></td></tr>";
+                                stroption += @"<tr><td colspan='2' align='left' style='padding-left:42px;'><b>TOTAL &nbsp;&nbsp;&nbsp;<span style='padding-left:42px;'>:</span> " + TotalMarks.ToString() + " / " + MaxMarks.ToString() + "</b></td><td colspan='4' style='padding-left: 172px;' align='left'><b>PERCENTAGE &nbsp;&nbsp;&nbsp;<span style='padding-left:1px;'>:</span> " + MarksPercetage + "</b></td></tr><tr><td height='20' colspan='2' align='left' style='padding-left:42px;'><b>SECTION RANK : " + drRank[0]["SectionRank"].ToString() + " / " + SectionCnt + "</b></td><td align='left' colspan='4' style='padding-left: 172px;'></td></tr>";
+
+                                //<b>OVERALL RANK : " + drRank[0]["ClassRank"].ToString() + " / " + ClassCnt + "</b>
                             }
 
                             if (ddlType.Text == "Grade")
@@ -470,9 +470,9 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                         }
                         
 
-                        stroption += @"</table></div></td></tr><tr><td></td></tr><tr><td></td></tr></table></div></td></tr>";
+                       // stroption += @"</table></div></td></tr><tr><td></td></tr><tr><td></td></tr></table></div></td></tr>";
 
-                        //stroption += @"</table></div></td></tr><tr><td>&nbsp;</td></tr></tr></table></div></td></tr>";
+                        stroption += @"</table></div></td></tr><tr><td>&nbsp;</td></tr></tr></table></div></td></tr>";
 
                         //General Type only - Result -START
                     }
@@ -745,12 +745,23 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
 
                         //Co-scholastic Type only - General Activities Result -END
 
-                        stroption += @"</div></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table></div></td></tr>";
+                        stroption += @"</div></td></tr></table></div></td></tr>";
+						
+						//<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
                     }
 
                     //Signature List Row - start
+                    //if (dsGet.Tables[0].Rows[i]["Signature"].ToString() != "" && (Server.MapPath("~\\Signature\\") + dsGet.Tables[0].Rows[i]["Signature"].ToString())!="")
+                    //{
+                    //    stroption += @"<tr><td> </td></tr></table></div></td></tr><tr><td height='300' align='center' valign='top'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tbody><tr><td width='33%'></td><td width='33%'></td><tdwidth='33%'></td></tr><tr><td>&nbsp;</td><td align='center' ><img class='signature' src='Signature/" + dsGet.Tables[0].Rows[i]["Signature"].ToString() + "' style='width: 100px;height: 50px;' /></td><td>&nbsp;</td></tr></tbody></table></td></tr></table> <p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
+                    //}
+                    //else
+                    //{
+                   // stroption += @"<tr><td>&nbsp;</td></tr></table></div></td></tr></table><p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
 
-                    stroption += @"<tr><td>&nbsp;</td></tr></table></div></td></tr></table> <p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
+                    stroption += @"<tr><td> </td></tr></table></div></td></tr><tr><td align='center' valign='top'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tbody><tr><td width='33%'></td><td width='33%'></td><tdwidth='33%'></td></tr><tr><td>&nbsp;</td><td align='center' >&nbsp;</td><td>&nbsp;</td></tr></tbody></table></td></tr></table> <p class='pagebreakhere' style='page-break-after:always; color: Red;'></p>";
+                     //<p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>
+                 //    }                  
 
 
                     #region Subject Header Tab starts
@@ -760,16 +771,31 @@ public partial class Performance_PerformanceChart : System.Web.UI.Page
                     string subexp = "";
 
                     DataTable dsheader = new DataTable();
-                    dsheader = utl.GetDataTable(@"select a.Regno,a.ClassID,e.SubExperienceName,SubjectHeaderName,isnull(MaxMark,0)MaxMark,isnull(k.Mark,0) as Mark from 
-Vw_GetStudent a inner join m_class c on a.classid=c.classid                   
-inner join m_schooltypes b on a.schooltypeid=b.schooltypeid                   
-inner join [p_ClassSubjects] d on d.schooltypeid=b.schooltypeid and d.ClassId=c.ClassId                   
-inner join m_subexperiences e on d.subjectid=e.subexperienceid 
-left join p_subjectheaders j on (j.ClassSubjectID=d.ClassSubjectID and j.isactive=1)                   
-inner join p_examheadermarks k on (k.regno=a.regno and k.sectionid=a.sectionid and j.SubjectheaderID=k.SubjectheaderID and k.isactive=1)
-inner join p_examtypes pe on pe.ExamTypeID=k.ExamTypeId and pe.AcademicID=k.AcademicID and pe.IsActive=1
-inner join p_examnamelist px on px.ExamNameID=pe.ExamNameID and px.AcademicID=px.AcademicID and px.isactive=1
-   where d.isactive=1 and a.active in ('C','N')  and a.Classid='" + ddlClass.SelectedValue + "' and a.SectionId='" + ddlSection.SelectedValue + "' and px.ExamNameID='" + ddlExamName.SelectedValue + "' and a.AcademicYear=" + AcademicID + " and a.RegNo='" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "' order by a.Regno,d.subjectid,Sortorder");
+                    dsheader = utl.GetDataTable(@"SELECT a.Regno, 
+                                               a.class AS ClassID, 
+                                               e.SubExperienceName, 
+                                               SubjectHeaderName, 
+                                               ISNULL(MaxMark, 0) AS MaxMark, 
+                                               ISNULL(k.Mark, 0) AS Mark 
+                                        FROM s_studentinfo a WITH (NOLOCK)
+                                        INNER JOIN m_class c WITH (NOLOCK) ON a.class = c.classid
+                                        INNER JOIN m_schooltypes b WITH (NOLOCK) ON c.SchoolTypeId = b.schooltypeid
+                                        INNER JOIN [p_ClassSubjects] d WITH (NOLOCK) ON d.schooltypeid = b.schooltypeid 
+                                                                                    AND d.ClassId = c.ClassId
+                                        INNER JOIN m_subexperiences e WITH (NOLOCK) ON d.subjectid = e.subexperienceid
+                                        LEFT JOIN p_subjectheaders j WITH (NOLOCK) ON j.ClassSubjectID = d.ClassSubjectID 
+                                                                                  AND j.isactive = 1
+                                        INNER JOIN p_examheadermarks k WITH (NOLOCK) ON k.regno = a.regno 
+                                                                                    AND k.sectionid = a.Section 
+                                                                                    AND j.SubjectheaderID = k.SubjectheaderID 
+                                                                                    AND k.isactive = 1
+                                        INNER JOIN p_examtypes pe WITH (NOLOCK) ON pe.ExamTypeID = k.ExamTypeId 
+                                                                               AND pe.AcademicID = k.AcademicID 
+                                                                               AND pe.IsActive = 1
+                                        INNER JOIN p_examnamelist px WITH (NOLOCK) ON px.ExamNameID = pe.ExamNameID 
+                                                                                  AND px.AcademicID = px.AcademicID 
+                                                                                  AND px.isactive = 1
+                                        WHERE d.isactive = 1 and a.active in ('C','N')  and a.class='" + ddlClass.SelectedValue + "' and a.section='" + ddlSection.SelectedValue + "' and px.ExamNameID='" + ddlExamName.SelectedValue + "' and a.AcademicYear=" + AcademicID + " and a.RegNo='" + dsGet.Tables[0].Rows[i]["RegNo"].ToString() + "' order by a.Regno,d.subjectid,Sortorder");
                     string str = "";
                     if (dsheader.Rows.Count > 0)
                     {
@@ -820,11 +846,11 @@ inner join p_examnamelist px on px.ExamNameID=pe.ExamNameID and px.AcademicID=px
 
                         str = str + "<br/><p style='margin-left:30px'>MA : Multiple Assessment</p>";
                         str = str + "<p style='margin-left:30px'>SE : Subject Enrichment </p>";
-                        str = str + "<p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
+                        str = str + "<p class='pagebreakhere' style='page-break-after:always; color: Red;'></p>";
 
                     }
                     stroption += str;
-                    //  stroption += @"<tr><p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p></tr>";
+                   // stroption += @"<p class='pagebreakhere' style='page-break-after:auto; color: Red;'></p>";
 
                     #endregion Subject Header TabSubject Header Tab end
 
@@ -920,8 +946,18 @@ inner join p_examnamelist px on px.ExamNameID=pe.ExamNameID and px.AcademicID=px
                 {
                    // sqlstr = "select COUNT(*) from m_DaysList where ClassID=" + Session["strClassID"] + " and AcademicID=" + AcademicID + " and MonthID ='" + dt1.Rows[k]["Month_Number"].ToString() + "' and IsActive=1";
 
-                    sqlstr = " select convert(decimal(18,1),NoofDays) from m_DaysinMonths where  ClassID=" + Session["strClassID"].ToString() + " and AcademicID='" + AcademicID + "' and isactive=1   and MonthID='" + dt1.Rows[k]["Month_Number"].ToString() + "' ";
-                    Retval += Convert.ToDecimal(utl.ExecuteScalar(sqlstr));
+                    sqlstr = " select isnull(convert(decimal(18,1),NoofDays),0) from m_DaysinMonths where  ClassID=" + Session["strClassID"].ToString() + " and AcademicID='" + AcademicID + "' and isactive=1   and MonthID='" + dt1.Rows[k]["Month_Number"].ToString() + "' ";
+                    string noofdays = utl.ExecuteScalar(sqlstr).ToString();
+                    if (noofdays == "" || noofdays == null)
+                    {
+                        noofdays = "0";
+                        Retval = Convert.ToDecimal(noofdays);
+                    }
+                    else
+                    {
+                        Retval += Convert.ToDecimal(utl.ExecuteScalar(sqlstr));
+                    }
+                   
                 }
             }
         }
@@ -976,8 +1012,19 @@ inner join p_examnamelist px on px.ExamNameID=pe.ExamNameID and px.AcademicID=px
             {
                 string[] myDateTimeString = txtIssueDate.Text.Split('/');
                 dateofissue = "'" + myDateTimeString[2] + "/" + myDateTimeString[1] + "/" + myDateTimeString[0] + "'";
+                string extension = "";
+                if (FuPhoto.PostedFile.FileName != null && FuPhoto.PostedFile.FileName != "")
+                {
 
-                utl.ExecuteQuery("update xmark set xmark.dateofissue=" + dateofissue + " from p_exammarks xmark inner join p_examtypes xtype on (xmark.ClassId=xtype.ClassId and xmark.ExamTypeId=xtype.ExamTypeID and xmark.AcademicID=xtype.AcademicID and xmark.IsActive=1)  where  xmark.ClassID= '" + ddlClass.SelectedValue + "' and xtype.ExamNameID= '" + ddlExamName.SelectedValue + "' and type='General' and xmark.academicId='" + AcademicID + "' and xtype.isactive=1");
+                    FuPhoto.PostedFile.SaveAs(Server.MapPath("~/Performance/Signature/" + FuPhoto.PostedFile.FileName));
+
+                    utl.ExecuteQuery("update xmark set xmark.dateofissue=" + dateofissue + ",signature='" + FuPhoto.PostedFile.FileName + "' from p_exammarks xmark inner join p_examtypes xtype on (xmark.ClassId=xtype.ClassId and xmark.ExamTypeId=xtype.ExamTypeID and xmark.AcademicID=xtype.AcademicID and xmark.IsActive=1)  where  xmark.ClassID= '" + ddlClass.SelectedValue + "' and xtype.ExamNameID= '" + ddlExamName.SelectedValue + "' and type='General' and xmark.academicId='" + AcademicID + "' and xtype.isactive=1");
+                }
+                else
+                {
+                    utl.ExecuteQuery("update xmark set xmark.dateofissue=" + dateofissue + " from p_exammarks xmark inner join p_examtypes xtype on (xmark.ClassId=xtype.ClassId and xmark.ExamTypeId=xtype.ExamTypeID and xmark.AcademicID=xtype.AcademicID and xmark.IsActive=1)  where  xmark.ClassID= '" + ddlClass.SelectedValue + "' and xtype.ExamNameID= '" + ddlExamName.SelectedValue + "' and type='General' and xmark.academicId='" + AcademicID + "' and xtype.isactive=1");
+                }
+          
             }
         }     
        

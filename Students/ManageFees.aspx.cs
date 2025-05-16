@@ -717,10 +717,21 @@ public partial class Students_ManageFees : System.Web.UI.Page
 
             string feesCatHeadId = "";
             string feesHeadAmt = "";
+            string feesHeadActualAmt = "", feesConcessionAmt = "";
             string feesCatId = string.Empty;
             string feesMonthName = string.Empty;
             string feestotalAmount = string.Empty;
             string paymentMode = string.Empty;
+
+            string sport_academicID = string.Empty;
+            string sport_feesCatHeadId = "";
+            string sport_feesHeadAmt = "";
+            string sport_feesCatId = string.Empty;
+            string sport_feesHeadActualAmt = "";
+            string sport_feesConcessionAmt = "";
+            string sport_feesMonthName = string.Empty;
+            string sport_feestotalAmount = string.Empty;
+
 
             if (cmd.Parameters["@FeesCatId"] != null)
                 feesCatId = cmd.Parameters["@FeesCatId"].Value.ToString();
@@ -738,7 +749,9 @@ public partial class Students_ManageFees : System.Web.UI.Page
 
                 string cashmode = "";
                 string cardmode = "";
-
+                string qrmode = "";
+                string remarks = "";
+                string paymodeHTML = "";
                 if (PaidMonthRow.Length > 0)
                     PaidMonthName = PaidMonthRow[0]["monthname"].ToString();
 
@@ -749,6 +762,44 @@ public partial class Students_ManageFees : System.Web.UI.Page
                     {
 
                         paymentMode += "<option value=\"" + dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() + "\">" + dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodename"].ToString() + "</option>";
+
+                        if (dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "4" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "8" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "9")
+                        {
+                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            qrmode = "<input type=\"textbox\" id=\"txtqramt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtqramt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "&nbsp;QR:" + qrmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
+
+                        }
+                        if (dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "10" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "11" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "12" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "13" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "14" || dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows[q]["paymentmodeid"].ToString() == "15")
+                        {
+                            cashmode = "<input type=\"textbox\" id=\"txtcashamt\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\" id=\"txtcardamt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtcardamt\" value=\"0\"/>";
+                            qrmode = "<input type=\"textbox\" id=\"txtqramt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtqramt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "&nbsp;QR:" + qrmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
+                        }
+                        else
+                        {
+                            cashmode = "<input type=\"textbox\" onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\" id=\"txtcashamt\" name=\"txtcashamt\" value=\"0\"/>";
+                            cardmode = "<input type=\"textbox\"  onkeyup=\"checkval(this);\" class='numericswithdecimals' style=\"width: 50px;\"  id=\"txtcardamt\" name=\"txtcardamt\" value=\"0\"/>";
+                            qrmode = "<input type=\"textbox\" id=\"txtqramt\" onkeyup=\"checkval(this);\"  class='numericswithdecimals' style=\"width: 50px;\"  name=\"txtqramt\" value=\"0\"/>";
+                            remarks = "<input type=\"textbox\" id=\"txtremarks\" style=\"width: 600px;\" class=\"jsrequired\" name=\"txtremarks\"/>";
+
+                            paymodeHTML = @"<tr><td>Payment Mode</td>
+	                                          <td >:</td>
+	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display:none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "&nbsp;QR:" + qrmode + "</td></tr>";
+                            paymodeHTML += @"<tr><td id='remarks' colspan='6'><br/>Remarks:&nbsp;" + remarks + "</td></tr>";
+                        }
 
                     }
                     paymentMode += "</select>";
@@ -791,12 +842,14 @@ public partial class Students_ManageFees : System.Web.UI.Page
 	                                      <td ><label for='textfield2'>" + dsManageFees.Tables[2].Rows[0]["sectionname"].ToString().ToUpper() + "</label></td></tr>");
                 if (paymentMode != string.Empty)
                 {
-                    feePOPUPStudentDetails.Append(@"<tr><td >Payment Mode</td>
-	                                          <td >:</td>
-	                                          <td >" + paymentMode + "</td><td id=\"modes\" style='display: none;float: left;position: absolute;' colspan='3'>Cash: " + cashmode + "&nbsp;Card:" + cardmode + "</td></tr>");
+                    feePOPUPStudentDetails.Append(paymodeHTML);
+
                 }
                 feePOPUPStudentDetails.Append(@"</tr></table>");
-                 
+
+                decimal schooltotal = 0;
+                decimal sportstotal = 0;
+                decimal schoolConcessionTotal = 0;
 
                 if (dsManageFees.Tables[3].Rows.Count > 0 && dsManageFees.Tables[0].Rows.Count > 0)
                 {
@@ -805,19 +858,155 @@ public partial class Students_ManageFees : System.Web.UI.Page
 	                                          <tr class='tlb-trbg'><td width='79%' height='30' align='left' style='padding-left:10px;'>Heads</td><td width='21%' align='center'>Amount</td></tr>");
                     feePOPUPHeadDetails.Append(@"<tr><td colspan='2'><div class='' style='overflow:auto; height:120px; margin:10px 0px;width:100%;'>
                                                 <table width='100%' border='0' cellspacing='0' cellpadding='0'>");
-
+                    decimal sumofactualAmt = 0;
                     for (int k = 0; k < dsManageFees.Tables[3].Rows.Count; k++)
                     {
+                        decimal actualAmt = Convert.ToDecimal(dsManageFees.Tables[3].Rows[k]["actualamount"]);
+                        decimal amount = Convert.ToDecimal(dsManageFees.Tables[3].Rows[k]["amount"]);
+                        decimal concession = actualAmt - amount;
+
+                        feesHeadActualAmt += dsManageFees.Tables[3].Rows[k]["actualamount"].ToString() + "|";
+                        feesConcessionAmt += concession + "|";
+
                         feesCatHeadId += dsManageFees.Tables[3].Rows[k]["feescatheadid"].ToString() + "|";
                         feesHeadAmt += dsManageFees.Tables[3].Rows[k]["amount"].ToString() + "|";
                         feePOPUPHeadDetails.Append(@"<tr><td height='30' class='tdbrd'> " + dsManageFees.Tables[3].Rows[k]["feesheadname"].ToString().ToUpper() + "</td>");
-                        feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + dsManageFees.Tables[3].Rows[k]["amount"].ToString().ToUpper() + "</td></tr>");
-
+                        //feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + dsManageFees.Tables[3].Rows[k]["amount"].ToString().ToUpper() + "</td></tr>");
+                        feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + dsManageFees.Tables[3].Rows[k]["actualamount"].ToString().ToUpper() + "</td></tr>");
+                        sumofactualAmt += Math.Round(actualAmt);
+                        schoolConcessionTotal += concession;
                     }
                     feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
+
+                    //if (schoolConcessionTotal > 0)
+                    //{
+
+                    //    feePOPUPHeadDetails.Append(@" <tr class='tlt-rs'><td height='30' class='tdbrd'>Concession Granted</td>
+                    //                                 <td class='tdbrd amt-rgt'>Rs. " + Math.Round(schoolConcessionTotal) + "</td></tr>");
+                    //}
                     feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
                                                     <td class='tdbrd'>Rs. " + cmd.Parameters["@FeesTotalAmt"].Value.ToString() + "</td></tr></table>");
 
+                    schooltotal = Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString()));
+
+                }
+
+                Utilities utl = new Utilities();
+                DataSet dataSports = new DataSet();
+                sport_academicID = utl.ExecuteASSScalar("select top 1 academicID from m_academicyear where isactive=1 order by academicID desc ");
+                string sport_Student = utl.ExecuteASSScalar("select count(*)  from s_studentinfo where RegNo = " + dsManageFees.Tables[2].Rows[0]["RegNo"].ToString() + " and academicID=" + sport_academicID);
+
+                SqlConnection sport_conn = new SqlConnection(ConfigurationManager.AppSettings["ASSConnection"].ToString());
+                string sqlstr = "select isactive from m_academicyear where AcademicID='" + sport_academicID + "'";
+                string sport_Isactive = utl.ExecuteASSScalar(sqlstr);
+                HttpContext.Current.Session["sport_Isactive"] = sport_Isactive.ToString();
+                SqlCommand sport_cmd = new SqlCommand();
+                if (sport_Student != "0" && sport_Student != null && sport_Student != "")
+                {
+                    if (sport_Isactive == "True")
+                    {
+                        sport_cmd = new SqlCommand("sp_ManageFee");
+                    }
+                    else
+                    {
+                        sport_cmd = new SqlCommand("[sp_ManageOldFee]");
+                    }
+
+                    sport_cmd.CommandType = CommandType.StoredProcedure;
+                    sport_cmd.Parameters.AddWithValue("@regno", dsManageFees.Tables[2].Rows[0]["RegNo"].ToString());
+                    sport_cmd.Parameters.AddWithValue("@AcademicId", sport_academicID);
+                    sport_cmd.Parameters.Add("@FeesCatId", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    sport_cmd.Parameters.Add("@FeesMonthName", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                    sport_cmd.Parameters.Add("@FeesTotalAmt", SqlDbType.Decimal, 18).Direction = ParameterDirection.Output;
+                    sport_cmd.Parameters["@FeesTotalAmt"].Precision = 18;
+                    sport_cmd.Parameters["@FeesTotalAmt"].Scale = 2;
+                    sport_cmd.Parameters.Add("@FeesMonth", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                    sport_cmd.Parameters.Add("@FeesType", SqlDbType.VarChar, 20).Direction = ParameterDirection.Output;
+                    sport_cmd.Parameters.Add("@isTerm", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    sport_conn.Open();
+                    sport_cmd.Connection = sport_conn;
+                    SqlDataAdapter daDataSports = new SqlDataAdapter();
+                    daDataSports.SelectCommand = sport_cmd;
+
+                    daDataSports.Fill(dataSports);
+                    sport_conn.Close();
+
+                    if (dataSports != null && dataSports.Tables.Count > 0 && dataSports.Tables[3].Rows.Count > 0)
+                    {
+
+                        if (sport_cmd.Parameters["@FeesCatId"] != null)
+                            sport_feesCatId = sport_cmd.Parameters["@FeesCatId"].Value.ToString();
+
+                        if (sport_cmd.Parameters["@FeesMonthName"] != null)
+                            sport_feesMonthName = sport_cmd.Parameters["@FeesMonthName"].Value.ToString();
+
+                        if (sport_cmd.Parameters["@FeesTotalAmt"] != null)
+                            sport_feestotalAmount = sport_cmd.Parameters["@FeesTotalAmt"].Value.ToString();
+
+
+                        feePOPUPHeadDetails.Append(@" <table width='100%' border='0' cellspacing='0' cellpadding='5' class='popup-form'>
+	                                          <tr class='tlb-trbg'><td width='79%' height='30' align='left' style='padding-left:10px;'>Heads</td><td width='21%' align='center'>Amount</td></tr>");
+                        feePOPUPHeadDetails.Append(@"<tr><td colspan='2'><div class='' style='overflow:auto; height:120px; margin:10px 0px;width:100%;'>
+                                                <table width='100%' border='0' cellspacing='0' cellpadding='0'>");
+
+                        for (int k = 0; k < dataSports.Tables[3].Rows.Count; k++)
+                        {
+                            sport_feesCatHeadId += dataSports.Tables[3].Rows[k]["feescatheadid"].ToString() + "|";
+                            sport_feesHeadAmt += dataSports.Tables[3].Rows[k]["amount"].ToString() + "|";
+                            feePOPUPHeadDetails.Append(@"<tr><td height='30' class='tdbrd'> " + dataSports.Tables[3].Rows[k]["feesheadname"].ToString().ToUpper() + "</td>");
+                            feePOPUPHeadDetails.Append(@"<td class='tdbrd amt-rgt'>" + Math.Round(Convert.ToDecimal(dataSports.Tables[3].Rows[k]["amount"].ToString().ToUpper())) + "</td></tr>");
+                            sport_feestotalAmount += Math.Round(Convert.ToDecimal(dataSports.Tables[3].Rows[k]["amount"].ToString().ToUpper()));
+                        }
+
+                        if (sport_feestotalAmount == null || sport_feestotalAmount == "")
+                        {
+                            sport_feestotalAmount = "0";
+                        }
+
+                        feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
+                        feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
+                                                    <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(sport_feestotalAmount.ToString())) + "</td></tr>");
+
+                        sportstotal = Math.Round(Convert.ToDecimal(sport_feestotalAmount));
+
+                        //feePOPUPHeadDetails.Append(@"<br/><br/><tr class='tlt-rs'><td height='30' class='tdbrd'>Grand Total </td>
+                                               //     <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(schooltotal) + Convert.ToDecimal(sportstotal)) + "</td></tr></table>");
+
+                    }
+                }
+
+
+                feePOPUPHeadDetails.Append(@" <table width='100%' border='0' cellspacing='0' cellpadding='5' class='popup-form'>");
+
+                if (schoolConcessionTotal > 0)
+                {
+
+                    feePOPUPHeadDetails.Append(@" <tr class='tlt-rs'><td height='30' class='tdbrd'>Concession Granted</td>
+                                                     <td class='tdbrd amt-rgt'>Rs. " + Math.Round(schoolConcessionTotal) + "</td></tr>");
+                }
+
+                feePOPUPHeadDetails.Append(@"<br/><br/><tr class='tlt-rs'><td height='30' class='tdbrd'>Grand Total </td>
+                                                    <td class='tdbrd amt-rgt'>Rs. " + Math.Round(Convert.ToDecimal(schooltotal) + Convert.ToDecimal(sportstotal)) + "</td></tr></table>");
+
+
+                DataTable dtadv = new DataTable();
+
+                string old_academicID = utl.ExecuteScalar("select top 1 academicID from m_academicyear where isactive=0 order by academicID desc ");
+
+                dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill,case when Billrefno is null then BillNo else Billrefno end as ReceiptNo from f_studentbillmaster a 
+	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
+	  inner join s_studentinfo info on info.RegNo=b.RegNo
+	  inner join f_studentbills d on d.BillId=a.BillId and d.isactive=1
+	  inner join m_feescategoryhead e on e.FeesCatHeadID=d.FeesCatHeadId and e.AcademicId=b.AcademicId
+	  inner join m_feeshead f on f.FeesHeadId=e.FeesHeadId and f.FeesHeadCode='A'
+      WHERE  info.regno = '" + dsManageFees.Tables[2].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + " and b.AcademicId= '" + old_academicID + "' order by a.billID desc");
+                if (dtadv != null && dtadv.Rows.Count > 0)
+                {
+                    feePOPUPHeadDetails.Append("<tr><td colspan='2'>Remarks:</td></tr>");
+                    feePOPUPHeadDetails.Append("<tr><td colspan='2'>Advance Received: " + dtadv.Rows[0]["TotalAmount"].ToString() + "</td></tr>");
+                    feePOPUPHeadDetails.Append("<tr><td colspan='2'>Bill No: " + dtadv.Rows[0]["ReceiptNo"].ToString() + "</td></tr>");
+                    feePOPUPHeadDetails.Append("<tr><td colspan='2'>Bill Date: " + dtadv.Rows[0]["datebill"].ToString() + "</td></tr>");
+                    feePOPUPHeadDetails.Append("<tr><td></td></tr>");
                 }
 
                 feePOPUPContent.Append(@"<table width='650px' border='0' cellpadding='3'  cellspacing='0' class='popup-form tlt-mainbrd' style='border: 1px solid #bfbfbf; background-color:#fff;'>");
@@ -825,7 +1014,49 @@ public partial class Students_ManageFees : System.Web.UI.Page
                 feePOPUPContent.Append("<tr><td  class='popup-form' style='padding:6px;'>" + feePOPUPStudentDetails.ToString() + "</td></tr>");
 
                 feePOPUPContent.Append(@"<tr><td  class='popup-form' style='padding:6px;'>" + feePOPUPHeadDetails.ToString() + "</td></tr>");
-                feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'" + regno + "\',\'" + academicId + "\',\'" + feesCatHeadId + "\',\'" + feesHeadAmt + "\',\'" + feesCatId + "\',\'" + feesMonthName + "\',\'" + feestotalAmount + "\');\" /></td> </tr>");
+
+                if (sport_feestotalAmount == null || sport_feestotalAmount == "")
+                {
+                    sport_feestotalAmount = "0";
+                }
+
+                if (sport_feesHeadAmt == null || sport_feesHeadAmt == "")
+                {
+                    sport_feesHeadAmt = "0";
+                }
+
+                // if (dataSports != null && dataSports.Tables[3].Rows.Count > 0)
+                if (dataSports != null && dataSports.Tables.Count > 0 && dataSports.Tables[0].Rows.Count > 0)
+                {
+                    //  feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'" + regno + "\',\'" + academicId + "-" + sport_academicID + "\',\'" + feesCatHeadId + "-" + sport_feesCatHeadId + "\',\'" + feesHeadAmt + "-" + sport_feesHeadAmt + "\',\'" + feesCatId + "-" + sport_feesCatId + "\',\'" + feesMonthName + "-" + sport_feesMonthName + "\',\'" + Math.Round(Convert.ToDecimal(feestotalAmount)) + "-" + Math.Round(Convert.ToDecimal(sport_feestotalAmount)) + "\');\" /></td> </tr>");
+                    feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy testsport\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'"
+                            + regno + "\',\'"
+                            + academicId + "-" + sport_academicID + "\',\'"
+                            + feesCatHeadId + "-" + sport_feesCatHeadId + "\',\'"
+                            + feesHeadAmt + "-" + sport_feesHeadAmt + "\',\'"
+                            + feesCatId + "-" + sport_feesCatId + "\',\'"
+                            + feesMonthName + "-" + sport_feesMonthName + "\',\'"
+                            + Math.Round(Convert.ToDecimal(feestotalAmount)) + "-" + Math.Round(Convert.ToDecimal(sport_feestotalAmount)) + "\',\'"
+                            + feesHeadActualAmt + "-" + sport_feesHeadActualAmt + "\',\'"
+                            + feesConcessionAmt + "-" + sport_feesConcessionAmt + "\');\" /></td> </tr>");
+
+                }
+                else
+                {
+                    //feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'" + regno + "\',\'" + academicId + "\',\'" + feesCatHeadId + "\',\'" + feesHeadAmt + "\',\'" + feesCatId + "\',\'" + feesMonthName + "\',\'" + Math.Round(Convert.ToDecimal(feestotalAmount)) + "\');\" /></td> </tr>");
+                    feePOPUPContent.Append("<tr><td style='text-align:center;' ><input id=\"btnSubmit\" type=\"button\" class=\"btn btn-navy test\"  value=\"Save & Print\" onclick=\"SaveFeesBill(\'"
+                             + regno + "\',\'"
+                             + academicId + "\',\'"
+                             + feesCatHeadId + "\',\'"
+                             + feesHeadAmt + "\',\'"
+                             + feesCatId + "\',\'"
+                             + feesMonthName + "\',\'"
+                             + Math.Round(Convert.ToDecimal(feestotalAmount)) + "\',\'"
+                             + feesHeadActualAmt + "\',\'"
+                             + feesConcessionAmt + "\');\" /></td> </tr>");
+                }
+
+
                 feePOPUPContent.Append(@"<tr><td colspan='6' ></td></tr> </table>");
                 feePOPUPContent.Append(@"<input type=""hidden"" id=""hdnMonthNum"" value=" + cmd.Parameters["@FeesMonth"].Value.ToString() + ">");
                 feePOPUPContent.Append(@"<input type=""hidden"" id=""hdnFeeType"" value=" + cmd.Parameters["@FeesType"].Value.ToString() + ">");
@@ -903,21 +1134,101 @@ public partial class Students_ManageFees : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string SaveBillDetails(string regNo, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string BillDate, string userId, string PaymentMode, string MonthNum, string FeeType)
+    public static string SaveBillDetails(string regNo, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string FeesHeadActualAmt, string FeesHeadConcessionAmt, string BillDate, string userId, string PaymentMode, string CashAmt, string CardAmt, string QRAmount, string Remarks, string MonthNum, string FeeType)
     {
         Utilities utl = new Utilities();
         FeesHeadIds = FeesHeadIds.Substring(0, FeesHeadIds.Length - 1);
         FeesAmount = FeesAmount.Substring(0, FeesAmount.Length - 1);
-        string[] feeHead = FeesHeadIds.Split('|');
-        string[] feeAmount = FeesAmount.Split('|');
+        //FeesCatId = FeesCatId.Substring(0, FeesCatId.Length - 1);
+        //CardAmt = CardAmt.Substring(0, CardAmt.Length - 1);
+        //CashAmt = CashAmt.Substring(0, CashAmt.Length - 1);
+        //QRAmount = QRAmount.Substring(0, QRAmount.Length - 1);
 
-        string subQuery = string.Empty;
-        int i = 0;
-        foreach (string head in feeHead)
+        string[] fh = FeesHeadIds.Split('-');
+        string[] feeHead = fh[0].Split('|');
+
+        string[] feeActualAmount = FeesHeadActualAmt.Split('|');
+        string[] feeConcessionAmount = FeesHeadConcessionAmt.Split('|');
+
+        string[] sport_feeHead = new string[2];
+        if (fh.Length > 1)
         {
-            subQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId])VALUES(''DummyBill''," + head + ",''" + FeesMonthName + "''," + feeAmount[i] + ",''True''," + userId + ")";
-            i++;
+            sport_feeHead = fh[1].Split('|');
         }
+
+
+        string[] ac = AcademicId.Split('-');
+        string academic = ac[0].ToString();
+        string sport_academic = string.Empty;
+        if (ac.Length > 1)
+        {
+            sport_academic = ac[1].ToString();
+        }
+
+        string[] fa = FeesAmount.Split('-');
+        string[] feeAmount = fa[0].Split('|');
+
+        string[] faActual = FeesHeadActualAmt.Split('-');
+        string[] feeActualAmt = faActual[0].Split('|');
+
+
+        string[] faConcession = FeesAmount.Split('-');
+        string[] feeConcessionAmt = faConcession[0].Split('|');
+
+        string[] sport_feeAmount = new string[2];
+        if (fa.Length > 1)
+        {
+            sport_feeAmount = fa[1].Split('|');
+        }
+
+        string[] fc = FeesCatId.Split('-');
+        string feecatid = fc[0].ToString();
+        string sport_feecatid = string.Empty;
+        if (fc.Length > 1)
+        {
+            sport_feecatid = fc[1].ToString();
+        }
+
+        string[] fm = FeesMonthName.Split('-');
+        string feemonth = fm[0].ToString();
+        string sport_feemonth = string.Empty;
+        if (fm.Length > 1)
+        {
+            sport_feemonth = fm[1].ToString();
+        }
+
+        string[] fta = FeestotalAmount.Split('-');
+        string feetotalamt = fta[0].ToString();
+        string sport_feetotalamt = string.Empty;
+        if (fta.Length > 1)
+        {
+            sport_feetotalamt = fta[1].ToString();
+        }
+
+        string[] cs = CashAmt.Split('-');
+        string cashamt = cs[0].ToString();
+        string sport_cashamt = string.Empty;
+        if (cs.Length > 1)
+        {
+            sport_cashamt = cs[1].ToString();
+        }
+
+        string[] crd = CardAmt.Split('-');
+        string cardamt = crd[0].ToString();
+        string sport_cardamt = string.Empty;
+        if (crd.Length > 1)
+        {
+            sport_cardamt = crd[1].ToString();
+        }
+
+        string[] qr = QRAmount.Split('-');
+        string qramt = qr[0].ToString();
+        string sport_qramt = string.Empty;
+        if (qr.Length > 1)
+        {
+            sport_qramt = qr[1].ToString();
+        }
+
 
         if (BillDate == string.Empty)
         {
@@ -927,13 +1238,124 @@ public partial class Students_ManageFees : System.Web.UI.Page
         string[] formats = { "dd/MM/yyyy" };
         string formatBillDate = DateTime.ParseExact(BillDate, formats, new CultureInfo("en-US"), DateTimeStyles.None).ToShortDateString();
 
-        string query = "[SP_InsertFeesBill] '0000'," + AcademicId + "," + FeesCatId + "," + regNo + ",'" + FeesMonthName + "'," + FeestotalAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + "," + FeestotalAmount + "," + "0";
+
+        if (PaymentMode == "1")
+        {
+            cashamt = feetotalamt;
+            cardamt = "0";
+
+            sport_cashamt = sport_feetotalamt;
+            sport_cardamt = "0";
+        }
+        else if (PaymentMode == "3")
+        {
+            cashamt = "0";
+            cardamt = feetotalamt;
+
+            sport_cashamt = "0";
+            sport_cardamt = sport_feetotalamt;
+        }
+
+        else if (PaymentMode == "5")
+        {
+            cashamt = "0";
+            cardamt = "0";
+            qramt = feetotalamt;
+            sport_cashamt = "0";
+            sport_cardamt = "0";
+            sport_qramt = sport_feetotalamt;
+        }
+
+        FeesCatId = utl.ExecuteScalar("select feescategoryid from m_feescategory where feescatcode=(select active from s_studentinfo where regno='" + regNo + "')");
+
+        string subAssQuery = string.Empty;
+        int i = 0;
+
+        //ASS BILL Opening
+        if (sport_feeHead.Length > 0)
+        {
+            foreach (string s_head in sport_feeHead)
+            {
+                if (s_head != "" && s_head != null)
+                {
+                    subAssQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId])VALUES(''DummyBill''," + s_head + ",''" + sport_feemonth + "''," + sport_feeAmount[i] + ",''True''," + userId + ")";
+
+                    i++;
+                }
+
+            }
+            string ass_query = "";
+            DataSet dsSportSaveBill = null;
+
+            if (sport_feecatid != "" && sport_feemonth != "" && subAssQuery != "")
+            {
+                ass_query = "[SP_InsertFeesBill] '0000'," + sport_academic + "," + sport_feecatid + "," + regNo + ",'" + sport_feemonth + "'," + sport_feetotalamt + ",'" + formatBillDate + "'," + userId + ",'" + subAssQuery + "'," + PaymentMode + ",'" + sport_cashamt + "','" + sport_cardamt + "','" + sport_qramt + "'";
+
+                dsSportSaveBill = utl.GetAssDataset(ass_query);
+            }
+
+            if (dsSportSaveBill != null && dsSportSaveBill.Tables.Count > 0 && dsSportSaveBill.Tables[0].Rows.Count > 0)
+            {
+
+                ass_query = "select distinct convert(varchar,year(startdate))+'-'+  convert(varchar,Datepart(yy,enddate)) as AcademicYear   from m_academicyear  where academicID='" + sport_academic + "'";
+                string sport_AcademicYear = utl.ExecuteASSScalar(ass_query);
+
+                ass_query = "select isnull(count(*),0)+1 from f_studenttaxbillmaster a inner join f_studentbillmaster b on a.BillID=b.BillID where b.academicID='" + sport_academic + "' ";
+                string sport_TaxBillcnt = utl.ExecuteASSScalar(ass_query);
+
+                string sport_schoolabbrivation = utl.ExecuteScalar("select ltrim(rtrim(Schoolabbreviation)) from m_schooldetails");
+                string sport_TaxBillNo = "GST/" + sport_schoolabbrivation.ToString().TrimEnd() + "/" + "" + sport_AcademicYear + "/000" + sport_TaxBillcnt.ToString();
+
+                ass_query = "insert into f_studenttaxbillmaster(TaxBillNo,BillID,isactive,userID)values( '" + sport_TaxBillNo.ToString().Trim() + "'," + dsSportSaveBill.Tables[0].Rows[0][0].ToString() + ",'true'," + userId + ")";
+                utl.ExecuteASSQuery(ass_query);
+
+                string sport_taxBillID = utl.ExecuteASSScalar("SELECT isnull(max(TaxBillID),0) from f_studenttaxbillmaster where isactive=1");
+                string sport_taxQuery = string.Empty;
+                i = 0;
+                foreach (string s_head in sport_feeHead)
+                {
+                    string s_classID = utl.ExecuteASSScalar("select class from s_studentinfo where regno = '" + regNo + "'");
+
+                    string s_headID = utl.ExecuteASSScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + s_head + "' and academicID='" + sport_academic + "' and ClassID='" + s_classID + "' and feescategoryID='" + sport_feecatid + "' and formonth like '%" + sport_feemonth + "%'");
+
+                    DataTable sport_dttax = new DataTable();
+                    sport_dttax = utl.GetASSDataTable("select a.* from m_tax a  where a.isactive=1 and a.academicid='" + AcademicId + "' and a.feeheadid='" + s_headID + "'");
+                    if (sport_dttax.Rows.Count > 0)
+                    {
+                        decimal s_taxvalue = Convert.ToDecimal(sport_feeAmount[i]) / (100 + Convert.ToDecimal(sport_dttax.Rows[0]["Percentage"].ToString())) * Convert.ToDecimal(sport_dttax.Rows[0]["Percentage"].ToString());
+
+                        sport_taxQuery = "insert into f_studenttaxbills(TaxBillID,FeesCatId,TaxID,TaxPercent,TaxAmount,isactive,userid)values('" + sport_taxBillID + "','" + s_head + "','" + sport_dttax.Rows[0]["TaxID"].ToString() + "','" + sport_dttax.Rows[0]["Percentage"].ToString() + "','" + s_taxvalue + "','true','" + userId + "')";
+                        utl.ExecuteASSQuery(sport_taxQuery);
+                    }
+
+                    i++;
+                }
+
+            }
+        }
+
+        //Ass BILL closure
+
+        string subQuery = string.Empty;
+        i = 0;
+        foreach (string head in feeHead)
+        {
+            if (head != null && head != "")
+            {
+                // += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId])VALUES(''DummyBill''," + head + ",''" + feemonth + "''," + feeAmount[i] + ",''True''," + userId + ")";
+                // subQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId],[ActualAmount],[Discount]) " +
+                // "VALUES(''DummyBill''," + head + ",''" + feemonth + "''," + feeAmount[i] + ",''True''," + userId + "," + feeActualAmount[i] + "," + feeConcessionAmount[i] + ")";
+                subQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId],[ActualAmount],[Discount]) " +
+               "VALUES(''DummyBill''," + head + ",''" + feemonth + "''," + feeAmount[i] + ",''True''," + userId + "," + feeActualAmount[i] + "," + feeConcessionAmount[i] + ")";
+
+                i++;
+            }
+        }
+        // string query = "[SP_InsertFeesBill] '0000'," + academic + "," + FeesCatId + "," + regNo + ",'" + feemonth + "'," + feeAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + ",'" + cashamt + "','" + cardamt + "','" + qramt + "','" + Remarks + "'";
+        string query = "[SP_InsertFeesBill] '0000'," + academic + ",'" + FeesCatId + "'," + regNo + ",'" + feemonth + "'," + feetotalamt + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + ",'" + cashamt + "','" + cardamt + "','" + qramt + "','" + Remarks + "'";
 
         DataSet dsSaveBill = utl.GetDataset(query);
 
-        DataSet dsCCSlip = new DataSet();
-        DataSet dsBBSlip = new DataSet();
-        DataSet dsActSlip = new DataSet();
         if (dsSaveBill != null && dsSaveBill.Tables.Count > 0 && dsSaveBill.Tables[0].Rows.Count > 0)
         {
             if (MonthNum.Trim() == "0" && FeeType.ToUpper() == "ACADEMIC")
@@ -941,52 +1363,101 @@ public partial class Students_ManageFees : System.Web.UI.Page
                 PrintBill(dsSaveBill.Tables[0].Rows[0][0].ToString());
                 PrintSlip(dsSaveBill.Tables[0].Rows[0][0].ToString(), regNo, AcademicId);
 
-                dsCCSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1 inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='CC' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
-                if (dsCCSlip != null && dsCCSlip.Tables.Count > 0 && dsCCSlip.Tables[0].Rows.Count > 0)
-                {
-                    PrintCricketSlip(dsCCSlip, regNo, AcademicId);
-                }
-
-                dsBBSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='BB' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
-                if (dsBBSlip != null && dsBBSlip.Tables.Count > 0 && dsBBSlip.Tables[0].Rows.Count > 0)
-                {
-                    PrintBadmintonSlip(dsBBSlip, regNo, AcademicId);
-                }
-
-                dsActSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode in('F','S')  where  b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
-                if (dsActSlip != null && dsActSlip.Tables.Count > 0 && dsActSlip.Tables[0].Rows.Count > 0)
-                {
-                    PrintActivitySlip(dsActSlip, regNo, AcademicId);
-                }
             }
             else
-            {
                 PrintBill(dsSaveBill.Tables[0].Rows[0][0].ToString());
-
-                dsCCSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1 inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='CC' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
-                if (dsCCSlip != null && dsCCSlip.Tables.Count > 0 && dsCCSlip.Tables[0].Rows.Count > 0)
-                {
-                    PrintCricketSlip(dsCCSlip, regNo, AcademicId);
-                }
-
-                dsBBSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='BB' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
-                if (dsBBSlip != null && dsBBSlip.Tables.Count > 0 && dsBBSlip.Tables[0].Rows.Count > 0)
-                {
-                    //PrintBadmintonSlip(dsBBSlip, regNo, AcademicId);
-                }
-
-                dsActSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode in('F','S')  where  b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
-                if (dsActSlip != null && dsActSlip.Tables.Count > 0 && dsActSlip.Tables[0].Rows.Count > 0)
-                {
-                    //PrintActivitySlip(dsActSlip, regNo, AcademicId);
-                } 
-            }
-
             return "Updated";
         }
         else
             return "Failed";
     }
+
+
+    //[WebMethod]
+    //public static string SaveBillDetails(string regNo, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string BillDate, string userId, string PaymentMode, string MonthNum, string FeeType)
+    //{
+    //    Utilities utl = new Utilities();
+    //    FeesHeadIds = FeesHeadIds.Substring(0, FeesHeadIds.Length - 1);
+    //    FeesAmount = FeesAmount.Substring(0, FeesAmount.Length - 1);
+    //    string[] feeHead = FeesHeadIds.Split('|');
+    //    string[] feeAmount = FeesAmount.Split('|');
+
+    //    string subQuery = string.Empty;
+    //    int i = 0;
+    //    foreach (string head in feeHead)
+    //    {
+    //        subQuery += "INSERT INTO [dbo].[f_studentbills]([BillId],[FeesCatHeadId],[BillMonth],[Amount],[IsActive],[UserId])VALUES(''DummyBill''," + head + ",''" + FeesMonthName + "''," + feeAmount[i] + ",''True''," + userId + ")";
+    //        i++;
+    //    }
+
+    //    if (BillDate == string.Empty)
+    //    {
+    //        BillDate = DateTime.Now.ToString("dd/MM/yyyy");
+    //    }
+
+    //    string[] formats = { "dd/MM/yyyy" };
+    //    string formatBillDate = DateTime.ParseExact(BillDate, formats, new CultureInfo("en-US"), DateTimeStyles.None).ToShortDateString();
+
+    //    string query = "[SP_InsertFeesBill] '0000'," + AcademicId + "," + FeesCatId + "," + regNo + ",'" + FeesMonthName + "'," + FeestotalAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + "," + FeestotalAmount + "," + "0";
+
+    //    DataSet dsSaveBill = utl.GetDataset(query);
+
+    //    DataSet dsCCSlip = new DataSet();
+    //    DataSet dsBBSlip = new DataSet();
+    //    DataSet dsActSlip = new DataSet();
+    //    if (dsSaveBill != null && dsSaveBill.Tables.Count > 0 && dsSaveBill.Tables[0].Rows.Count > 0)
+    //    {
+    //        if (MonthNum.Trim() == "0" && FeeType.ToUpper() == "ACADEMIC")
+    //        {
+    //            PrintBill(dsSaveBill.Tables[0].Rows[0][0].ToString());
+    //            PrintSlip(dsSaveBill.Tables[0].Rows[0][0].ToString(), regNo, AcademicId);
+
+    //            dsCCSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1 inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='CC' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
+    //            if (dsCCSlip != null && dsCCSlip.Tables.Count > 0 && dsCCSlip.Tables[0].Rows.Count > 0)
+    //            {
+    //                PrintCricketSlip(dsCCSlip, regNo, AcademicId);
+    //            }
+
+    //            dsBBSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='BB' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
+    //            if (dsBBSlip != null && dsBBSlip.Tables.Count > 0 && dsBBSlip.Tables[0].Rows.Count > 0)
+    //            {
+    //                PrintBadmintonSlip(dsBBSlip, regNo, AcademicId);
+    //            }
+
+    //            dsActSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode in('F','S')  where  b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
+    //            if (dsActSlip != null && dsActSlip.Tables.Count > 0 && dsActSlip.Tables[0].Rows.Count > 0)
+    //            {
+    //                PrintActivitySlip(dsActSlip, regNo, AcademicId);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            PrintBill(dsSaveBill.Tables[0].Rows[0][0].ToString());
+
+    //            dsCCSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1 inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='CC' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
+    //            if (dsCCSlip != null && dsCCSlip.Tables.Count > 0 && dsCCSlip.Tables[0].Rows.Count > 0)
+    //            {
+    //                PrintCricketSlip(dsCCSlip, regNo, AcademicId);
+    //            }
+
+    //            dsBBSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode='BB' where b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
+    //            if (dsBBSlip != null && dsBBSlip.Tables.Count > 0 && dsBBSlip.Tables[0].Rows.Count > 0)
+    //            {
+    //                //PrintBadmintonSlip(dsBBSlip, regNo, AcademicId);
+    //            }
+
+    //            dsActSlip = utl.GetDataset("select * from m_feescategoryhead a inner join vw_getstudent b on a.classID=b.classID and a.academicid=b.academicyear  and a.isactive=1 inner join m_feescategory c on c.FeesCategoryId=a.FeesCategoryId and b.Active=c.FeesCatCode  and c.IsActive=1 inner join f_studentbillmaster d on d.regno=b.regno and d.AcademicId=b.AcademicYear  and d.IsActive=1 inner join f_studentbills e on e.BillId=d.BillId and a.FeesCatHeadID=e.FeesCatHeadId and e.IsActive=1 inner join s_studentactivities f  on f.regno=b.regno and f.AcademicId=b.AcademicYear and f.ActId=a.FeesHeadId  and f.IsActive=1  inner join m_feeshead g on g.FeesHeadId=a.FeesHeadId and FeesHeadCode in('F','S')  where  b.regno=" + regNo + " and d.BillId='" + dsSaveBill.Tables[0].Rows[0][0].ToString() + "'");
+    //            if (dsActSlip != null && dsActSlip.Tables.Count > 0 && dsActSlip.Tables[0].Rows.Count > 0)
+    //            {
+    //                //PrintActivitySlip(dsActSlip, regNo, AcademicId);
+    //            } 
+    //        }
+
+    //        return "Updated";
+    //    }
+    //    else
+    //        return "Failed";
+    //}
 
     public static void PrintActivitySlip(DataSet Bill, string regNo, string AcademicId)
     {
@@ -1419,13 +1890,16 @@ public partial class Students_ManageFees : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string UpdateBillDetails(string BillId, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string BillDate, string userId, string PaymentMode, string MonthNum, string FeeType)
+    public static string UpdateBillDetails(string BillId, string AcademicId, string FeesHeadIds, string FeesAmount, string FeesCatId, string FeesMonthName, string FeestotalAmount, string BillDate, string userId, string PaymentMode, string CashAmt, string CardAmt, string QRAmount, string Remarks, string MonthNum, string FeeType)
     {
         Utilities utl = new Utilities();
         FeesHeadIds = FeesHeadIds.Substring(0, FeesHeadIds.Length - 1);
         FeesAmount = FeesAmount.Substring(0, FeesAmount.Length - 1);
         string[] feeHead = FeesHeadIds.Split('|');
         string[] feeAmount = FeesAmount.Split('|');
+        CardAmt = CardAmt.Substring(0, CardAmt.Length - 1);
+        CashAmt = CashAmt.Substring(0, CashAmt.Length - 1);
+        QRAmount = QRAmount.Substring(0, QRAmount.Length - 1);
 
         string subQuery = string.Empty;
         int i = 0;
@@ -1439,11 +1913,21 @@ public partial class Students_ManageFees : System.Web.UI.Page
         {
             BillDate = DateTime.Now.ToString("dd/MM/yyyy");
         }
+        if (PaymentMode == "1")
+        {
+            CashAmt = FeestotalAmount;
+            CardAmt = "0";
+        }
+        else if (PaymentMode == "3")
+        {
+            CashAmt = "0";
+            CardAmt = FeestotalAmount;
+        }
 
         string[] formats = { "dd/MM/yyyy" };
         string formatBillDate = DateTime.ParseExact(BillDate, formats, new CultureInfo("en-US"), DateTimeStyles.None).ToShortDateString();
 
-        string query = "[SP_UpdateFeesBill] '0000'," + AcademicId + "," + FeesCatId + "," + BillId + ",'" + FeesMonthName + "'," + FeestotalAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + "," + FeestotalAmount + "," + "0";
+        string query = "[SP_UpdateFeesBill] '0000'," + AcademicId + "," + FeesCatId + "," + BillId + ",'" + FeesMonthName + "'," + FeestotalAmount + ",'" + formatBillDate + "'," + userId + ",'" + subQuery + "'," + PaymentMode + ",'" + CashAmt + "','" + CardAmt + "','" + QRAmount + "','" + Remarks + "'";
 
         DataSet dsSaveBill = utl.GetDataset(query);
 
@@ -1609,50 +2093,100 @@ public partial class Students_ManageFees : System.Web.UI.Page
                         args.Graphics.DrawString(" Month 	: 	" + dsPrint.Tables[0].Rows[0]["BillMonth"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(120, 95, 120, 50), stringAlignRight);
                         args.Graphics.DrawString("PARTICULARS", new System.Drawing.Font("ARIAL", 8, FontStyle.Regular), Brushes.Black, new Rectangle(0, 135, 180, 50), stringAlignCenter);
                         args.Graphics.DrawString("AMOUNT ", new System.Drawing.Font("ARIAL", 8, FontStyle.Regular), Brushes.Black, new Rectangle(180, 135, 70, 50), stringAlignCenter);
+                        decimal totalConcessionAmount = 0;
                         if (dsPrint.Tables[1].Rows.Count > 0)
                         {
                             yPos = 158;
 
                             for (int i = 0; i < dsPrint.Tables[1].Rows.Count; i++, yPos += 25, headCount += 1)
                             {
+
+                                string concessionAmount = dsPrint.Tables[1].Rows[i]["ConcessionAmount"].ToString();
+                                decimal concessionVal;
+                                if (decimal.TryParse(concessionAmount, out concessionVal))
+                                {
+                                    totalConcessionAmount += concessionVal;
+                                }
                                 args.Graphics.DrawString(dsPrint.Tables[1].Rows[i]["FeesHeadName"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(5, yPos, 180, 50), stringAlignLeft);
-                                args.Graphics.DrawString(dsPrint.Tables[1].Rows[i]["Amount"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos, 70, 50), stringAlignRight);
+                                //args.Graphics.DrawString(dsPrint.Tables[1].Rows[i]["Amount"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos, 70, 50), stringAlignRight);
+                                args.Graphics.DrawString(dsPrint.Tables[1].Rows[i]["actualamount"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos, 70, 50), stringAlignRight);
+
                             }
                         }
 
-                        args.Graphics.DrawString("TOTAL", new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 8, 180, 50), stringAlignRight);
-                        args.Graphics.DrawString(dsPrint.Tables[0].Rows[0]["TotalAmount"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos + 8, 70, 50), stringAlignRight);
+                        int tableHeight = 25 * headCount;
 
+                        if (totalConcessionAmount > 0)
+                        {
+                            yPos += 25;
+                            tableHeight += 25;
+                            // Draw border around Concession row
+                            Pen penConcession = new Pen(Color.Black, 1);
+                            penConcession.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                            args.Graphics.DrawRectangle(penConcession, 0, yPos, 180, 25);
+                            args.Graphics.DrawRectangle(penConcession, 180, yPos, 68, 25);
+
+                            args.Graphics.DrawString("Concession Granted", new Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos, 180, 25), stringAlignLeft);
+                            args.Graphics.DrawString(totalConcessionAmount.ToString("0.00"), new Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos, 70, 25), stringAlignRight);
+                            yPos += 14;
+                        }
+                        tableHeight += 35;
+
+                        args.Graphics.DrawString("TOTAL", new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos, 180, 50), stringAlignRight);
+                        args.Graphics.DrawString(dsPrint.Tables[0].Rows[0]["TotalAmount"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos, 70, 50), stringAlignRight);
+
+                        //args.Graphics.DrawString("TOTAL", new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 8, 180, 50), stringAlignRight);
+                        //args.Graphics.DrawString(dsPrint.Tables[0].Rows[0]["TotalAmount"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos + 8, 70, 50), stringAlignRight);
+
+                        //args.Graphics.DrawString("Mode of Payment", new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 40, 180, 50), stringAlignRight);
+                        //args.Graphics.DrawString(dsPrint.Tables[0].Rows[0]["PaymentModeName"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(165, yPos + 40, 70, 50), stringAlignRight);
+
+                       // args.Graphics.DrawString("Mode of Payment", new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 60, 180, 50), stringAlignLeft);
+                        //args.Graphics.DrawString(dsPrint.Tables[0].Rows[0]["PaymentModeName"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 40, 250, 100), stringAlignLeft);
+
+                       args.Graphics.DrawString("Mode of Payment : " + dsPrint.Tables[0].Rows[0]["PaymentModeName"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 40, 250, 100), stringAlignLeft);
 
                         args.Graphics.DrawString("Date : " + dsPrint.Tables[0].Rows[0]["BillDate"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 40, 250, 50), stringAlignLeft);
                         args.Graphics.DrawString("Cashier : " + dsPrint.Tables[0].Rows[0]["staffname"].ToString(), new System.Drawing.Font("ARIAL", 9, FontStyle.Regular), Brushes.Black, new Rectangle(0, yPos + 40, 250, 150), stringAlignLeft);
- 
+
                         //args.Graphics.DrawRectangle(new Pen(Color.Black, 1), 0, 145, 180, 25);
                         //args.Graphics.DrawRectangle(new Pen(Color.Black, 1), 180, 145, 68, 25);
 
-                        Pen pen = new Pen(Color.Black, 1);
-                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        args.Graphics.DrawRectangle(pen, 0, 145, 180, 25);
+                        //Pen pen = new Pen(Color.Black, 1);
+                        //pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        //args.Graphics.DrawRectangle(pen, 0, 145, 180, 25);
 
-                        Pen pen0 = new Pen(Color.Black, 1);
-                        pen0.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        args.Graphics.DrawRectangle(pen0, 180, 145, 68, 25);
+                        //Pen pen0 = new Pen(Color.Black, 1);
+                        //pen0.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        //args.Graphics.DrawRectangle(pen0, 180, 145, 68, 25);
 
-                        Pen pen1 = new Pen(Color.Black, 1);
-                        pen1.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        args.Graphics.DrawRectangle(pen1, 0, 170, 180, 25 * headCount);
+                        //Pen pen1 = new Pen(Color.Black, 1);
+                        //pen1.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        //args.Graphics.DrawRectangle(pen1, 0, 170, 180, 25 * headCount);
 
-                        Pen pen2 = new Pen(Color.Black, 1);
-                        pen2.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        args.Graphics.DrawRectangle(pen2, 180, 170, 68, 25 * headCount);
+                        //Pen pen2 = new Pen(Color.Black, 1);
+                        //pen2.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        //args.Graphics.DrawRectangle(pen2, 180, 170, 68, 25 * headCount);
 
-                        Pen pen3 = new Pen(Color.Black, 1);
-                        pen3.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        args.Graphics.DrawRectangle(pen3, 0, yPos + 12, 180, 35);
+                        //Pen pen3 = new Pen(Color.Black, 1);
+                        //pen3.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        //args.Graphics.DrawRectangle(pen3, 0, yPos + 12, 180, 35);
 
-                        Pen pen4 = new Pen(Color.Black, 1);
-                        pen4.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        args.Graphics.DrawRectangle(pen4, 180, yPos + 12, 68, 35);
+                        //Pen pen4 = new Pen(Color.Black, 1);
+                        //pen4.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        //args.Graphics.DrawRectangle(pen4, 180, yPos + 12, 68, 35);
+
+                        Pen tablePen = new Pen(Color.Black, 1);
+                        tablePen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+
+                        args.Graphics.DrawRectangle(tablePen, 0, 145, 180, 25);
+                        args.Graphics.DrawRectangle(tablePen, 180, 145, 68, 25);
+
+                        args.Graphics.DrawRectangle(tablePen, 0, 170, 180, tableHeight);
+                        args.Graphics.DrawRectangle(tablePen, 180, 170, 68, tableHeight);
+
+                        args.Graphics.DrawLine(tablePen, 180, 145, 180, 170 + tableHeight);
+
                         //args.Graphics.DrawRectangle(new Pen(Color.Black, 1), 0, 170, 180, 25 * headCount);
                         //args.Graphics.DrawRectangle(new Pen(Color.Black, 1), 180, 170, 68, 25 * headCount);
 
@@ -1661,7 +2195,8 @@ public partial class Students_ManageFees : System.Web.UI.Page
                     }
 
                 };
-               // clientIPAddress = "192.168.0.48";
+                // clientIPAddress = "192.168.0.48";
+                //clientIPAddress = "192.168.0.102";
                 fd.PrinterSettings.PrinterName = "\\\\" + clientIPAddress + "\\" + printerName + "";
                 fd.Print();
             }

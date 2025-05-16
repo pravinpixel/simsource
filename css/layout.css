@@ -2146,7 +2146,7 @@ height: 30px;
 }
 .stats-list span {
     color: #313131;
-    font-size: 14px;
+    /*font-size: 14px;*/
 	font-weight:bold;
 }
 

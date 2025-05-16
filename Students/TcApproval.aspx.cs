@@ -336,6 +336,17 @@ public partial class Students_TcApproval : System.Web.UI.Page
 
         string strError = utl.ExecuteQuery(query);
 
+        string icnt = "";
+        icnt = utl.ExecuteScalar("select count(*) from s_studentpromotion where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        if (icnt == "" || icnt == "0")
+        {
+            utl.ExecuteQuery("insert into s_studentpromotion(RegNo,AcademicId,ClassId,SectionId,UserId) (select regno,Class,Section,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo  where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "')");
+        }
+        else
+        {
+            utl.ExecuteQuery("update s_studentpromotion set active='O' where regno='" + regNo + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        }
+
         if (strError == string.Empty)
             return "";
         else
