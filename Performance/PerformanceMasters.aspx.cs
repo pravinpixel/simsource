@@ -129,7 +129,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             query = "[sp_GetExamTypeByExamName_Filter] " + "'" + ExamNameID + "','" + ClassID + "','" + AcademicID + "'";
            
         }
-        return utl.GetDatasetTable(query, "ExamNameByType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ExamNameByType").GetXml();
     }
 
   
@@ -174,7 +174,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
            query = "sp_GetExamClassSubjectID " + classid + "," + examtypeid + "," + subjecttype + "," + subjects + "," + AcademicID + "";
             
         }
-        return utl.GetDatasetTable(query, "GetExamClassSubjectID").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetExamClassSubjectID").GetXml();
     }
 
 
@@ -183,7 +183,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "sp_GetClassSubjectID " + classid + "," + subjecttype + "," + subjects + ","+ AcademicID +"";
-        return utl.GetDatasetTable(query, "GetClassSubjectID").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetClassSubjectID").GetXml();
     }
 
     [WebMethod]
@@ -191,7 +191,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "sp_GetClassBySchoolType " + SchoolTypeID + "";
-        return utl.GetDatasetTable(query, "ClassBySchoolType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ClassBySchoolType").GetXml();
     }
     protected string BindSubjects()
     {
@@ -487,7 +487,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_getexamtypes " + ExamTypeID + "," + AcademicID;
-        return utl.GetDatasetTable(query, "ClassByExamType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ClassByExamType").GetXml();
     }
     [WebMethod]
     public static string EditExamType(int ExamTypeID)
@@ -495,7 +495,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_getexamtypes " + ExamTypeID + "," + AcademicID;
-        return utl.GetDatasetTable(query, "EditExamType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditExamType").GetXml();
     }
     [WebMethod]
     public static string DeleteExamType(string ExamTypeID)
@@ -570,7 +570,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -597,7 +597,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     public static DataSet GetExamSetupData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -625,7 +625,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     public static DataSet GetClassSubjectsData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -653,7 +653,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     public static DataSet GetSubjectheadersData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -687,7 +687,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
             sectionid = "''";
         }
         string query = "[sp_GetPerformanceStudentList] '" + classid + "'," + sectionid + "," + AcademicID  + "";
-        return utl.GetDatasetTable(query, "StudentList").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentList").GetXml();
 
 
     }
@@ -793,7 +793,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetExamNameList " + ExamNameID + "," + AcademicID;
-        return utl.GetDatasetTable(query, "EditExamName").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditExamName").GetXml();
     }
 
     [WebMethod]
@@ -802,7 +802,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSubjectheaderList " + SubjectheaderID + "," + AcademicID;
-        return utl.GetDatasetTable(query, "EditSubjectheader").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditSubjectheader").GetXml();
     }
 
     [WebMethod]
@@ -879,7 +879,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     public static DataSet GetExamNameData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -924,7 +924,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetGradeSetup "  + GradeSetupID + "," + AcademicID;
-        return utl.GetDatasetTable(query, "EditGradeSetup").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditGradeSetup").GetXml();
     }
 
     [WebMethod]
@@ -1005,7 +1005,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     public static DataSet GetGradeSetupData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -1037,7 +1037,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "GetClassSubjects " + ClassID + ",'" + Type + "'," + AcademicID + "";
-        return utl.GetDatasetTable(query, "GetClassSubject").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetClassSubject").GetXml();
     }
     [WebMethod]
     public static string GetClassSubjects(int pageIndex,string ClassID)
@@ -1059,7 +1059,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetClassSubjects " + ClassSubjectID + "," + AcademicID;
-        return utl.GetDatasetTable(query, "EditClassSubjects").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditClassSubjects").GetXml();
     }
 
     [WebMethod]
@@ -1134,7 +1134,7 @@ public partial class Performance_PerformanceMasters : System.Web.UI.Page
     public static DataSet GetClassData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

@@ -67,7 +67,7 @@ public partial class MessageTemplate : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMessageTemplate " + "" + MessageTemplateID + "";
-        return utl.GetDatasetTable(query, "EditMessageTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditMessageTemplate").GetXml();
     }
 
     [WebMethod]
@@ -134,7 +134,7 @@ public partial class MessageTemplate : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

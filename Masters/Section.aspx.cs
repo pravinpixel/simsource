@@ -99,7 +99,7 @@ public partial class Section : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -128,7 +128,7 @@ public partial class Section : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "sp_GetClassBySchoolType " + "" + SchoolTypeID + "";
-        return utl.GetDatasetTable(query, "ClassBySchoolType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ClassBySchoolType").GetXml();
     }
 
     [WebMethod]
@@ -150,7 +150,7 @@ public partial class Section : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSection " + "" + SectionID + "";
-        return utl.GetDatasetTable(query, "EditSection").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditSection").GetXml();
     }
 
     [WebMethod]

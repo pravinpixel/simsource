@@ -242,7 +242,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
             query = "sp_getPromoStudentByDup " + dupYear + ",'" + dupClass + "','" + dupSection + "'";
         }
 
-        return utl.GetDatasetTable(query, "Students").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Students").GetXml();
 
     }
 
@@ -253,7 +253,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 
@@ -273,7 +273,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
         {
             query = "sp_GetPromoStudentBySection '" + Class + "','" + Section + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
         }
-        return utl.GetDatasetTable(query, "Students").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Students").GetXml();
     }
 
 
@@ -283,7 +283,7 @@ public partial class Students_TcApproval : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuId '" + path + "'," + UserId;
-        return utl.GetDatasetTable(query, "ModuleMenu").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ModuleMenu").GetXml();
     }
     [WebMethod]
     public static string GetFeePendingList(string RegNo, string Active, string AcademicId)
@@ -335,6 +335,17 @@ public partial class Students_TcApproval : System.Web.UI.Page
         }
 
         string strError = utl.ExecuteQuery(query);
+
+        string icnt = "";
+        icnt = utl.ExecuteScalar("select count(*) from s_studentpromotion where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        if (icnt == "" || icnt == "0")
+        {
+            utl.ExecuteQuery("insert into s_studentpromotion(RegNo,AcademicId,ClassId,SectionId,UserId) (select regno,Class,Section,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo  where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "')");
+        }
+        else
+        {
+            utl.ExecuteQuery("update s_studentpromotion set active='O' where regno='" + regNo + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        }
 
         if (strError == string.Empty)
             return "";

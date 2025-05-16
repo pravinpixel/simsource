@@ -125,7 +125,7 @@ public partial class Performance_SalaryEntry : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        return utl.GetDatasetTable(query, "Salary").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Salary").GetXml();
     }
     private void BindDummyRow()
     {

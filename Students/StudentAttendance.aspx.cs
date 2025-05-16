@@ -255,7 +255,7 @@ public partial class Students_StudentAttendance : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
     [WebMethod]
@@ -359,7 +359,7 @@ public partial class Students_StudentAttendance : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStudentInfo " + "''"+",'" + RegNo + "','" + StudentName + "'";
-        return utl.GetDatasetTable(query, "Student").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Student").GetXml();
     }
 
     [WebMethod]
@@ -373,6 +373,6 @@ public partial class Students_StudentAttendance : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "SELECT DATENAME(WEEKDAY,'" + Date + "') AS 'DAYNAME'";
-        return utl.GetDatasetTable(query, "DayofWeek").GetXml();
+        return utl.GetDatasetTable(query,  "others", "DayofWeek").GetXml();
     }
 }

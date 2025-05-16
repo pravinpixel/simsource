@@ -817,12 +817,12 @@
                         </td>
                     </tr>
                     
-                    <tr>
+                    <tr style="display:none;">
                         <td height="30" class="formsubheading">
                             <span>Academic Year Fee Structure</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="display:none;">
                         <td>
                             <label>
                                 <input type="radio" onkeydown="GetAcademicDetails();" checked="checked" name="btype"
@@ -832,7 +832,7 @@
                                     value="Double" />Bi-month Billing</label>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="display:none;">
                         <td height="30" class="formsubheading">
                             <span>Do you want to enroll for Bus?</span>&nbsp;
                             <label>

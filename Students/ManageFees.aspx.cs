@@ -76,7 +76,7 @@ public partial class Students_ManageFees : System.Web.UI.Page
     [WebMethod]
     public static string BindAcademicYearMonth(string regNo, string academicId, string editPrm, string delPrm, string btype)
     {
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
 
         StringBuilder str = new StringBuilder();
         DataSet dsManageFees = new DataSet();

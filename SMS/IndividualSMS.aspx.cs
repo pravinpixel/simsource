@@ -68,7 +68,7 @@ public partial class IndividualSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMessageTemplate " + "" + MessTempID + "";
-        return utl.GetDatasetTable(query, "GetMessageTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetMessageTemplate").GetXml();
     }
 
 
@@ -137,7 +137,7 @@ public partial class IndividualSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
     [WebMethod]
@@ -156,7 +156,7 @@ public partial class IndividualSMS : System.Web.UI.Page
 
         }
 
-        return utl.GetDatasetTable(query, "StudentBySection").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentBySection").GetXml();
     }
 
     [WebMethod]

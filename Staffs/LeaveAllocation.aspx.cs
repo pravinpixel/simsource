@@ -120,7 +120,7 @@ public partial class Staffs_LeaveAllocation : System.Web.UI.Page
         Utilities utl = new Utilities();
 
         string query = "[sp_GetStaffListForAllocation] '" + PlaceofworkID + "','" + LeaveID + "'," + HttpContext.Current.Session["AcademicID"] + "";
-        return utl.GetDatasetTable(query, "StaffList").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StaffList").GetXml();
 
 
     }

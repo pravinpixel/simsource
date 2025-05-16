@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/AdminMaster.master"
-    AutoEventWireup="true"  CodeFile="PerformanceChart.aspx.cs" Inherits="Performance_PerformanceChart" %>
+    AutoEventWireup="true" CodeFile="PerformanceChart.aspx.cs" Inherits="Performance_PerformanceChart" %>
 
 <%@ MasterType VirtualPath="~/MasterPage/AdminMaster.master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
@@ -9,10 +9,9 @@
         @media print
         {
             .printContent
-        
             {
-                display: block;                
-            }  
+                display: block;
+            }
         }
         @media screen
         {
@@ -21,17 +20,20 @@
                 display: none;
             }
         }
+        
+     .signature img
+        {
+             max-width: inherit;
+        }
     </style>
-  
+
     <script type="text/javascript">
 
     </script>
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="head2" runat="Server">
     <%="<script src='" + ResolveUrl("~/js/jquery.printElement.js") + "' type='text/javascript'></script>"%>
     <%="<link href='" + ResolveUrl("~/css/print-terms.css") + "' rel='stylesheet' type='text/css'  media='print, handheld' />"%>
-     
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script type="text/javascript">
@@ -94,31 +96,34 @@
                             <asp:DropDownList ID="ddlExamName" CssClass="jsrequired" runat="server">
                                 <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                             </asp:DropDownList>
-                             <label>
+                            <label>
                                 Display Type :</label>
-                            <asp:DropDownList ID="ddlType" runat="server" 
-                                AutoPostBack="True">
+                            <asp:DropDownList ID="ddlType" runat="server" AutoPostBack="True">
                                 <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
                                 <asp:ListItem Value="Grade">Grade</asp:ListItem>
                             </asp:DropDownList>
-                            
                         </td>
                     </tr>
                     <tr>
-                    <td>
-                      <label>
+                        <td>
+                            <label>
                                 Date of Issue :</label>
-                            <asp:TextBox ID="txtIssueDate" CssClass="dateNL date-picker"
-                                                runat="server"></asp:TextBox>
-                        
+                            <asp:TextBox ID="txtIssueDate" CssClass="dateNL date-picker" runat="server"></asp:TextBox>
+                        </td>
+                        <td colspan="2" align="left">
+                            <label>
+                                Upload Image :</label>
+                            <input type='file' id="FuPhoto" runat="server" />
+                        </td>
                     </tr>
                 </table>
                 <table class="form">
                     <tr>
                         <td align="center" class="col1">
-                        &nbsp;<asp:Button ID="btnUpdate" runat="server" class="btn-icon button-search" 
-                                OnClick="btnUpdate_Click" Text="Update" /> 
-                            <asp:Button ID="btnSearch" runat="server" class="btn-icon button-search" Text="Search" OnClick="btnSearch_Click" />
+                            &nbsp;<asp:Button ID="btnUpdate" runat="server" class="btn-icon button-search" OnClick="btnUpdate_Click"
+                                Text="Update" />
+                            <asp:Button ID="btnSearch" runat="server" class="btn-icon button-search" Text="Search"
+                                OnClick="btnSearch_Click" />
                             <asp:Button ID="Button2" runat="server" class="btn-icon button-cancel" OnClientClick="return Cancel();"
                                 Text="Cancel" />
                             <asp:Button ID="btnPrint" runat="server" class="btn-icon button-print" OnClientClick="Print();"

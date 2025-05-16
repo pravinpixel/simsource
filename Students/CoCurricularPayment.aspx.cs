@@ -233,7 +233,7 @@ public partial class Students_CoCurricularPayment : System.Web.UI.Page
         {
             query = "sp_GetPromoStudentInfo " + studentid + "";
         }
-        return utl.GetDatasetTable(query, "StudentInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentInfo").GetXml();
     }
 
 
@@ -243,7 +243,7 @@ public partial class Students_CoCurricularPayment : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSportsInfo " + regno + "," + HttpContext.Current.Session["AcademicID"].ToString();
-        return utl.GetDatasetTable(query, "Sports").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Sports").GetXml();
     }
 
 
@@ -253,7 +253,7 @@ public partial class Students_CoCurricularPayment : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetFineArtsInfo " + regno + "," + HttpContext.Current.Session["AcademicID"].ToString();
-        return utl.GetDatasetTable(query, "FineArts").GetXml();
+        return utl.GetDatasetTable(query,  "others", "FineArts").GetXml();
     }
 
 

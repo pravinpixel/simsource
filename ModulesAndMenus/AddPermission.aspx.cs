@@ -107,7 +107,7 @@ public partial class ModulesAndMenus_AddPermission : System.Web.UI.Page
         else
             sqlstr = "exec sp_GetSubMenu " + id + "";
         DataTable dt = new DataTable();
-        return utl.GetDatasetTable(sqlstr, "SubMenus").GetXml();
+        return utl.GetDatasetTable(sqlstr, "others", "SubMenus").GetXml();
     }
 
     [WebMethod]
@@ -130,11 +130,11 @@ public partial class ModulesAndMenus_AddPermission : System.Web.UI.Page
         Utilities utl = new Utilities();
         string query = "[GetUserPermission_Pager] "+userId+","+menuId+"";
         DataTable dt = new DataTable();
-        DataSet ds = utl.GetDatasetTable(query, "UserPermissions");
+        DataSet ds = utl.GetDatasetTable(query,  "others", "UserPermissions");
         if(ds!=null&&ds.Tables[0].Rows.Count>0)
-        return utl.GetDatasetTable(query, "UserPermissions").GetXml();
+        return utl.GetDatasetTable(query,  "others", "UserPermissions").GetXml();
         else
-            return utl.GetDatasetTable("exec sp_GetModuleMenu ''," + menuId + "," + userId + "", "UserPermissions").GetXml();
+            return utl.GetDatasetTable("exec sp_GetModuleMenu ''," + menuId + "," + userId + "", "others", "UserPermissions").GetXml();
     }
     [WebMethod]
     public static string SavePermission(string query)

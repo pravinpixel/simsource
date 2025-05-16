@@ -249,7 +249,7 @@ public partial class Voucher : System.Web.UI.Page
     public static DataSet GetCashVoucherData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -279,7 +279,7 @@ public partial class Voucher : System.Web.UI.Page
     public static DataSet GetCashVoucherIDData(SqlCommand cmd)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -324,7 +324,7 @@ public partial class Voucher : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetCashVoucher " + "" + CashVoucherID + "";
-        return utl.GetDatasetTable(query, "EditCashVoucher").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditCashVoucher").GetXml();
     }
 
     [WebMethod]
@@ -828,7 +828,7 @@ public partial class Voucher : System.Web.UI.Page
     public static DataSet GetFuelPriceData(SqlCommand cmd)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -848,7 +848,7 @@ public partial class Voucher : System.Web.UI.Page
     public static DataSet GetFuelVoucherData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -878,7 +878,7 @@ public partial class Voucher : System.Web.UI.Page
     public static DataSet GetFuelVoucherIDData(SqlCommand cmd)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -923,7 +923,7 @@ public partial class Voucher : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetFuelVoucher " + "" + FuelVoucherID + "";
-        return utl.GetDatasetTable(query, "EditFuelVoucher").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditFuelVoucher").GetXml();
     }
 
     [WebMethod]
@@ -1024,7 +1024,7 @@ public partial class Voucher : System.Web.UI.Page
     public static DataSet GetCashReturnVoucherData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -1057,7 +1057,7 @@ public partial class Voucher : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetCashRetVoucher " + "" + CashReturnVoucherID + "";
-        return utl.GetDatasetTable(query, "EditCashReturnVoucher").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditCashReturnVoucher").GetXml();
     }
 
     [WebMethod]
@@ -1153,7 +1153,7 @@ public partial class Voucher : System.Web.UI.Page
     public static DataSet GetCashVoucherAmountData(SqlCommand cmd)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

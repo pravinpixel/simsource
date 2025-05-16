@@ -84,7 +84,7 @@ public partial class Promotions_PromotionSearch : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex,string ClassID,string SectionID,string AcademicID)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -137,7 +137,7 @@ public partial class Promotions_PromotionSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Userid + "";
-        ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,  "others", "ModuleMenusByPath");
         return ds.GetXml();
     }
     [WebMethod]
@@ -147,7 +147,7 @@ public partial class Promotions_PromotionSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 
@@ -161,7 +161,7 @@ public partial class Promotions_PromotionSearch : System.Web.UI.Page
         tmp = PromotionID.ToString().Split('-');
         query = "sp_GetPromotionInfo '" + tmp[0].ToString() + "','" + tmp[1].ToString() + "','" + HttpContext.Current.Session["AcademicID"] + "'";
 
-        return utl.GetDatasetTable(query, "ViewPromotionInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ViewPromotionInfo").GetXml();
     }
 
     [WebMethod]

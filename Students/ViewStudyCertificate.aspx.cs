@@ -218,7 +218,7 @@ public partial class Students_ViewStudyCertificate : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "Select isnull(Max(SCId)+ 1,1)as  SerialNo from s_studycertificate";
-        return utl.GetDatasetTable(query, "SCIDs").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SCIDs").GetXml();
 
     }
 

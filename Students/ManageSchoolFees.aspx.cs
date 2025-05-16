@@ -93,7 +93,7 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
     [WebMethod]
     public static string BindAcademicYearMonth(string regNo, string academicId, string editPrm, string delPrm, string btype)
     {
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
 
         StringBuilder str = new StringBuilder();
         DataSet dsManageFees = new DataSet();
@@ -498,8 +498,10 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                 string PaidMonthName = "";
                 string cashmode = "";
                 string cardmode = "";
-                if (PaidMonthRow.Length > 0)
+                if (PaidMonthRow.Length > 1)
                     PaidMonthName = PaidMonthRow[0]["monthname"].ToString() + "," + PaidMonthRow[1]["monthname"].ToString();
+                else
+                    PaidMonthName = PaidMonthRow[0]["monthname"].ToString();
 
                 if (dsManageFees.Tables[dsManageFees.Tables.Count - 2].Rows.Count > 0)
                 {
@@ -585,25 +587,42 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
                     }
                     feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
-                    feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
-                                                    <td class='tdbrd'>Rs. " + cmd.Parameters["@FeesTotalAmt"].Value.ToString() + "</td></tr></table>");
+                    feePOPUPHeadDetails.Append(@"<tr style='Font-size:16px'><td height='30' class='tdbrd'>Total </td>
+                                                    <td class='tdbrd'>Rs. " + feesHeadAmt.ToString() + "</td></tr></table>");
 
                 }
 
                 DataTable dtadv = new DataTable();
                 Utilities utl = new Utilities();
-                dtadv = utl.GetDataTable(@"select a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
-	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
-	  inner join s_studentinfo info on info.RegNo=b.RegNo
-	  inner join f_studentbills d on d.BillId=a.BillId and d.isactive=1
-	  inner join m_feescategoryhead e on e.FeesCatHeadID=d.FeesCatHeadId and e.AcademicId=b.AcademicId
-	  inner join m_feeshead f on f.FeesHeadId=e.FeesHeadId and f.FeesHeadCode='A'
-      WHERE  info.regno = '" + dsManageFees.Tables[2].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + "");
+                string old_academicID = utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+
+                dtadv = utl.GetDataTable(@" select sf.*,convert(varchar(10),a.billdate,103) as datebill,case when Billrefno is null then BillNo else Billrefno end as ReceiptNo  FROM   s_studentinfo info
+	  inner join s_studentpromotion promo on info.RegNo=promo.RegNo
+             INNER JOIN m_feescategory c  
+                     ON info.active = c.feescatcode  
+                        AND c.isactive = 1  
+             INNER JOIN m_feescategoryhead ch on  
+                   ch.academicid = promo.AcademicId
+                        AND promo.classId = ch.classid  
+                        AND ch.isactive = 1  
+             INNER JOIN m_feeshead h  
+                     ON h.feesheadid = ch.feesheadid  
+                        AND h.feesheadcode = 'A'  
+                        AND h.isactive = 1  
+             INNER JOIN f_studentbillmaster sf  
+                     ON sf.regno = info.regno  
+                        AND ch.academicid = sf.academicid  
+                        AND sf.isactive = 1  
+			INNER JOIN f_studentbills sfb  
+                     ON sfb.BillId = sf.BillId  
+                        AND ch.FeesCatHeadID = sfb.FeesCatHeadID  
+                        AND sfb.isactive = 1 
+      WHERE  info.regno = '" + regno.ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + " and promo.AcademicId= '" + old_academicID + "' order by sf.billID desc");
                 if (dtadv != null && dtadv.Rows.Count > 0)
                 {
                     feePOPUPHeadDetails.Append("<tr><td colspan='2' class='billcont'>Remarks:</td></tr>");
                     feePOPUPHeadDetails.Append("<tr><td colspan='2' class='billcont'>Advance Received: " + dtadv.Rows[0]["TotalAmount"].ToString() + "</td></tr>");
-                    feePOPUPHeadDetails.Append("<tr><td colspan='2' class='billcont'>Bill No: " + dtadv.Rows[0]["BillNo"].ToString() + "</td></tr>");
+                    feePOPUPHeadDetails.Append("<tr><td colspan='2' class='billcont'>Bill No: " + dtadv.Rows[0]["ReceiptNo"].ToString() + "</td></tr>");
                     feePOPUPHeadDetails.Append("<tr><td colspan='2' class='billcont'>Bill Date: " + dtadv.Rows[0]["datebill"].ToString() + "</td></tr>");
                     feePOPUPHeadDetails.Append("<tr><td></td></tr>");
                 }
@@ -1117,25 +1136,28 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
                     }
                     feePOPUPHeadDetails.Append(@"</table></div></td></tr>");
-                    feePOPUPHeadDetails.Append(@"<tr class='tlt-rs'><td height='30' class='tdbrd'>Total </td>
+                    feePOPUPHeadDetails.Append(@"<tr style='font-size:16px'><td height='30' class='tdbrd'>Total </td>
                                                     <td class='tdbrd'>Rs. " + Math.Round(Convert.ToDecimal(cmd.Parameters["@FeesTotalAmt"].Value.ToString())) + "</td></tr></table>");
 
                 }
 
                 DataTable dtadv = new DataTable();
                 Utilities utl = new Utilities();
-                dtadv = utl.GetDataTable(@"select a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
+
+               string old_academicID= utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+
+                dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill,case when Billrefno is null then BillNo else Billrefno end as ReceiptNo from f_studentbillmaster a 
 	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
 	  inner join s_studentinfo info on info.RegNo=b.RegNo
 	  inner join f_studentbills d on d.BillId=a.BillId and d.isactive=1
 	  inner join m_feescategoryhead e on e.FeesCatHeadID=d.FeesCatHeadId and e.AcademicId=b.AcademicId
 	  inner join m_feeshead f on f.FeesHeadId=e.FeesHeadId and f.FeesHeadCode='A'
-      WHERE  info.regno = '" + dsManageSchoolFees.Tables[2].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + "");
+      WHERE  info.regno = '" + dsManageSchoolFees.Tables[2].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + " and b.AcademicId= '" + old_academicID + "' order by a.billID desc");
                 if (dtadv != null && dtadv.Rows.Count > 0)
                 {
                     feePOPUPHeadDetails.Append("<tr><td colspan='2'>Remarks:</td></tr>");
                     feePOPUPHeadDetails.Append("<tr><td colspan='2'>Advance Received: " + dtadv.Rows[0]["TotalAmount"].ToString() + "</td></tr>");
-                    feePOPUPHeadDetails.Append("<tr><td colspan='2'>Bill No: " + dtadv.Rows[0]["BillNo"].ToString() + "</td></tr>");
+                    feePOPUPHeadDetails.Append("<tr><td colspan='2'>Bill No: " + dtadv.Rows[0]["ReceiptNo"].ToString() + "</td></tr>");
                     feePOPUPHeadDetails.Append("<tr><td colspan='2'>Bill Date: " + dtadv.Rows[0]["datebill"].ToString() + "</td></tr>");
                     feePOPUPHeadDetails.Append("<tr><td></td></tr>");
                 }
@@ -1533,14 +1555,14 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                     str.Append("<tr class='billcont'><td height='45' style='border-top: 1px solid #000;border-right: 1px solid #000;'>TOTAL</td><td style='border-top:1px solid #000;'><div align='center'>" + dsPrint.Tables[0].Rows[0]["TotalAmount"].ToString() + "</div></td></tr></table></td></tr><br/><br/>");
                     
                      DataTable dtadv=new DataTable();
-
-                     dtadv = utl.GetDataTable(@"select a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
+                     string old_academicID = utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+                     dtadv = utl.GetDataTable(@"select top 1 a.*,convert(varchar(10),a.billdate,103) as datebill from f_studentbillmaster a 
 	  inner join s_studentpromotion b on a.RegNo=b.RegNo  and a.isactive=1
 	  inner join s_studentinfo info on info.RegNo=b.RegNo
 	  inner join f_studentbills d on d.BillId=a.BillId and d.isactive=1
 	  inner join m_feescategoryhead e on e.FeesCatHeadID=d.FeesCatHeadId and e.AcademicId=b.AcademicId
 	  inner join m_feeshead f on f.FeesHeadId=e.FeesHeadId and f.FeesHeadCode='A'
-      WHERE  info.regno = '" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() +"' AND info.academicyear = "+  HttpContext.Current.Session["AcademicID"] +"");
+      WHERE  info.regno = '" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + "  and b.AcademicId= '" + old_academicID + "' order by a.billID desc");
               if (dtadv != null && dtadv.Rows.Count > 0)
               {
                   str.Append("<tr><td colspan='2' class='billcont'>Remarks:</td></tr>");
@@ -1565,7 +1587,7 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                             {
                                 string classID = utl.ExecuteScalar("select class from s_studentinfo where regno = '" + dsPrint.Tables[1].Rows[0]["RegNo"].ToString() + "'");
 
-                                string headID = utl.ExecuteScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + dtbill.Rows[i]["FeesCatHeadId"] + "' and academicID='" + HttpContext.Current.Session["AcademicID"] + "' and ClassID='" + classID + "' and feescategoryID='" + dsPrint.Tables[3].Rows[0]["FeesCategoryID"].ToString() + "' and formonth like '%" + dsPrint.Tables[1].Rows[0]["BillMonth"].ToString() + "%'");
+                                string headID = utl.ExecuteScalar("select feesheadid from m_feescategoryhead where FeesCatHeadID='" + dtbill.Rows[i]["FeesCatHeadId"] + "' and academicID='" + HttpContext.Current.Session["AcademicID"] + "' and ClassID='" + classID + "' and feescategoryID='" + dsPrint.Tables[0].Rows[0]["FeesCategoryID"].ToString() + "' and formonth like '%" + dsPrint.Tables[1].Rows[0]["BillMonth"].ToString() + "%'");
 
                                 DataTable dttax = new DataTable();
                                 dttax = utl.GetDataTable("select a.* from m_tax a  where a.isactive=1 and a.academicid='" + HttpContext.Current.Session["AcademicID"] + "' and a.feeheadid='" + headID + "'");
@@ -1657,6 +1679,8 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
 
                         DataTable dtadv = new DataTable();
 
+                        string old_academicID = utl.ExecuteScalar("select top 1 * from m_academicyear where isactive=0 order by academicID desc ");
+
                         dtadv = utl.GetDataTable(@" select sf.*,convert(varchar(10),billdate,103) as datebill  FROM   s_studentinfo info
 	  inner join s_studentpromotion promo on info.RegNo=promo.RegNo
              INNER JOIN m_feescategory c  
@@ -1664,7 +1688,6 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                         AND c.isactive = 1  
              INNER JOIN m_feescategoryhead ch on  
                    ch.academicid = promo.AcademicId
-                      
                         AND promo.classId = ch.classid  
                         AND ch.isactive = 1  
              INNER JOIN m_feeshead h  
@@ -1679,7 +1702,7 @@ public partial class Students_ManageSchoolFees : System.Web.UI.Page
                      ON sfb.BillId = sf.BillId  
                         AND ch.FeesCatHeadID = sfb.FeesCatHeadID  
                         AND sfb.isactive = 1 
-      WHERE  info.regno = '" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + "");
+      WHERE  info.regno = '" + dsPrint.Tables[0].Rows[0]["RegNo"].ToString() + "' AND info.academicyear = " + HttpContext.Current.Session["AcademicID"] + " and promo.AcademicId= '" + old_academicID + "' order by sf.billID desc");
                         if (dtadv != null && dtadv.Rows.Count > 0)
                         {
                             str.Append("<tr><td colspan='2' class='billcont'>Remarks:</td></tr>");

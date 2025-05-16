@@ -48,7 +48,7 @@ public partial class SMS_ApproveSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "GetUnApprovedSMSList '" + MessageDate + "'";
-        return utl.GetDatasetTable(query, "SMS").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SMS").GetXml();
     }
 
     [WebMethod]
@@ -57,7 +57,7 @@ public partial class SMS_ApproveSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "GetSMSListByType '" + msgType + "','" + ReceiverType + "','" + MsgDate + "'";
-        return utl.GetDatasetTable(query, "SMSList").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SMSList").GetXml();
     }
 
     [WebMethod]

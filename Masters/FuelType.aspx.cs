@@ -62,7 +62,7 @@ public partial class FuelType : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetFuelType " + "" + FuelTypeID + "";
-        return utl.GetDatasetTable(query, "EditFuelType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditFuelType").GetXml();
     }
 
     [WebMethod]
@@ -127,7 +127,7 @@ public partial class FuelType : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

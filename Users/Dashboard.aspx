@@ -52,12 +52,12 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div id="divdashboard" class="grid_10">
        
-        <div class="box round first fullpage">
+        <div  class="box round first fullpage">
             <h2>
                 DashBoard
             </h2>
             <div class="block john-accord content-wrapper2">
-                <div class="grid_12">
+                <div style="display:none"  class="grid_12">
                     <div class="alert info">
                         <span class="icon"></span>
                         <!--<strong>Information</strong>
@@ -69,7 +69,7 @@ Lorem ipsum dolor sit amet. -->
                 </div>
                 <div class="clear">
                 </div>
-                <div class="grid_12">
+                <div style="display:none"  class="grid_12">
                     <div class="isotope_holder indented_area">
                     <asp:PlaceHolder ID="phMenus" runat="server">
                     
@@ -133,7 +133,7 @@ Lorem ipsum dolor sit amet. -->
                 </div>
                 <div class="clear">
                 </div>
-                <div class="grid_12">
+                <div style="display:none"  class="grid_12">
                     <div class="box1">
                         <div class="header">
                             <h3>

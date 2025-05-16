@@ -88,7 +88,7 @@ public partial class Template : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -131,7 +131,7 @@ public partial class Template : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetTemplate " + "" + TemplateID + "";
-        return utl.GetDatasetTable(query, "EditTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditTemplate").GetXml();
     }
 
     [WebMethod]

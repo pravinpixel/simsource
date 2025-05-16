@@ -218,7 +218,7 @@ public partial class AdminMaster : System.Web.UI.MasterPage
             dbSubAnchor.Attributes.Add("id", "-1-1");
             dbSubLI.Controls.Add(dbSubAnchor);
             dbSubUL.Controls.Add(dbSubLI);
-            dbSubAnchor.Attributes.Add("style", "background:#a8bcc8;font-weight:bold;");
+            dbSubAnchor.Attributes.Add("style", "background:#c8d1ff;font-weight:bold;");
 
             dbLi.Controls.Add(dbAnchor);
             dbLi.Controls.Add(dbSubUL);
@@ -229,7 +229,7 @@ public partial class AdminMaster : System.Web.UI.MasterPage
             phSubMenu.Controls.Clear();
             HtmlGenericControl div = (HtmlGenericControl)FindControl("menuDash");
 
-            //dBbtn.Attributes.Add("style", "background:#103D5F");
+            //dBbtn.Attributes.Add("style", "background:#071351");
 
             DataTable dtTable = new DataTable();
             dtTable = (DataTable)ViewState["menuDataTable"];
@@ -270,7 +270,7 @@ public partial class AdminMaster : System.Web.UI.MasterPage
                             subAnchor.HRef = "~/" + drow["ModulePath"].ToString() + "?" + queryString + "";
                             subAnchor.Attributes.Add("id", drow["ParentId"].ToString() + drow["modulemenuid"].ToString());
                             if (oldId == newId)
-                                subAnchor.Attributes.Add("style", "background:#a8bcc8;font-weight:bold;");
+                                subAnchor.Attributes.Add("style", "background:#c8d1ff;font-weight:bold;");
 
                             subLI.Controls.Add(subAnchor);
                             subUL.Controls.Add(subLI);
@@ -345,7 +345,7 @@ public partial class AdminMaster : System.Web.UI.MasterPage
         HtmlAnchor dBbtn = new HtmlAnchor();
         dBbtn.ID = "-1";
         dBbtn.HRef = "~/Users/Dashboard.aspx?moduleId=-1";
-        dBbtn.Attributes.Add("style", "background:#103D5F;");
+        dBbtn.Attributes.Add("style", "background:#071351;");
         dBbtn.Attributes.Add("onclick", "ChangeParentMenuBG('-1')");
       //  dBbtn.Click += new EventHandler(btn_Click);
 

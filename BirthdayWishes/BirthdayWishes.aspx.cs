@@ -96,7 +96,7 @@ public partial class BirthdayWishes_BirthdayWishes : System.Web.UI.Page
         string[] formats = { "dd/MM/yyyy" };
         formattedDate = DateTime.ParseExact(date, formats, new CultureInfo("en-US"), DateTimeStyles.None).ToShortDateString();
         query = "[SP_GETBIRTHDAYLIST] '" + formattedDate + "'";
-        return utl.GetDatasetTable(query, "Birthdays").GetXml();
+        return utl.GetDatasetTable(query, "others", "Birthdays").GetXml();
     }
 
     protected void BindRepeater()

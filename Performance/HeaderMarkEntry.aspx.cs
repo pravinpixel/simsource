@@ -120,7 +120,7 @@ public partial class Performance_HeaderMarkEntry : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetExamTypeByExamName_Filter " + ExamNameID + "," + ClassID + "," + HttpContext.Current.Session["AcademicID"] + "";
-        return utl.GetDatasetTable(query, "ExamTypeByExamName").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ExamTypeByExamName").GetXml();
     }
 
 
@@ -130,14 +130,14 @@ public partial class Performance_HeaderMarkEntry : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetExamNameByType " + ExamNameID+ "," + HttpContext.Current.Session["AcademicID"] + "";
-        return utl.GetDatasetTable(query, "ExamNameByType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ExamNameByType").GetXml();
     }
     [WebMethod]
     public static string GetMaxmarks(string query)
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        return utl.GetDatasetTable(query, "Mark").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Mark").GetXml();
     }
     private void BindDummyRow()
     {
@@ -159,7 +159,7 @@ public partial class Performance_HeaderMarkEntry : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
     }
 
     [WebMethod]
@@ -292,7 +292,7 @@ public partial class Performance_HeaderMarkEntry : System.Web.UI.Page
     //    Utilities utl = new Utilities();
     //    DataSet ds = new DataSet();
     //    string query = "sp_getexamtypes " + ExamTypeID + ","+ HttpContext.Current.Session["AcademicID"];
-    //    return utl.GetDatasetTable(query, "ClassByExamType").GetXml();
+    //    return utl.GetDatasetTable(query,  "others", "ClassByExamType").GetXml();
     //}
 
     

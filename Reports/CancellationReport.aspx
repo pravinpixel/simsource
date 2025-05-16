@@ -17,9 +17,9 @@
                             <div align="center">
                                 <label>
                                     Cancellation Type: &nbsp;</label><asp:DropDownList ID="ddlType" runat="server">
-                                        <asp:ListItem Selected="True" Value="">---Select---</asp:ListItem>
-                                        <asp:ListItem Text="Bus" Value="Bus"></asp:ListItem>
-                                        <asp:ListItem Text="Hostel" Value="Hostel"></asp:ListItem>
+                                        <%--<asp:ListItem Text="Bus" Value="Bus"></asp:ListItem>--%>
+                                        <%--<asp:ListItem Text="Hostel" Value="Hostel"></asp:ListItem>--%>
+                                        <asp:ListItem Text="Sports" Selected="True" Value="Sports"></asp:ListItem>
                                     </asp:DropDownList>
                                 <asp:Button ID="btnSearch" class="btn-icon button-search" Text="Search" runat="server"
                                     OnClick="btnSearch_Click" />&nbsp;

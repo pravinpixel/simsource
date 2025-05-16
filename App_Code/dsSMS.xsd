@@ -2,14 +2,15 @@
 <xs:schema id="dsSMS" targetNamespace="http://tempuri.org/dsSMS.xsd" xmlns:mstns="http://tempuri.org/dsSMS.xsd" xmlns="http://tempuri.org/dsSMS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
-      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="SIMV1ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="SIMV1ConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.SIMV1ConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ASSConnectiontring" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ASSConnectiontring (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ASSConnectiontring.ConnectionString" Provider="System.Data.SqlClient" />
         </Connections>
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="O_MessageTableAdapter" GeneratorDataComponentClassName="O_MessageTableAdapter" Name="O_Message" UserDataComponentName="O_MessageTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="SIMV1ConnectionString (Web.config)" DbObjectName="SIMV8.dbo.GetSMSList" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="ASSConnectiontring (Web.config)" DbObjectName="ASS.dbo.GetSMSList" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
                     <CommandText>dbo.GetSMSList</CommandText>
@@ -36,7 +37,7 @@
   <xs:element name="dsSMS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="dsSMS" msprop:Generator_UserDSName="dsSMS">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="O_Message" msprop:Generator_TableClassName="O_MessageDataTable" msprop:Generator_TableVarName="tableO_Message" msprop:Generator_TablePropName="O_Message" msprop:Generator_RowDeletingName="O_MessageRowDeleting" msprop:Generator_UserTableName="O_Message" msprop:Generator_RowChangingName="O_MessageRowChanging" msprop:Generator_RowEvHandlerName="O_MessageRowChangeEventHandler" msprop:Generator_RowDeletedName="O_MessageRowDeleted" msprop:Generator_RowEvArgName="O_MessageRowChangeEvent" msprop:Generator_RowChangedName="O_MessageRowChanged" msprop:Generator_RowClassName="O_MessageRow">
+        <xs:element name="O_Message" msprop:Generator_TableClassName="O_MessageDataTable" msprop:Generator_TableVarName="tableO_Message" msprop:Generator_RowChangedName="O_MessageRowChanged" msprop:Generator_TablePropName="O_Message" msprop:Generator_RowDeletingName="O_MessageRowDeleting" msprop:Generator_RowChangingName="O_MessageRowChanging" msprop:Generator_RowEvHandlerName="O_MessageRowChangeEventHandler" msprop:Generator_RowDeletedName="O_MessageRowDeleted" msprop:Generator_RowClassName="O_MessageRow" msprop:Generator_UserTableName="O_Message" msprop:Generator_RowEvArgName="O_MessageRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="MessageType" msprop:Generator_ColumnVarNameInTable="columnMessageType" msprop:Generator_ColumnPropNameInRow="MessageType" msprop:Generator_ColumnPropNameInTable="MessageTypeColumn" msprop:Generator_UserColumnName="MessageType" minOccurs="0">

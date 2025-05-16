@@ -58,13 +58,34 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
                 Session["strSubjectID"] = "";
                 BindTemplate();
                 BindClass();
-
+                BindType();
                 utl = new Utilities();
                 utl.ExecuteQuery("DeleteDuplicate '" + AcademicID + "'");
                 DataTable dtSchool = new DataTable();
                 dtSchool = utl.GetDataTable("exec sp_schoolDetails");
                 ReportParameter Schoolname = new ReportParameter("Schoolname", dtSchool.Rows[0]["SchoolName"].ToString());
             }
+        }
+    }
+
+    private void BindType()
+    {
+        utl = new Utilities();
+        DataSet dsType = new DataSet();
+        dsType = utl.GetDataset("select distinct title,AcademicId from s_Certificate order by AcademicId desc");
+        if (dsType != null && dsType.Tables.Count > 0 && dsType.Tables[0].Rows.Count > 0)
+        {
+            ddlType.DataSource = dsType.Tables[0];
+            ddlType.DataTextField = "title";
+            ddlType.DataValueField = "title";
+            ddlType.DataBind();
+        }
+        else
+        {
+            ddlType.DataSource = null;
+            ddlType.DataTextField = "";
+            ddlType.DataValueField = "";
+            ddlType.DataBind();
         }
     }
 
@@ -228,7 +249,7 @@ public partial class Performance_CertificateReport : System.Web.UI.Page
         if (Session["strCompfor"].ToString() != "")
         {
 
-            sqlstr = "[sp_GetStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','"+ txtSearch.Text +"'";
+            sqlstr = "[sp_GetStudentCertificateInfoByTemplate] '" + AcademicID + "','" + ddlClass.SelectedValue + "','" + ddlSection.SelectedValue + "'," + "'" + ddlTmp.SelectedValue + "'" + ",'" + ddlPrint.SelectedValue + "','" + ddlType.Text + "','" + txtSearch.Text + "'";
             dsGet = utl.GetDataset(sqlstr);
         }
         if (dsGet != null && dsGet.Tables.Count > 0 && dsGet.Tables[0].Rows.Count > 0)

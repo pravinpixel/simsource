@@ -2,14 +2,15 @@
 <xs:schema id="dsFeesBudget" targetNamespace="http://tempuri.org/dsFeesBudget.xsd" xmlns:mstns="http://tempuri.org/dsFeesBudget.xsd" xmlns="http://tempuri.org/dsFeesBudget.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
-      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="SIMV1ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="SIMV1ConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.SIMV1ConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ASSConnectiontring" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ASSConnectiontring (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ASSConnectiontring.ConnectionString" Provider="System.Data.SqlClient" />
         </Connections>
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vw_FeesBudgetTableAdapter" GeneratorDataComponentClassName="vw_FeesBudgetTableAdapter" Name="vw_FeesBudget" UserDataComponentName="vw_FeesBudgetTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="SIMV1ConnectionString (Web.config)" DbObjectName="SIMV6.dbo.sp_FeesBudget" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="ASSConnectiontring (Web.config)" DbObjectName="ASS.dbo.sp_FeesBudget" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
                     <CommandText>dbo.sp_FeesBudget</CommandText>
@@ -40,7 +41,7 @@
   <xs:element name="dsFeesBudget" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="dsFeesBudget" msprop:Generator_UserDSName="dsFeesBudget">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="vw_FeesBudget" msprop:Generator_TableClassName="vw_FeesBudgetDataTable" msprop:Generator_TableVarName="tablevw_FeesBudget" msprop:Generator_TablePropName="vw_FeesBudget" msprop:Generator_RowDeletingName="vw_FeesBudgetRowDeleting" msprop:Generator_UserTableName="vw_FeesBudget" msprop:Generator_RowChangingName="vw_FeesBudgetRowChanging" msprop:Generator_RowEvHandlerName="vw_FeesBudgetRowChangeEventHandler" msprop:Generator_RowDeletedName="vw_FeesBudgetRowDeleted" msprop:Generator_RowEvArgName="vw_FeesBudgetRowChangeEvent" msprop:Generator_RowChangedName="vw_FeesBudgetRowChanged" msprop:Generator_RowClassName="vw_FeesBudgetRow">
+        <xs:element name="vw_FeesBudget" msprop:Generator_TableClassName="vw_FeesBudgetDataTable" msprop:Generator_TableVarName="tablevw_FeesBudget" msprop:Generator_RowChangedName="vw_FeesBudgetRowChanged" msprop:Generator_TablePropName="vw_FeesBudget" msprop:Generator_RowDeletingName="vw_FeesBudgetRowDeleting" msprop:Generator_RowChangingName="vw_FeesBudgetRowChanging" msprop:Generator_RowEvHandlerName="vw_FeesBudgetRowChangeEventHandler" msprop:Generator_RowDeletedName="vw_FeesBudgetRowDeleted" msprop:Generator_RowClassName="vw_FeesBudgetRow" msprop:Generator_UserTableName="vw_FeesBudget" msprop:Generator_RowEvArgName="vw_FeesBudgetRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Classname" msprop:Generator_ColumnVarNameInTable="columnClassname" msprop:Generator_ColumnPropNameInRow="Classname" msprop:Generator_ColumnPropNameInTable="ClassnameColumn" msprop:Generator_UserColumnName="Classname">

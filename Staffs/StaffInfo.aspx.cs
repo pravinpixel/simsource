@@ -1049,7 +1049,7 @@ public partial class StaffInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStaffRelationInfo " + "''" + "," + "''" + "," + "" + StaffID + "";
-        return utl.GetDatasetTable(query, "StaffRelations").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StaffRelations").GetXml();
     }
     [WebMethod]
     public static string EditStaffRelationInfo(int StaffRelID, string Relationship)
@@ -1058,7 +1058,7 @@ public partial class StaffInfo : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         string query = "sp_GetStaffRelationInfo " + StaffRelID + ",'" + Relationship + "'" + "," + "''";
-        return utl.GetDatasetTable(query, "StaffRelation").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StaffRelation").GetXml();
     }
     [WebMethod]
     public static string UpdateStaffRelativeDetails(string staffId, string RelationID, string Relationship, string StaffRelId)
@@ -1536,21 +1536,21 @@ public partial class StaffInfo : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         string query = "sp_GetStaffFamilyById " + StaffFamilyId + "";
-        return utl.GetDatasetTable(query, "EditFamily").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditFamily").GetXml();
     }
     [WebMethod]
     public static string GetFamilyDetails(int staffId)
     {
         Utilities utl = new Utilities();
         string query = "[GetStaffFamilyById] " + staffId + "";
-        return utl.GetDatasetTable(query, "Family").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Family").GetXml();
     }
     [WebMethod]
     public static string GetNomineeDetails(int staffId)
     {
         Utilities utl = new Utilities();
         string query = "GetStaffNomineeById " + staffId + "";
-        return utl.GetDatasetTable(query, "Nominee").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Nominee").GetXml();
     }
     [WebMethod]
     public static string GetLeaveDetails(string staffId, string academicId, string staffLeaveId)
@@ -1562,7 +1562,7 @@ public partial class StaffInfo : System.Web.UI.Page
         else
             query = "[sp_GetStaffLeaveId] '',''," + staffLeaveId + "";
 
-        return utl.GetDatasetTable(query, "Leave").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Leave").GetXml();
     }
     [WebMethod]
     public static string GetRemarkDetails(string staffId)
@@ -1570,7 +1570,7 @@ public partial class StaffInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         string query = string.Empty;
         query = "[sp_GetStaffRemark] " + staffId + "";
-        return utl.GetDatasetTable(query, "Remark").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Remark").GetXml();
     }
     [WebMethod]
     public static string GetPunishDetails(string staffId)
@@ -1578,7 +1578,7 @@ public partial class StaffInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         string query = string.Empty;
         query = "[sp_GetStaffPunish] " + staffId + "";
-        return utl.GetDatasetTable(query, "Punish").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Punish").GetXml();
     }
     [WebMethod]
     public static string GetRetireDetails(string staffId)
@@ -1586,7 +1586,7 @@ public partial class StaffInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         string query = string.Empty;
         query = "[sp_GetStaffRetire] " + staffId + "";
-        return utl.GetDatasetTable(query, "Retire").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Retire").GetXml();
     }
     [WebMethod]
     public static string GetPersonalDetails(string staffId)
@@ -1594,7 +1594,7 @@ public partial class StaffInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         string query = string.Empty;
         query = "[sp_GetStaffPersonalInfo] " + staffId + "";
-        return utl.GetDatasetTable(query, "Personal").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Personal").GetXml();
     }
     [WebMethod]
     public static string GetAcademicDetails(string staffId, string staffAcdId)
@@ -1608,7 +1608,7 @@ public partial class StaffInfo : System.Web.UI.Page
             staffAcdId = "''";
 
         query = "[sp_GetStaffAcademicInfo] " + staffId + "," + staffAcdId + "";
-        return utl.GetDatasetTable(query, "Academic").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Academic").GetXml();
     }
     [WebMethod]
     public static string GetCourseDetails(string staffId)
@@ -1616,7 +1616,7 @@ public partial class StaffInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         string query = string.Empty;
         query = "[sp_GetStaffCourseInfo] " + staffId + "";
-        return utl.GetDatasetTable(query, "StaffCourse").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StaffCourse").GetXml();
     }
     [WebMethod]
     public static string GetMedicalRemarks(string staffId)
@@ -1625,7 +1625,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "[sp_GetStaffMedicalRecords] " + staffId + "";
 
-        return utl.GetDatasetTable(query, "MedicalRecords").GetXml();
+        return utl.GetDatasetTable(query,  "others", "MedicalRecords").GetXml();
     }
     [WebMethod]
     public static string GetSubjectDetails(string staffId)
@@ -1634,7 +1634,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "[sp_GetStaffSubjectDetails] " + staffId + "";
 
-        return utl.GetDatasetTable(query, "SubjectDetails").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SubjectDetails").GetXml();
     }
     [WebMethod]
     public static string GetLangKnown(string staffId)
@@ -1643,7 +1643,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "sp_GetStaffLangKnownDetails " + staffId + "";
 
-        return utl.GetDatasetTable(query, "LangKnownDetails").GetXml();
+        return utl.GetDatasetTable(query,  "others", "LangKnownDetails").GetXml();
     }
     [WebMethod]
     public static string GetServiceDetails(string staffId)
@@ -1652,7 +1652,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "[sp_GetServiceAppDetails] " + staffId + "";
 
-        return utl.GetDatasetTable(query, "Service").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Service").GetXml();
     }
     [WebMethod]
     public static string GetCareerDetails(string staffId, string staffCareerServiceId)
@@ -1667,7 +1667,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "[sp_GetStaffCareerDetails] " + staffId + "," + staffCareerServiceId + "";
 
-        return utl.GetDatasetTable(query, "CareerService").GetXml();
+        return utl.GetDatasetTable(query,  "others", "CareerService").GetXml();
     }
     [WebMethod]
     public static string GetInvDetails(string staffId, string staffExtInvId)
@@ -1682,7 +1682,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "[sp_GetStaffInvigilationDetails] " + staffId + "," + staffExtInvId + "";
 
-        return utl.GetDatasetTable(query, "InvService").GetXml();
+        return utl.GetDatasetTable(query,  "others", "InvService").GetXml();
     }
     [WebMethod]
     public static string GetResignDetails(string staffId)
@@ -1691,7 +1691,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "[sp_GetStaffResignDetails] " + staffId + "";
 
-        return utl.GetDatasetTable(query, "Resign").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Resign").GetXml();
     }
     [WebMethod]
     public static string EditServiceDetails(string staffServiceId)
@@ -1700,7 +1700,7 @@ public partial class StaffInfo : System.Web.UI.Page
         string query = string.Empty;
         query = "[sp_GetServiceAppDetails] '', " + staffServiceId + "";
 
-        return utl.GetDatasetTable(query, "EditService").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditService").GetXml();
     }
     [WebMethod]
     public static string DeleteAcademicDetails(int userId, int staffAcdId)
@@ -1893,7 +1893,7 @@ public partial class StaffInfo : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetStaffGeneralAttachmentInfo " + staffId + "";
-        return utl.GetDatasetTable(query, "Attachment").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Attachment").GetXml();
     }
 
    

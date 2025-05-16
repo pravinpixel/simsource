@@ -125,7 +125,7 @@ public partial class BusSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMessageTemplate " + "" + MessTempID + "";
-        return utl.GetDatasetTable(query, "GetMessageTemplate").GetXml();
+        return utl.GetDatasetTable(query,  "others", "GetMessageTemplate").GetXml();
     }
     
 
@@ -172,7 +172,7 @@ public partial class BusSMS : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
     [WebMethod]
@@ -197,7 +197,7 @@ public partial class BusSMS : System.Web.UI.Page
         query = "[sp_busroutelist] " + Bus + "," + Busroute + "," + HttpContext.Current.Session["AcademicID"].ToString() + "," + classId + "," + sectionId + "";
 
 
-        return utl.GetDatasetTable(query, "StudentBySection").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentBySection").GetXml();
     }
 
 

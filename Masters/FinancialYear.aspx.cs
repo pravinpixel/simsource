@@ -49,7 +49,7 @@ public partial class FinancialYear : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -92,7 +92,7 @@ public partial class FinancialYear : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetFinancialYear " + "" + FinancialID + "";
-        return utl.GetDatasetTable(query, "EditFinancialYear").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditFinancialYear").GetXml();
     }
 
     [WebMethod]

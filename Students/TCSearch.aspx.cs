@@ -272,7 +272,7 @@ public partial class Students_TCSearch : System.Web.UI.Page
             query = "[sp_getPromoStudentByDup]" + dupYear + ",'" + dupClass + "','" + dupSection + "'";
         }
 
-        return utl.GetDatasetTable(query, "Students").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Students").GetXml();
 
     }
 
@@ -283,7 +283,7 @@ public partial class Students_TCSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 
@@ -303,7 +303,7 @@ public partial class Students_TCSearch : System.Web.UI.Page
         {
             query = "sp_GetPromoStudentBySection '" + Class + "','" + Section + "'";
         }
-        return utl.GetDatasetTable(query, "Students").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Students").GetXml();
     }
 
 
@@ -313,7 +313,7 @@ public partial class Students_TCSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuId '" + path + "'," + UserId;
-        return utl.GetDatasetTable(query, "ModuleMenu").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ModuleMenu").GetXml();
     }
     [WebMethod]
     public static string GetFeePendingList(string RegNo, string Active, string AcademicId)
@@ -352,7 +352,16 @@ public partial class Students_TCSearch : System.Web.UI.Page
             query = "sp_PromoTCSendForApporval " + RegNo + "," + AcademicId + "," + userId;
         }
         string strError = utl.ExecuteQuery(query);
-
+        string icnt = "";
+        icnt = utl.ExecuteScalar("select count(*) from s_studentpromotion where regno='" + RegNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        if (icnt == "" || icnt == "0")
+        {
+            utl.ExecuteQuery("insert into s_studentpromotion(RegNo,AcademicId,ClassId,SectionId,UserId) (select regno,Class,Section,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo  where regno='" + RegNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "')");
+        }
+        else
+        {
+            utl.ExecuteQuery("update s_studentpromotion set active='O' where regno='" + RegNo + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+        }
         if (strError == string.Empty)
             return "1";
         else
@@ -654,6 +663,8 @@ public partial class Students_TCSearch : System.Web.UI.Page
 
             sqlstr = "select isactive from m_academicyear where AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
             Isactive = utls.ExecuteScalar(sqlstr);
+            medicalCheckup = "1";
+
             if (Isactive == "True")
             {
                 query = "SP_UPDATETCDETAILS1 '', " + academicId + ",'" + tcSlno + "','" + leaveOfStudy + "','" + promotionText + "','" + medicalCheckup + "','" + lDate + "','" + conduct + "','" + aDate + "','" + tcDate + "','" + courseofStudy + "',0," + userId + ",'False'," + classId + "," + sectionId + "";

@@ -6,7 +6,12 @@ margin-bottom: 0px;
 size:11.69in8.5in;
 }                          
 
- 
+.signature img
+        {
+             max-width: inherit;
+        }
+        
+img{display:block !important;}
 .pagebreakhere {display: block; page-break-before: always;}
 
 

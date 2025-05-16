@@ -80,7 +80,7 @@ public partial class Students_TransferCertificate : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuId '" + path + "'," + UserId;
-        return utl.GetDatasetTable(query, "ModuleMenu").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ModuleMenu").GetXml();
     }
     [WebMethod]
     public static string SendForApporval(string RegNo, string AcademicId, string userId)
@@ -316,7 +316,17 @@ public partial class Students_TransferCertificate : System.Web.UI.Page
 
             query = "update s_studenttc set TCSlno=convert(varchar(10),'" + Icnt + "')+ ' / ' + '" + AcademicYear + "',ApproveStatus=null   where academicID='" + HttpContext.Current.Session["AcademicID"] + "' and tcID='" + Slno + "'";
             strError = utl.ExecuteScalar(query);
-        
+
+            string icnt = "";
+            icnt = utl.ExecuteScalar("select count(*) from s_studentpromotion where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+            if (icnt == "" || icnt == "0")
+            {
+                utl.ExecuteQuery("insert into s_studentpromotion(RegNo,AcademicId,ClassId,SectionId,UserId) (select regno,Class,Section,BusFacility,Concession,Hostel,Scholar,academicyear,Active,1 from s_studentinfo  where regno='" + regNo + "' and AcademicId='" + HttpContext.Current.Session["AcademicID"].ToString() + "')");
+            }
+            else
+            {
+                utl.ExecuteQuery("update s_studentpromotion set active='O' where regno='" + regNo + "' and AcademicID='" + HttpContext.Current.Session["AcademicID"].ToString() + "'");
+            }
         if (strError == string.Empty)
             return isPrint;
         else

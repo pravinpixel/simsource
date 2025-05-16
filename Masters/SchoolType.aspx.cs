@@ -65,7 +65,7 @@ public partial class SchoolType : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSchoolCategory " + "" + SchoolTypeID + "";
-        return utl.GetDatasetTable(query, "EditSchoolType").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditSchoolType").GetXml();
     }
 
     [WebMethod]
@@ -131,7 +131,7 @@ public partial class SchoolType : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())

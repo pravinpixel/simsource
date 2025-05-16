@@ -466,19 +466,19 @@ html body * span.clear, html body * div.clear, html body * li.clear, html body *
     font-weight:bold;
     display: inline-block;
     width: 40px;
-    background-color: #8f8f8f;
+    background-color: #071351;
     margin-right: 3px;
     line-height: 150%;
-    border: 1px solid #8f8f8f;
+    border: 1px solid #071351;
 }
 .Pager a
 {
     text-align: center;
     display: inline-block;
     width: 40px;
-    background-color: #8f8f8f;
+    background-color: #071351;
     color: #fff;
-    border: 1px solid #8f8f8f;
+    border: 1px solid #071351;
     margin-right: 3px;
     line-height: 150%;
     text-decoration: none;
@@ -488,9 +488,9 @@ ul.menu li .Pager a
     text-align: center;
     display: inline-block;
     width: 40px;
-    background-color: #8f8f8f;
+    background-color: #071351;
     color: #fff;
-    border: 1px solid #8f8f8f;
+    border: 1px solid #071351;
     margin-right: 3px;
     line-height: 150%;
     text-decoration: none;
@@ -501,9 +501,9 @@ ul.section ul.current li .Pager a
     text-align: center;
     display: inline-block;
     width: 40px;
-    background-color: #8f8f8f;
+    background-color: #071351;
     color: #fff;
-    border: 1px solid #8f8f8f;
+    border: 1px solid #071351;
     margin-right: 3px;
     line-height: 150%;
     text-decoration: none;
@@ -513,15 +513,15 @@ ul.section ul.current li .Pager  a
 	    text-align: center;
     display: inline-block;
     width: 40px;
-    background-color: #8f8f8f;
+    background-color: #071351;
     color: #fff;
-    border: 1px solid #8f8f8f;
+    border: 1px solid #071351;
     margin-right: 3px;
     line-height: 150%;
     text-decoration: none;
 }
 
 ul.section ul.current li .Pager a:hover {
-	  background-color: #8f8f8f;
+	  background-color: #071351;
 	  color:#000;
 }

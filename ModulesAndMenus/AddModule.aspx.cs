@@ -61,7 +61,7 @@ public partial class ModulesAndMenus_AddModule : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModule " + "" + moduleId + "";
-        return utl.GetDatasetTable(query,"EditModules").GetXml();
+        return utl.GetDatasetTable(query, "others", "EditModules").GetXml();
     }
 
     [WebMethod]

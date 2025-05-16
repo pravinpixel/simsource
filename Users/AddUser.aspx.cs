@@ -80,7 +80,7 @@ public partial class Users_AddUser : System.Web.UI.Page
 
         if (dt != null && dt.Rows.Count > 0)
         {
-            return utl.GetDatasetTable(query, "Employees").GetXml();
+            return utl.GetDatasetTable(query,  "others", "Employees").GetXml();
         }
         else
         {
@@ -97,7 +97,7 @@ public partial class Users_AddUser : System.Web.UI.Page
         Utilities1 utl1 = new Utilities1();
         string query = "[sp_GetEmployee] '','" + staffName.Trim() + "'";
 
-        DataSet ds = utl.GetDatasetTable(query, "Employee");
+        DataSet ds = utl.GetDatasetTable(query,  "others", "Employee");
         DataSet ds1 = utl1.GetDatasetTable(query, "Employee");
 
         ds.Merge(ds1);
@@ -308,7 +308,7 @@ public partial class Users_AddUser : System.Web.UI.Page
     {
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
-        ds = utl.GetDatasetTable("Exec sp_GetEmployeeForAddUser", "Employees");
+        ds = utl.GetDatasetTable("Exec sp_GetEmployeeForAddUser", "others", "Employees");
         return ds.GetXml();
     }
 }

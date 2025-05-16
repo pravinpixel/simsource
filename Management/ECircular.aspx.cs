@@ -102,7 +102,7 @@ public partial class Management_ECircular : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -132,7 +132,7 @@ public partial class Management_ECircular : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetECircularLog '" + ECircularID + "'";
-        ds = utl.GetDatasetTable(query, "ECircularLog");
+        ds = utl.GetDatasetTable(query,"others",  "ECircularLog");
         return ds.GetXml();
 
     }
@@ -155,7 +155,7 @@ public partial class Management_ECircular : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Userid + "";
-        ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,"others",  "ModuleMenusByPath");
         return ds.GetXml();
     }
 
@@ -165,7 +165,7 @@ public partial class Management_ECircular : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetECircular " + "" + ECircularID + "";
-        return utl.GetDatasetTable(query, "EditECircularInfo").GetXml();
+        return utl.GetDatasetTable(query,"others",  "EditECircularInfo").GetXml();
     }
     [WebMethod]
     public static string EditECircularInfo(int ECircularID)
@@ -173,7 +173,7 @@ public partial class Management_ECircular : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetECircular " + "" + ECircularID + "";
-        return utl.GetDatasetTable(query, "EditECircular").GetXml();
+        return utl.GetDatasetTable(query,"others",  "EditECircular").GetXml();
     }
 
     [WebMethod]

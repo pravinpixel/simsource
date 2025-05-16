@@ -83,7 +83,7 @@ public class IUser
 
     private static Object ExecuteScalarCmd(SqlCommand sqlCmd)
     {
-        string ConnectionString = ConfigurationManager.AppSettings["SIMConnection"];
+        string ConnectionString = ConfigurationManager.AppSettings["ASSConnection"];
         // Validate Command Properties
         if (ConnectionString == string.Empty)
             throw (new ArgumentOutOfRangeException("ConnectionString"));

@@ -106,7 +106,7 @@ public partial class Students_ViewTransferCertificate : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuId '" + path + "'," + UserId;
-        return utl.GetDatasetTable(query, "ModuleMenu").GetXml();
+        return utl.GetDatasetTable(query,  "others", "ModuleMenu").GetXml();
     }
 
 

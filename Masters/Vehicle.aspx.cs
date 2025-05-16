@@ -104,7 +104,7 @@ public partial class Vehicle : System.Web.UI.Page
     public static DataSet GetServiceData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -149,7 +149,7 @@ public partial class Vehicle : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetVehicle ";
-        return utl.GetDatasetTable(query, "Vehicle").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Vehicle").GetXml();
     }
 
     [WebMethod]
@@ -158,7 +158,7 @@ public partial class Vehicle : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetService " + "" + ServiceID + "";
-        return utl.GetDatasetTable(query, "EditService").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditService").GetXml();
     }
 
     [WebMethod]
@@ -234,7 +234,7 @@ public partial class Vehicle : System.Web.UI.Page
     public static DataSet GetVehicleData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -278,7 +278,7 @@ public partial class Vehicle : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetVehicle " + "" + VehicleID + "";
-        return utl.GetDatasetTable(query, "EditVehicle").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditVehicle").GetXml();
     }
 
     [WebMethod]

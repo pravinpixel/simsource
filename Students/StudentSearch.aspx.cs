@@ -187,7 +187,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
                             dts = utl.GetDataTable("select top 1 * from f_studentbillmaster where RegNo ='" + regno.ToString().Trim() + "' and AcademicId='" + dtss.Rows[0]["academicyear"].ToString().Trim() + "' and isactive=1 order by billid asc");
                             if (dts.Rows.Count > 0)
                             {
-                                utl.ExecuteQuery("update a set a.feescatheadid=f.feescatheadid from f_studentbills as  a inner join f_studentbillmaster  as b on a.billid=b.billid  inner join s_studentinfo e on e.regno=b.regno and e.AcademicYear=b.AcademicId inner join m_feescategory g on e.Active=g.FeesCatCode  inner join m_feescategoryhead c on c.feescatheadid=a.feescatheadid  inner join m_feeshead d  on d.feesheadid=c.feesheadid left join m_feescategoryhead f on (e.class=f.classid and f.feesheadid=c.feesheadid   and f.FeesCategoryId=g.FeesCategoryId  and e.AcademicYear=f.AcademicId) where e.regno='" + regno.ToString() + "' and b.BillId=" + dts.Rows[0]["billid"].ToString().Trim() + "  and  e.AcademicYear='" + dtss.Rows[0]["academicyear"].ToString() + "' ");
+                                utl.ExecuteQuery("update a set a.feescatheadid=f.feescatheadid from f_studentbills as a inner join f_studentbillmaster  as b on a.billid=b.billid  inner join s_studentinfo e on e.regno=b.regno and e.AcademicYear=b.AcademicId inner join m_feescategory g on e.Active=g.FeesCatCode  inner join m_feescategoryhead c on c.feescatheadid=a.feescatheadid  inner join m_feeshead d  on d.feesheadid=c.feesheadid left join m_feescategoryhead f on (e.class=f.classid and f.feesheadid=c.feesheadid   and f.FeesCategoryId=g.FeesCategoryId  and e.AcademicYear=f.AcademicId) where e.regno='" + regno.ToString() + "' and b.BillId=" + dts.Rows[0]["billid"].ToString().Trim() + "  and  e.AcademicYear='" + dtss.Rows[0]["academicyear"].ToString() + "' ");
                             }
                         }
                        // return;
@@ -224,7 +224,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
             query = "sp_GetPromoStudentInfo " + HttpContext.Current.Session["AcademicID"] + ",'', '" + RegNo + "','" + StudentName + "'";
         }
 
-        return utl.GetDatasetTable(query, "Student").GetXml();
+        return utl.GetDatasetTable(query,"others",  "Student").GetXml();
     }
     private void BindAcademicYear()
     {
@@ -295,7 +295,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -369,7 +369,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Userid + "";
-        ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,"others",  "ModuleMenusByPath");
         return ds.GetXml();
     }
     [WebMethod]
@@ -379,7 +379,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 
@@ -400,7 +400,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
             query = "sp_GetPromoStudentBySection '" + Class + "','" + Section + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
         }
 
-        return utl.GetDatasetTable(query, "StudentBySection").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentBySection").GetXml();
 
     }
 
@@ -420,7 +420,7 @@ public partial class Students_StudentSearch : System.Web.UI.Page
         {
             query = "sp_GetPromoStudentInfo " + HttpContext.Current.Session["AcademicID"] + ",'" + StudentInfoID + "'";
         }
-        return utl.GetDatasetTable(query, "EditStudentInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditStudentInfo").GetXml();
     }
 
     [WebMethod]

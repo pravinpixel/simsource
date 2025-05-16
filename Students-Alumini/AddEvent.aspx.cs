@@ -72,7 +72,7 @@ public partial class AddEvent : System.Web.UI.Page
 
         query = "sp_GetEventInfo " + eventID + "";
 
-        return utl.GetDatasetTable(query, "EventInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EventInfo").GetXml();
     }
 
     [WebMethod]

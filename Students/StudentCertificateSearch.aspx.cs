@@ -59,7 +59,7 @@ public partial class Students_StudentCertificateSearch : System.Web.UI.Page
             query = "sp_GetPromoStudentInfo " + HttpContext.Current.Session["AcademicID"] + ",'', '" + RegNo + "','" + StudentName + "'";
         }
 
-        return utl.GetDatasetTable(query, "Student").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Student").GetXml();
     }
     private void BindAcademicYear()
     {
@@ -130,7 +130,7 @@ public partial class Students_StudentCertificateSearch : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -223,7 +223,7 @@ public partial class Students_StudentCertificateSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetModuleMenuIdByPath '" + path + "'," + Userid + "";
-        ds = utl.GetDatasetTable(query, "ModuleMenusByPath");
+        ds = utl.GetDatasetTable(query,  "others", "ModuleMenusByPath");
         return ds.GetXml();
     }
     [WebMethod]
@@ -233,7 +233,7 @@ public partial class Students_StudentCertificateSearch : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetSectionByClass " + ClassID;
-        return utl.GetDatasetTable(query, "SectionByClass").GetXml();
+        return utl.GetDatasetTable(query,  "others", "SectionByClass").GetXml();
 
     }
 
@@ -254,7 +254,7 @@ public partial class Students_StudentCertificateSearch : System.Web.UI.Page
             query = "sp_GetPromoStudentBySection '" + Class + "','" + Section + "','" + HttpContext.Current.Session["AcademicID"].ToString() + "'";
         }
 
-        return utl.GetDatasetTable(query, "StudentBySection").GetXml();
+        return utl.GetDatasetTable(query,  "others", "StudentBySection").GetXml();
 
     }
 
@@ -274,7 +274,7 @@ public partial class Students_StudentCertificateSearch : System.Web.UI.Page
         {
             query = "sp_GetPromoStudentInfo " + HttpContext.Current.Session["AcademicID"] + ",'" + StudentInfoID + "'";
         }
-        return utl.GetDatasetTable(query, "EditStudentInfo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditStudentInfo").GetXml();
     }
 
     [WebMethod]

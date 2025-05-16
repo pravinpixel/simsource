@@ -118,6 +118,10 @@
                             </asp:DropDownList>
                         </td>
                         <td align="left">
+                         <label>
+                                Name : &nbsp;</label>
+                            <asp:DropDownList ID="ddlType" runat="server">
+                            </asp:DropDownList>
                            </td>
                         <td align="left">
                         <label>

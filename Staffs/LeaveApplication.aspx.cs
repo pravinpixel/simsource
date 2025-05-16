@@ -133,7 +133,7 @@ public partial class Staffs_LeaveApplication : System.Web.UI.Page
         else
             query = "[sp_GetStaffLeaveId] '',''," + staffLeaveId + "";
 
-        return utl.GetDatasetTable(query, "Leave").GetXml();
+        return utl.GetDatasetTable(query,  "others", "Leave").GetXml();
     }
     [WebMethod]
     public static string UpdateLeaveDetails(string staffId, string acdYear, string leaveId, string reason, string from, string to, string noOfLeave, string fileName, string filePath, string userId, string staffLeaveId)

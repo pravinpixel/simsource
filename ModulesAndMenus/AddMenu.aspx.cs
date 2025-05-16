@@ -83,7 +83,7 @@ public partial class AddMenu : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetMenu " + "" + menuId + "";
-        return utl.GetDatasetTable(query, "EditMenus").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditMenus").GetXml();
     }
 
     [WebMethod]
@@ -150,7 +150,7 @@ public partial class AddMenu : System.Web.UI.Page
         Utilities utl = new Utilities();
         string sqlstr = "exec sp_GetMenu '',0";
         DataSet ds = new DataSet();
-        ds = utl.GetDatasetTable(sqlstr, "DropDownMenus");
+        ds = utl.GetDatasetTable(sqlstr, "others", "DropDownMenus");
         return ds.GetXml();
     }
 }

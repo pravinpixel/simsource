@@ -75,7 +75,7 @@ public partial class BusRoute : System.Web.UI.Page
     public static DataSet GetData(SqlCommand cmd, int pageIndex)
     {
 
-        string strConnString = ConfigurationManager.AppSettings["SIMConnection"].ToString();
+        string strConnString = ConfigurationManager.AppSettings["ASSConnection"].ToString();
         using (SqlConnection con = new SqlConnection(strConnString))
         {
             using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -118,7 +118,7 @@ public partial class BusRoute : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetBusRoute " + BusRouteID + "," + "''" + "";
-        return utl.GetDatasetTable(query, "EditBusRoute").GetXml();
+        return utl.GetDatasetTable(query,  "others", "EditBusRoute").GetXml();
     }
     [WebMethod]
     public static string GetRegisterNo(int VehicleID)
@@ -126,7 +126,7 @@ public partial class BusRoute : System.Web.UI.Page
         Utilities utl = new Utilities();
         DataSet ds = new DataSet();
         string query = "sp_GetVehicle " + VehicleID + "";
-        return utl.GetDatasetTable(query, "RegisterNo").GetXml();
+        return utl.GetDatasetTable(query,  "others", "RegisterNo").GetXml();
     }
 
     [WebMethod]
